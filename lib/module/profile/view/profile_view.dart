@@ -144,7 +144,7 @@ class Profile extends GetView<ProfileController> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                          'السعودية, المدينة المنورة , حي النبلاء',
+                                          '${controller.model['country']}, ${controller.model['state']} , ${controller.model['city']}',
                                           style: TextStyle(
                                               fontSize: AppFonts.smallTitleFont(
                                                   context),
@@ -201,7 +201,7 @@ class Profile extends GetView<ProfileController> {
                             vertical: ScreenDimensions.heightPercentage(context, 1)),
                         Directions(
                             child: Text(
-                          'الحلاق لبيع المجوهرات',
+                              controller.model['description'].toString(),
                           style: TextStyle(
                               fontSize: AppFonts.smallTitleFont(context),
                               fontWeight: FontWeight.bold),

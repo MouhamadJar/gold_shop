@@ -5,6 +5,7 @@ import 'package:gold_shop/core/network/end_points.dart';
 import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 
 String baseUrl = 'https://mayadeen-md.com/goldStore/public';
+String baseUrlImages = 'https://mayadeen-md.com/goldStore/public/storage/';
 
 class DioHelper {
   static final Dio _dio = Dio(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/module/authentication/controller/user/user_login_controller.dart';
 import 'core/storage_handler/storage_handler.dart';
 import 'core/dictionary/dictionary.dart';
 import 'module/splash/view/splash_view.dart';
@@ -12,7 +11,8 @@ void main() async {
   await Future.wait([
     StorageHandler.init(),
   ]);
-
+Get.log(StorageHandler().token);
+Get.log(StorageHandler().userId);
   runApp(const MyApp());
 }
 

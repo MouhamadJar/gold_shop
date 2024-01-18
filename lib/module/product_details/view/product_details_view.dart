@@ -9,6 +9,7 @@ import 'package:gold_shop/module/invoice/view/invoice_view.dart';
 import 'package:gold_shop/module/product_details/controller/product_details_controller.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/images/images.dart';
+import '../../../core/network/dio_helper.dart';
 import '../../../core/texts/words.dart';
 import '../../../core/utils/app_fonts.dart';
 import '../../../core/utils/dimensions.dart';
@@ -82,7 +83,7 @@ class ProductDetails extends GetView<ProductDetailsController> {
                           onTap: () {
                             Get.dialog(InteractiveViewer(
                                 child:
-                                    AppNetworkImage(controller.model!.images[0])));
+                                    AppNetworkImage(baseUrlImages + controller.model!.images[0]['image'],)));
                           },
                           child: Container(
                             padding: EdgeInsetsDirectional.symmetric(
@@ -92,14 +93,15 @@ class ProductDetails extends GetView<ProductDetailsController> {
                             width: ScreenDimensions.screenWidth(context),
                             height:
                                 ScreenDimensions.heightPercentage(context, 25),
-                            child: AppNetworkImage(controller.model!.images[0]['image']),
+                            child: AppNetworkImage(baseUrlImages + controller.model!.images[0]['image'],fit: BoxFit.fitHeight,),
                           ),
                         ),
                         SizedBox(
                           height:
                               ScreenDimensions.heightPercentage(context, 10),
-                          child: const ProductImages(
-                            itemCount: 5,
+                          child:  ProductImages(
+                            image: controller.model!.images,
+                            itemCount: controller.model!.images.length,
                           ),
                         ),
                         SizedBox(

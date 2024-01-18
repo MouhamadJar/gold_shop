@@ -21,6 +21,7 @@ class ClassificationController extends GetxController {
 
   void getSubcategories({required int categoryId}) async {
     Map<String, dynamic> data = await DioHelper.getAllSubCategories(categoryId: categoryId);
+    subcategories.clear();
     data['data']['data'].forEach((element) {subcategories.add(ClassificationCategoriesModel.fromJson(json: element));});
     subcategories.isEmpty?isSubcategoryEmpty:isSubcategoryEmpty=false;
     isLoading= false;

@@ -21,7 +21,7 @@ class Category extends GetView<CategoriesController> {
   Widget build(BuildContext context) {
     Get.put(CategoriesController());
     return GetBuilder<CategoriesController>(initState: (state) {
-      controller.getCategories();
+      if(controller.categories.isEmpty) controller.getCategories();
     }, builder: (_) {
       return controller.isLoading
           ? Center(

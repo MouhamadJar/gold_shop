@@ -4,6 +4,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
+import 'package:gold_shop/core/utils/app_network_image.dart';
 
 import '../colors/colors.dart';
 import '../images/images.dart';
@@ -324,7 +326,8 @@ class Details extends StatelessWidget {
                 )
               : const SizedBox.shrink(),
         ],
-      ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+      ).paddingSymmetric(
+          vertical: ScreenDimensions.heightPercentage(context, 1)),
     );
   }
 }
@@ -351,8 +354,10 @@ class ScrollingContainer extends StatelessWidget {
 }
 
 class ProductImages extends StatelessWidget {
-  const ProductImages({super.key, required this.itemCount});
+  const ProductImages(
+      {super.key, required this.itemCount, this.image = const []});
 
+  final List<dynamic> image;
   final int itemCount;
 
   @override
@@ -382,13 +387,9 @@ class ProductImages extends StatelessWidget {
                 )
               ],
             ),
-            child: Padding(
-              padding: EdgeInsets.all(
-                ScreenDimensions.heightPercentage(context, 1),
-              ),
-              child:
-                  SvgPicture.asset(AppImages.bannerImage1, fit: BoxFit.contain),
-            ),
+            padding:
+                EdgeInsets.all(ScreenDimensions.heightPercentage(context, 1)),
+            child: AppNetworkImage(baseUrlImages + image[index]['image'], fit: BoxFit.contain),
           ),
         ),
       ),

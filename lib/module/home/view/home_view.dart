@@ -22,7 +22,7 @@ class HomeScreen extends GetView<HomeController> {
     Get.put(HomeController());
     return GetBuilder<HomeController>(
         initState: (state){
-          controller.getCity();
+         controller.getCity();
         },
         builder: (_) {
       return Column(

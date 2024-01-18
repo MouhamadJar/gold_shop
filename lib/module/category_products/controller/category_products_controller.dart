@@ -24,8 +24,13 @@ class SubcategoryProductsController extends GetxController {
   void getAllProducts({required int subcategoryId}) async {
     Map<String, dynamic> data =
         await DioHelper.allProducts(subcategoryId: subcategoryId);
+    product.clear();
     data['data']['data'].forEach((element) {
       product.add(ProductsModel.fromJson(json: element));
+      Get.log("""
+      element : $element
+      list index : ${product.length}
+      """);
     });
     isLoading = false;
     product.isEmpty ? isSubcategoryEmpty == true : isSubcategoryEmpty = false;
