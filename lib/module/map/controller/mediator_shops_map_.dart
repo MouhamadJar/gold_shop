@@ -42,7 +42,7 @@ class MediatorShopsMapController extends GetxController {
   late MarkerEntity markerEntity;
   @override
   void onInit() {
-    ///
+    ///Fuck
     markerEntity = MarkerEntity.fromMarkerInfo(info: markerInfo);
     super.onInit();
   }
