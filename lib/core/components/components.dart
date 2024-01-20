@@ -648,3 +648,14 @@ class AppTextField extends StatelessWidget {
     );
   }
 }
+
+class BackArrow extends StatelessWidget {
+  const BackArrow({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(onTap: (){Get.back();},child: const Icon(Icons.arrow_back));
+  }
+}

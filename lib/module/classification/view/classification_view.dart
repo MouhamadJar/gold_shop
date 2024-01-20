@@ -34,19 +34,6 @@ class Classification extends GetView<ClassificationController> {
               height: ScreenDimensions.heightPercentage(context, 5),
             ),
           ),
-          Padding(
-            padding: EdgeInsets.all(
-              ScreenDimensions.widthPercentage(context, 1),
-            ),
-            child: GestureDetector(
-                child: Icon(
-                  Icons.arrow_forward,
-                  color: CustomColors.black,
-                ),
-                onTap: () {
-                  Get.back();
-                }),
-          )
         ],
         centerTitle: true,
         title: Text(
@@ -57,7 +44,7 @@ class Classification extends GetView<ClassificationController> {
             fontSize: AppFonts.subTitleFont(context),
           ),
         ),
-        leading: const SizedBox.shrink(),
+        leading: const BackArrow(),
         elevation: 1,
         backgroundColor: CustomColors.white,
       ),

@@ -28,23 +28,13 @@ class Invoice extends GetView<InvoiceController> {
               backgroundColor: CustomColors.white,
               elevation: 1,
               centerTitle: true,
-              leading: const SizedBox.shrink(),
+              leading: const BackArrow(),
               title: Text(
                 AppWord.invoice,
                 style: TextStyle(
                     fontSize: AppFonts.subTitleFont(context),
                     fontWeight: FontWeight.bold),
               ),
-              actions: [
-                Directions(
-                  child: GestureDetector(
-                    onTap: (){
-                      Get.back();
-                    },
-                    child:  Icon(Icons.arrow_forward,size: ScreenDimensions.widthPercentage(context, 5)),
-                  ),
-                ),
-              ],
             ),
             body: SizedBox(
               width: ScreenDimensions.screenWidth(context),

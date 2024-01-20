@@ -31,6 +31,8 @@ class Profile extends GetView<ProfileController> {
         body: GetBuilder<ProfileController>(initState: (state) {
           controller.getProfile();
           controller.getPurchases();
+          controller.getSells();
+          controller.getMyProducts();
         }, builder: (_) {
           return controller.isLoading
               ? Center(
@@ -235,17 +237,6 @@ class Profile extends GetView<ProfileController> {
                                 ScreenDimensions.widthPercentage(context, 5),
                             vertical:
                                 ScreenDimensions.heightPercentage(context, 1)),
-                        Directions(
-                            child: Text(
-                          controller.model['description'].toString(),
-                          style: TextStyle(
-                              fontSize: AppFonts.smallTitleFont(context),
-                              fontWeight: FontWeight.bold),
-                        )).paddingSymmetric(
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1),
-                            horizontal:
-                                ScreenDimensions.widthPercentage(context, 10)),
                         Text(
                           AppWord.myPurchasesAndPutAside,
                           style: TextStyle(
@@ -263,9 +254,19 @@ class Profile extends GetView<ProfileController> {
                                 ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
-                            child:  ProfileLists(image: controller.myPurchases,)),
+                            height: ScreenDimensions.heightPercentage(context, 22),
+                            child: controller.isLoadingPurchases?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):controller.myPurchases.isEmpty
+                                ? Center(
+                                    child: Text(
+                                      AppWord.nothingToShow,
+                                      style: TextStyle(
+                                          fontSize:
+                                              AppFonts.subTitleFont(context)),
+                                    ),
+                                  )
+                                : ProfileLists(
+                                    image: controller.myPurchases,
+                                  )),
                         TextButton(
                                 onPressed: () {
                                   Get.to(const MyPurchasesHome(),
@@ -280,9 +281,7 @@ class Profile extends GetView<ProfileController> {
                                       fontSize:
                                           AppFonts.smallTitleFont(context)),
                                 ))
-                            .paddingSymmetric(
-                                horizontal: ScreenDimensions.widthPercentage(
-                                    context, 2)),
+                            .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                         Text(
                           AppWord.mySellsAndPutAside,
                           style: TextStyle(
@@ -293,16 +292,22 @@ class Profile extends GetView<ProfileController> {
                               color: CustomColors.yellow,
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
-                        ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.heightPercentage(context, 2),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                        ).paddingSymmetric(horizontal: ScreenDimensions.heightPercentage(context, 2), vertical: ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
-                            child:  ProfileLists(image: controller.myPurchases)),
+                            height: ScreenDimensions.heightPercentage(context, 22),
+                            child: controller.isLoadingSells?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):controller.mySells.isEmpty
+                                ? Center(
+                              child: Text(
+                                AppWord.nothingToShow,
+                                style: TextStyle(
+                                    fontSize:
+                                    AppFonts.subTitleFont(context)),
+                              ),
+                            )
+                                : ProfileLists(
+                              image: controller.mySells,
+                            )),
                         TextButton(
                                 onPressed: () {
                                   Get.to(const MySellsHome(),
@@ -337,10 +342,18 @@ class Profile extends GetView<ProfileController> {
                                 ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
-                            child: ProfileLists(
-                              image:  controller.myPurchases,
+                            height: ScreenDimensions.heightPercentage(context, 22),
+                            child: controller.isLoadingMyProducts?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):controller.myProducts.isEmpty
+                                ? Center(
+                              child: Text(
+                                AppWord.nothingToShow,
+                                style: TextStyle(
+                                    fontSize:
+                                    AppFonts.subTitleFont(context)),
+                              ),
+                            )
+                                : ProfileLists(
+                              image: controller.myProducts,
                             )),
                         TextButton(
                                 onPressed: () {
