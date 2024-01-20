@@ -2,6 +2,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:gold_shop/core/texts/words.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/images/images.dart';
@@ -39,8 +40,12 @@ class MediatorShopsMapScreen extends GetView<MediatorShopsMapController> {
         elevation: 1,
         backgroundColor: CustomColors.white,
       ),
-      body: WebViewWidget(
-        controller: controller.webController,
+      body: GoogleMap(
+        mapType: MapType.normal,
+        initialCameraPosition:controller.initialCameraPosition,
+        markers: {
+        controller.markerEntity
+        },
       ),
     );
   }

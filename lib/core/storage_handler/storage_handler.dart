@@ -55,7 +55,7 @@ class StorageHandler {
 
   Future<void> removeUserId() => _storage.remove('userId');
 
-  String get userId => _storage.read('userId');
+  String get userId => _storage.read('userId') ?? '';
 
   bool get hasUserId => _storage.hasData('userId');
 }
