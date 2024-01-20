@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/module/about_us/view/about_us_view.dart';
+import 'package:gold_shop/module/authentication/view/user/verify_account_screen.dart';
 import 'package:gold_shop/module/privacy/view/privacy_view.dart';
 
 import '../../../../core/colors/colors.dart';
@@ -145,6 +146,7 @@ class MainScreen extends GetView<MainScreenController> {
                                 },
                         ),
                         DrawerListTiles(
+                          onTap: (){Get.to(const VerifyUserAccount(),transition: Transition.rightToLeft,duration: const Duration(milliseconds: 700));},
                             title: AppWord.activateAccount,
                             imagePath: AppImages.verified),
                         DrawerListTiles(

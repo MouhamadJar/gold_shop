@@ -16,9 +16,9 @@ class VerifyUserAccount extends StatelessWidget {
     return Scaffold(
       backgroundColor: CustomColors.white,
       appBar: AppBar(
-        leading: const SizedBox.shrink(),
+        leading: const BackArrow(),
         backgroundColor: CustomColors.white,
-        elevation: 10,
+        elevation: 1,
         title: Text(
           AppWord.activateAccount,
           style: TextStyle(
@@ -83,3 +83,4 @@ class VerifyUserAccount extends StatelessWidget {
     );
   }
 }
+
