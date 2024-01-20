@@ -8,23 +8,23 @@ import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/images/images.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
+import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
 
 class ProfileLists extends StatelessWidget {
-  const ProfileLists({super.key});
+  const ProfileLists({super.key,required this.image});
 
+  final List<Map<String,dynamic>> image;
   @override
   Widget build(BuildContext context) {
-    int itemCount = 5;
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       padding: EdgeInsetsDirectional.symmetric(
         vertical: ScreenDimensions.heightPercentage(context, 2),
       ),
-      itemCount: itemCount,
+      itemCount: image.length<10?image.length:10,
       itemBuilder: (context, index) => GestureDetector(
-        onTap: () {
-        },
+        onTap: () {},
         child: SizedBox(
           width: ScreenDimensions.widthPercentage(context, 40),
           child: Stack(
@@ -56,7 +56,7 @@ class ProfileLists extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          'GN12345',
+                          image[index]['code'],
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: AppFonts.smallTitleFont(context),
@@ -82,9 +82,9 @@ class ProfileLists extends StatelessWidget {
               ),
               Positioned(
                 top: ScreenDimensions.heightPercentage(context, 0),
-                child: SvgPicture.asset(
+                child: AppNetworkImage(
+                  image[index]['images'][0]['image'],
                   width: ScreenDimensions.widthPercentage(context, 22),
-                  AppImages.bannerImage1,
                 ),
               ),
             ],

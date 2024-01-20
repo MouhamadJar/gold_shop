@@ -14,6 +14,7 @@ import 'package:gold_shop/module/my_ads/view/my_ads_view.dart';
 import 'package:gold_shop/module/profile/controller/profile_controller.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/images/images.dart';
+import '../../../core/network/dio_helper.dart';
 import '../../my_purchases_home/view/my_purchases_home_view.dart';
 import '../../my_sells_home/view/my_sells_home_view.dart';
 import '../components/profile_components.dart';
@@ -29,6 +30,7 @@ class Profile extends GetView<ProfileController> {
         backgroundColor: CustomColors.white,
         body: GetBuilder<ProfileController>(initState: (state) {
           controller.getProfile();
+          controller.getPurchases();
         }, builder: (_) {
           return controller.isLoading
               ? Center(
@@ -45,18 +47,24 @@ class Profile extends GetView<ProfileController> {
                       children: [
                         SizedBox(
                           width: ScreenDimensions.screenWidth(context),
-                          height: ScreenDimensions.heightPercentage(context, 60),
+                          height:
+                              ScreenDimensions.heightPercentage(context, 60),
                           child: Stack(
                             children: [
                               Positioned(
-                                top: ScreenDimensions.heightPercentage(context, 20),
-                                left: -ScreenDimensions.widthPercentage(context, 30),
-                                right: -ScreenDimensions.widthPercentage(context, 30),
+                                top: ScreenDimensions.heightPercentage(
+                                    context, 20),
+                                left: -ScreenDimensions.widthPercentage(
+                                    context, 30),
+                                right: -ScreenDimensions.widthPercentage(
+                                    context, 30),
                                 child: Transform.rotate(
                                   angle: -120,
                                   child: Container(
-                                    width: ScreenDimensions.screenWidth(context),
-                                    height: ScreenDimensions.heightPercentage(context, 20),
+                                    width:
+                                        ScreenDimensions.screenWidth(context),
+                                    height: ScreenDimensions.heightPercentage(
+                                        context, 20),
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
@@ -71,26 +79,35 @@ class Profile extends GetView<ProfileController> {
                               Positioned(
                                   left: 0,
                                   right: 0,
-                                  top: ScreenDimensions.heightPercentage(context, 6),
+                                  top: ScreenDimensions.heightPercentage(
+                                      context, 6),
                                   child: CircleAvatar(
                                     backgroundColor: CustomColors.white,
-                                    radius: ScreenDimensions.radius(context, 10),
+                                    radius:
+                                        ScreenDimensions.radius(context, 10),
                                   )),
                               Positioned(
                                   left: 0,
                                   right: 0,
-                                  top: ScreenDimensions.heightPercentage(context, 7),
+                                  top: ScreenDimensions.heightPercentage(
+                                      context, 7),
                                   child: CircleAvatar(
                                     backgroundColor: CustomColors.white1,
                                     radius: ScreenDimensions.radius(context, 9),
                                     child: DelayedDisplay(
                                       delay: const Duration(milliseconds: 100),
                                       slidingBeginOffset: const Offset(0, 5),
-                                      child: controller.model['photo']!=null
-                                          ?AppNetworkImage(controller.model['photo'],shape:BoxShape.circle,)
-                                          :Icon(Icons.person_2_outlined,
-                                        size: ScreenDimensions.heightPercentage(context, 10),
-                                      ),
+                                      child: controller.model['photo'] != null
+                                          ? AppNetworkImage(
+                                              controller.model['photo'],
+                                              shape: BoxShape.circle,
+                                            )
+                                          : Icon(
+                                              Icons.person_2_outlined,
+                                              size: ScreenDimensions
+                                                  .heightPercentage(
+                                                      context, 10),
+                                            ),
                                     ),
                                   )),
                               Positioned(
@@ -116,21 +133,28 @@ class Profile extends GetView<ProfileController> {
                                       delay: const Duration(milliseconds: 600),
                                       slidingBeginOffset: const Offset(-5, 0),
                                       child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           Text(
-                                            controller.model['is_verified']==0?AppWord.notActivatedAccount:AppWord.activatedAccount,
+                                            controller.model['is_verified'] == 0
+                                                ? AppWord.notActivatedAccount
+                                                : AppWord.activatedAccount,
                                             style: TextStyle(
                                               color: CustomColors.white,
                                               fontSize: AppFonts.subTitleFont(
                                                   context),
                                             ),
-                                          ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 3)),
-                                          controller.model['is_verified']==0
-                                              ?const SizedBox.shrink()
-                                              :Icon(Icons.verified,
-                                              color: CustomColors.white,
-                                              size: ScreenDimensions.widthPercentage(context, 6)),
+                                          ).paddingSymmetric(
+                                              horizontal: ScreenDimensions
+                                                  .widthPercentage(context, 3)),
+                                          controller.model['is_verified'] == 0
+                                              ? const SizedBox.shrink()
+                                              : Icon(Icons.verified,
+                                                  color: CustomColors.white,
+                                                  size: ScreenDimensions
+                                                      .widthPercentage(
+                                                          context, 6)),
                                         ],
                                       ),
                                     ),
@@ -165,9 +189,12 @@ class Profile extends GetView<ProfileController> {
                         ),
                         Container(
                           width: ScreenDimensions.screenWidth(context),
-                          height: ScreenDimensions.heightPercentage(context, 15),
+                          height:
+                              ScreenDimensions.heightPercentage(context, 15),
                           decoration: BoxDecoration(border: Border.all()),
-                        ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                        ).paddingSymmetric(
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 2)),
                         Directions(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -177,12 +204,17 @@ class Profile extends GetView<ProfileController> {
                                 style: TextStyle(
                                     fontSize: AppFonts.smallTitleFont(context),
                                     fontWeight: FontWeight.bold),
-                              ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                              ).paddingSymmetric(
+                                  horizontal: ScreenDimensions.widthPercentage(
+                                      context, 2)),
                               SvgPicture.asset(AppImages.phone)
                             ],
                           ),
-                        ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
+                        ).paddingSymmetric(
+                            horizontal:
+                                ScreenDimensions.widthPercentage(context, 5),
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 1)),
                         Directions(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -192,16 +224,20 @@ class Profile extends GetView<ProfileController> {
                                 style: TextStyle(
                                     fontSize: AppFonts.smallTitleFont(context),
                                     fontWeight: FontWeight.bold),
-                              ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                              ).paddingSymmetric(
+                                  horizontal: ScreenDimensions.widthPercentage(
+                                      context, 2)),
                               SvgPicture.asset(AppImages.email)
                             ],
                           ),
                         ).paddingSymmetric(
-                            horizontal: ScreenDimensions.widthPercentage(context, 5),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal:
+                                ScreenDimensions.widthPercentage(context, 5),
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 1)),
                         Directions(
                             child: Text(
-                              controller.model['description'].toString(),
+                          controller.model['description'].toString(),
                           style: TextStyle(
                               fontSize: AppFonts.smallTitleFont(context),
                               fontWeight: FontWeight.bold),
@@ -229,7 +265,7 @@ class Profile extends GetView<ProfileController> {
                             width: ScreenDimensions.screenWidth(context),
                             height:
                                 ScreenDimensions.heightPercentage(context, 22),
-                            child: const ProfileLists()),
+                            child:  ProfileLists(image: controller.myPurchases,)),
                         TextButton(
                                 onPressed: () {
                                   Get.to(const MyPurchasesHome(),
@@ -266,7 +302,7 @@ class Profile extends GetView<ProfileController> {
                             width: ScreenDimensions.screenWidth(context),
                             height:
                                 ScreenDimensions.heightPercentage(context, 22),
-                            child: const ProfileLists()),
+                            child:  ProfileLists(image: controller.myPurchases)),
                         TextButton(
                                 onPressed: () {
                                   Get.to(const MySellsHome(),
@@ -303,7 +339,9 @@ class Profile extends GetView<ProfileController> {
                             width: ScreenDimensions.screenWidth(context),
                             height:
                                 ScreenDimensions.heightPercentage(context, 22),
-                            child: const ProfileLists()),
+                            child: ProfileLists(
+                              image:  controller.myPurchases,
+                            )),
                         TextButton(
                                 onPressed: () {
                                   Get.to(const MyAds(),
