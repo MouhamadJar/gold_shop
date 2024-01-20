@@ -12,6 +12,7 @@ import 'package:gold_shop/core/utils/dimensions.dart';
 import 'package:gold_shop/module/edit_profile/view/edit_profile_view.dart';
 import 'package:gold_shop/module/my_ads/view/my_ads_view.dart';
 import 'package:gold_shop/module/profile/controller/profile_controller.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/images/images.dart';
 import '../../../core/network/dio_helper.dart';
@@ -191,9 +192,9 @@ class Profile extends GetView<ProfileController> {
                         ),
                         Container(
                           width: ScreenDimensions.screenWidth(context),
-                          height:
-                              ScreenDimensions.heightPercentage(context, 15),
+                          height: ScreenDimensions.heightPercentage(context, 25),
                           decoration: BoxDecoration(border: Border.all()),
+                          child: GoogleMap(initialCameraPosition: controller.position!,markers: {controller.marker!}),
                         ).paddingSymmetric(
                             vertical:
                                 ScreenDimensions.heightPercentage(context, 2)),

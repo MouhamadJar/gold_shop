@@ -11,10 +11,8 @@ void main() async {
   await Future.wait([
     StorageHandler.init(),
   ]);
-  StorageHandler().removeToken();
-  StorageHandler().removeUserId();
-// Get.log(StorageHandler().token);
-// Get.log(StorageHandler().userId);
+Get.log(StorageHandler().token);
+Get.log(StorageHandler().userId);
   runApp(const MyApp());
 }
 
