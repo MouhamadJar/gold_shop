@@ -35,14 +35,13 @@ class MediatorShopsMapController extends GetxController {
   MarkerInfo markerInfo = const MarkerInfo(
     markerId: 'markerId',
     title: 'title',
-    subTitle: 'subTitle',
+    subTitle: 'Suiiiiii',
     location: LocationEntity(lon: 39.612236, lat:  24.470901),
   );
 
   late MarkerEntity markerEntity;
   @override
   void onInit() {
-    ///Fuck
     markerEntity = MarkerEntity.fromMarkerInfo(info: markerInfo);
     super.onInit();
   }
