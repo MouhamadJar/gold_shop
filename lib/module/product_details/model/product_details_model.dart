@@ -1,6 +1,6 @@
 class ProductDetailsModel {
   final int id;
-  final String? code;
+  final String code;
   final int userId;
   final String description;
   final String age;
@@ -15,7 +15,7 @@ class ProductDetailsModel {
   final String manufacturerType;
   final bool toggle;
   final String deliveryType;
-  final String phoneNumber;
+  final String? phoneNumber;
   final int views;
   final String productStatus;
   final String createdAt;
@@ -27,7 +27,7 @@ class ProductDetailsModel {
 
   ProductDetailsModel({
     required this.id,
-    this.code,
+    required this.code,
     required this.userId,
     required this.description,
     required this.age,
@@ -42,7 +42,7 @@ class ProductDetailsModel {
     required this.manufacturerType,
     required this.toggle,
     required this.deliveryType,
-    required this.phoneNumber,
+     this.phoneNumber,
     required this.views,
     required this.productStatus,
     required this.createdAt,

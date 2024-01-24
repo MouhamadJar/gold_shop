@@ -11,8 +11,6 @@ void main() async {
   await Future.wait([
     StorageHandler.init(),
   ]);
-Get.log(StorageHandler().token);
-Get.log(StorageHandler().userId);
   runApp(const MyApp());
 }
 

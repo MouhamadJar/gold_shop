@@ -7,107 +7,99 @@ import 'package:get/get.dart';
 import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/images/images.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
+import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
+import 'package:gold_shop/module/my_purchases/controller/my_purchases_controller.dart';
 
 import '../../purchased_product/view/purchased_product_view.dart';
 
 
-class PurchasesCard extends StatelessWidget {
+class PurchasesCard extends GetView<MyPurchasesController> {
   const PurchasesCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    int itemCount = 5;
-    return GridView.builder(
-      padding: EdgeInsetsDirectional.symmetric(
-        horizontal: ScreenDimensions.widthPercentage(context, 5),
-        vertical: ScreenDimensions.heightPercentage(context, 2),
-      ),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisSpacing: ScreenDimensions.heightPercentage(context, 4),
-        mainAxisSpacing: ScreenDimensions.widthPercentage(context, 2),
-        mainAxisExtent: ScreenDimensions.heightPercentage(context, 25),
-        // childAspectRatio: ScreenDimensions.heightPercentage(context, 0.06),
-        crossAxisCount: 2,
-      ),
-      itemCount: itemCount,
-      itemBuilder: (context, index) => GestureDetector(
-        onTap: () {Get.to(const PurchasedProduct(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));},
-        child: DelayedDisplay(
-          slidingBeginOffset: const Offset(-1,0),
-          delay: Duration(milliseconds: (index*100)+100),
-          child: Stack(
-            alignment: AlignmentDirectional.center,
-            children: [
-              Positioned(
-                width: ScreenDimensions.widthPercentage(context, 40),
-                top: ScreenDimensions.heightPercentage(context, 3),
-                height: ScreenDimensions.heightPercentage(context, 20),
-                child: Directions(
-                  child: Container(
-                    padding: EdgeInsetsDirectional.symmetric(
-                      horizontal: ScreenDimensions.widthPercentage(context, 3),
-                    ),
-                    alignment: AlignmentDirectional.centerEnd,
-                    decoration: BoxDecoration(
-                        color: CustomColors.white1,
-                        borderRadius: BorderRadiusDirectional.only(
-                            topStart: Radius.circular(
-                              ScreenDimensions.widthPercentage(context, 2),
-                            ),
-                            topEnd: Radius.circular(
-                              ScreenDimensions.widthPercentage(context, 2),
-                            )),
-                        border: Border.all()),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          AppWord.productContent,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: AppFonts.smallTitleFont(context),
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          maxLines: 2,
+    Get.put(MyPurchasesController());
+    return GetBuilder<MyPurchasesController>(initState: (state){
+      controller.getMyPurchases();},
+      builder: (_) {
+        return GridView.builder(
+          padding: EdgeInsetsDirectional.symmetric(
+            horizontal: ScreenDimensions.widthPercentage(context, 5),
+            vertical: ScreenDimensions.heightPercentage(context, 2),
+          ),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisSpacing: ScreenDimensions.heightPercentage(context, 4),
+            mainAxisSpacing: ScreenDimensions.widthPercentage(context, 2),
+            mainAxisExtent: ScreenDimensions.heightPercentage(context, 25),
+            // childAspectRatio: ScreenDimensions.heightPercentage(context, 0.06),
+            crossAxisCount: 2,
+          ),
+          itemCount: controller.products.length,
+          itemBuilder: (context, index) => GestureDetector(
+            onTap: () {Get.to(const PurchasedProduct(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));},
+            child: DelayedDisplay(
+              slidingBeginOffset: const Offset(-1,0),
+              delay: Duration(milliseconds: (index*10)+10),
+              child: Stack(
+                alignment: AlignmentDirectional.center,
+                children: [
+                  Positioned(
+                    width: ScreenDimensions.widthPercentage(context, 40),
+                    top: ScreenDimensions.heightPercentage(context, 3),
+                    height: ScreenDimensions.heightPercentage(context, 20),
+                    child: Directions(
+                      child: Container(
+                        padding: EdgeInsetsDirectional.symmetric(
+                          horizontal: ScreenDimensions.widthPercentage(context, 3),
                         ),
-                        SizedBox(
-                          height: ScreenDimensions.heightPercentage(context, 1),
-                        ),
-                        Row(
+                        alignment: AlignmentDirectional.centerEnd,
+                        decoration: BoxDecoration(
+                            color: CustomColors.white1,
+                            borderRadius: BorderRadiusDirectional.only(
+                                topStart: Radius.circular(
+                                  ScreenDimensions.widthPercentage(context, 2),
+                                ),
+                                topEnd: Radius.circular(
+                                  ScreenDimensions.widthPercentage(context, 2),
+                                )),
+                            border: Border.all()),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              '${AppWord.caliber} 18',
+                              controller.products[index]['description'],
+                              textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontWeight: FontWeight.bold,
                                 fontSize: AppFonts.smallTitleFont(context),
+                                overflow: TextOverflow.ellipsis,
                               ),
+                              maxLines: 2,
+                            ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 1)),
+                            Row(
+                              children: [
+                                Text(
+                                  '${AppWord.caliber} ${controller.products[index]['carat']}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: AppFonts.smallTitleFont(context),
+                                  ),
+                                ),
+                                const Spacer(),
+                                Text(
+                                  '${AppWord.grams} ${controller.products[index]['wight']}',
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: AppFonts.smallTitleFont(context),
+                                  ),
+                                ),
+                              ],
                             ),
-                            const Spacer(),
                             Text(
-                              '${AppWord.grams} 5',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppFonts.smallTitleFont(context),
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            const Icon(Icons.visibility_outlined),
-                            Text(
-                              '20',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppFonts.smallTitleFont(context),
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              '${AppWord.sad} 1200',
+                              '${AppWord.sad} ${controller.products[index]['price']}',
                               style: TextStyle(
                                 color: CustomColors.gold,
                                 fontWeight: FontWeight.bold,
@@ -116,23 +108,23 @@ class PurchasesCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                      ],
+                      ),
                     ),
                   ),
-                ),
+                  Positioned(
+                    top: ScreenDimensions.heightPercentage(context, 0.01),
+                    width: ScreenDimensions.widthPercentage(context, 30),
+                    child: AppNetworkImage(
+                      baseUrlImages + controller.products[index]['images']['image'],
+                      width: ScreenDimensions.widthPercentage(context, 25),
+                    ),
+                  ),
+                ],
               ),
-              Positioned(
-                top: ScreenDimensions.heightPercentage(context, 0.01),
-                width: ScreenDimensions.widthPercentage(context, 30),
-                child: SvgPicture.asset(
-                  width: ScreenDimensions.widthPercentage(context, 25),
-                  AppImages.bannerImage1,
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }
     );
   }
 }

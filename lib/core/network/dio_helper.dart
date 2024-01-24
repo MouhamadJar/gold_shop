@@ -420,7 +420,7 @@ return error.response!.data;
   }
 
 //app problems
-  static Future<Map<String, dynamic>> problemStore(
+  static Future<bool> problemStore(
       {required String description,
       required String type,
       required int productId}) async {
@@ -431,9 +431,9 @@ return error.response!.data;
         'type': type,
         'product_id': productId,
       });
-      return response.data;
+      return true;
     } on DioException catch (error) {
-      return error.response!.data;
+      return false;
     }
   }
 

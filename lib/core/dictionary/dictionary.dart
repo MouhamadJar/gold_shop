@@ -242,6 +242,10 @@ class Dictionary extends Translations {
           AppWord.youHaveToChooseCaliber:'You have to choose caliber',
           AppWord.warning:'Warning',
           AppWord.noDataForThisFilter:'No data for this filtering',
+          AppWord.youHaveToLoginOrSignup :'You have to login or signup',
+          AppWord.loggedOut :'Logged out successfully',
+          AppWord.problemCreatedSuccessfully :'Problem created successfully',
+          AppWord.pleaseEnterDescription :'Please describe your problem',
         },
         'ar': {
           AppWord.splashText: AppWord.splashText,
@@ -473,6 +477,10 @@ class Dictionary extends Translations {
           AppWord.youHaveToChooseCaliber :AppWord.youHaveToChooseCaliber,
           AppWord.warning :AppWord.warning,
           AppWord.noDataForThisFilter :AppWord.noDataForThisFilter,
+          AppWord.youHaveToLoginOrSignup :AppWord.youHaveToLoginOrSignup,
+          AppWord.loggedOut :AppWord.loggedOut,
+          AppWord.problemCreatedSuccessfully :AppWord.problemCreatedSuccessfully,
+          AppWord.pleaseEnterDescription :AppWord.pleaseEnterDescription,
 }
       };
 }

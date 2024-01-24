@@ -171,15 +171,12 @@ class Profile extends GetView<ProfileController> {
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: [
                                       Text(
-                                          '${controller.model['country']}, ${controller.model['state']} , ${controller.model['city']}',
+                                          '${controller.model['country']}, ${controller.model['state']} , ${controller.model['city']} , ${controller.model['neighborhood']} , ${controller.model['street']}',
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              fontSize: AppFonts.smallTitleFont(
-                                                  context),
-                                              fontWeight: FontWeight.bold)),
-                                      SizedBox(
-                                        width: ScreenDimensions.widthPercentage(
-                                            context, 1),
-                                      ),
+                                              fontSize: AppFonts.smallTitleFont(context),
+                                              fontWeight: FontWeight.bold)).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                       SvgPicture.asset(
                                         AppImages.location,
                                       ),

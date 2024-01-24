@@ -488,4 +488,6 @@ class AppWord {
   static String get noDataForThisFilter => 'لا يوجد بيانات مطابقة للفلترة'.tr;
   static String get youHaveToLoginOrSignup => 'يرجى انشاء حساب او تسجيل الدخول'.tr;
   static String get loggedOut => 'تم تسجيل الخروج بنجاح'.tr;
+  static String get problemCreatedSuccessfully => 'تم إرسال المشكلة'.tr;
+  static String get pleaseEnterDescription => 'الرجاء إرسال شرح عن المشكلة'.tr;
 }
