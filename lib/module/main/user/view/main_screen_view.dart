@@ -161,12 +161,14 @@ class MainScreen extends GetView<MainScreenController> {
                         DrawerListTiles(
                           title: AppWord.language,
                           imagePath: AppImages.language,
-                          onTap: () {
+                          onTap: () async {
                             Get.log(Get.locale!.languageCode);
                             if (Get.locale!.languageCode == 'ar') {
                               Get.updateLocale(const Locale('en'));
+                            await  StorageHandler().setLocale('en');
                             } else {
                               Get.updateLocale(const Locale('ar'));
+                            await  StorageHandler().setLocale('ar');
                             }
                           },
                         ),

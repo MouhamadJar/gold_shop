@@ -44,7 +44,7 @@ class EndPoints {
  static String problemStore = '/api/app/problems';
 
 //app profile
-static String updateProfile = '/api/app/profile/2';
+static String updateProfile = '/api/app/profile/${StorageHandler().userId}';
 static String showProfile = '/api/app/profile/${StorageHandler().userId}';
 static String deleteAccount = '/api/app/profile/174';
 

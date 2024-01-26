@@ -12,6 +12,7 @@ class ProfileController extends GetxController {
   bool isLoadingSells = true;
   bool isLoadingMyProducts = true;
   CameraPosition? position;
+  GoogleMapController? mapController ;
 
   MarkerEntity? marker;
   Map<String, dynamic> model = {};
@@ -48,6 +49,7 @@ class ProfileController extends GetxController {
 
   void getSells() async {
     Map<String, dynamic> data = await DioHelper.profileListsSales();
+    Get.log(data['data']['data'].toString());
     data['data']['data'].forEach((element) {
       mySells.add(element);
     });

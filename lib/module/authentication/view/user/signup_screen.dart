@@ -1,9 +1,12 @@
 import 'package:delayed_display/delayed_display.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/validtor/app_validator.dart';
 import 'package:gold_shop/module/authentication/controller/user/user_signup_controller.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/components/components.dart';
 import '../../../../core/texts/words.dart';
 import '../../../../core/utils/app_fonts.dart';
@@ -150,8 +153,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                           value);
                                     },
                                     keyboardType: TextInputType.emailAddress,
-                                  )
-                                      .paddingSymmetric(
+                                  )   .paddingSymmetric(
                                       horizontal: ScreenDimensions
                                           .widthPercentage(
                                           context, 5))
@@ -208,19 +210,36 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                       .marginOnly(
                                       bottom: ScreenDimensions.heightPercentage(
                                           context, 2)),
-                                  AppTextField(
-                                    title: AppWord.address,
-                                    controller: controller.addressController,
-                                    keyboardType: TextInputType.name,
-                                    maxLines: 5,
-                                  )
-                                      .paddingSymmetric(
-                                      horizontal: ScreenDimensions
-                                          .widthPercentage(
-                                          context, 5))
-                                      .marginOnly(
-                                      bottom: ScreenDimensions.heightPercentage(
-                                          context, 5)),
+                                  GetBuilder<UserSignupController>(
+                                    builder: (_) {
+                                      return Container(
+                                        width: ScreenDimensions.screenWidth(context),
+                                        height: ScreenDimensions.heightPercentage(
+                                            context, 25),
+                                        decoration: BoxDecoration(border: Border.all()),
+                                        child: GoogleMap(
+                                          gestureRecognizers: {
+                                            Factory(
+                                                  () => EagerGestureRecognizer(
+                                                  allowedButtonsFilter: (buttons) => true,
+                                                  supportedDevices: {
+                                                    PointerDeviceKind.touch
+                                                  }),
+                                            ),
+                                          },
+                                          initialCameraPosition: controller.position,
+                                          onTap: controller.onGoogleMapTapped,
+                                          markers: controller.markers,
+                                        ),
+                                      ).paddingSymmetric(
+                                          vertical: ScreenDimensions.heightPercentage(
+                                              context, 2),
+                                          horizontal:
+                                          ScreenDimensions.widthPercentage(
+                                              context, 5)
+                                      );
+                                    }
+                                  ),
                                   Directions(
                                     child: EditProfileCard(
                                       title: AppWord.area,
@@ -311,16 +330,11 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                         ),
                                       ),
                                       onTap: () {
-                                        if (controller.formKey.currentState!
-                                            .validate()) {}
-                                        controller.signup(
-                                            latitude: controller.latitude,
-                                            longitude: controller.longitude,
-                                            country: controller.country,
-                                            state: controller.state,
-                                            city: controller.city,
-                                            neighborhood: controller.neighborhood,
-                                            street: controller.street);
+                                        if (!(controller.formKey.currentState!
+                                            .validate())) {
+                                          return;
+                                        }
+                                        controller.signup();
                                       },
                                       buttonBackground: AppImages
                                           .buttonLiteBackground),

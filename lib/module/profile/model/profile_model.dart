@@ -55,7 +55,7 @@ class ProfileModel {
   });
 
   factory ProfileModel.fromJson({required Map<String, dynamic> json}) {
-    print(json.toString());
+
     return ProfileModel(
       id: json['id'],
       firstName: json['first_name'],
