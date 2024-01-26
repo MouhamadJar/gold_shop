@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+
 class UserSignupModel {
   final String token;
   final int userId;
@@ -14,9 +16,9 @@ class UserSignupModel {
 
   factory UserSignupModel.fromJson({required Map<String, dynamic> json}) {
     return UserSignupModel(
-      token: json['token'],
-      userId: json['user_id'],
-      name: json['user_name'],
+      token: json['token'].toString(),
+      userId: int.parse(json['user_id'].toString()),
+      name: '',
     );
   }
 }

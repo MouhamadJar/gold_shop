@@ -12,7 +12,6 @@ class StorageHandler {
 
   static Future<void> init() async {
     await GetStorage.init();
-    await StorageHandler().setLocale("ar");
   }
 
   // Token
@@ -20,7 +19,7 @@ class StorageHandler {
 
   Future<void> removeToken() => _storage.remove('token');
 
-  String get token => _storage.read('token');
+  String get token => _storage.read('token') ?? 'no token';
 
   bool get hasToken => _storage.hasData('token');
 
@@ -32,12 +31,12 @@ class StorageHandler {
       var lang = _storage.read('locale');
       switch (lang) {
         case 'ar':
-          return const Locale('ar', 'sy');
+          return const Locale('ar');
         default:
-          return const Locale('en', 'us');
+          return const Locale('en');
       }
     }
-    return const Locale('en', 'us');
+    return const Locale('en');
   }
 
   String get lang {
@@ -45,7 +44,7 @@ class StorageHandler {
       var lang = _storage.read('locale');
       return lang;
     }
-    return 'ar';
+    return 'en';
   }
 
   bool get isAr => lang == 'ar';
@@ -55,7 +54,7 @@ class StorageHandler {
 
   Future<void> removeUserId() => _storage.remove('userId');
 
-  String get userId => _storage.read('userId') ?? '';
+  String get userId => _storage.read('userId') ?? 'no user id';
 
   bool get hasUserId => _storage.hasData('userId');
 }

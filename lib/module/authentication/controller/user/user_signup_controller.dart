@@ -1,10 +1,14 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/network/dio_helper.dart';
-import 'package:gold_shop/module/authentication/model/user/user_signup_model.dart';
-import 'package:gold_shop/module/main/user/view/main_screen_view.dart';
-
+import 'package:flutter/material.dart';
+import '../../../../core/texts/words.dart';
+import '../../model/user/user_signup_model.dart';
+import '../../../../core/network/dio_helper.dart';
+import '../../../main/user/view/main_screen_view.dart';
+import '../../../../core/location_service/marker_entity.dart';
+import "package:google_maps_flutter/google_maps_flutter.dart";
+import '../../../../core/location_service/location_model.dart';
 import '../../../../core/storage_handler/storage_handler.dart';
+import '../../../../core/location_service/location_entity.dart';
 
 class UserSignupController extends GetxController {
   TextEditingController firstNameController = TextEditingController();
@@ -14,43 +18,66 @@ class UserSignupController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
-   double latitude=1;
-   double longitude=1;
-   String country='';
-   String state='';
-   String city='';
-   String neighborhood='';
-   String street='';
-
+  double latitude = 1;
+  double longitude = 1;
+  String country = 'syria';
+  String state = 'state';
+  String city = 'city';
+  String neighborhood = 'neighborhood';
+  String street = 'street';
+  LocationEntity location =
+      const LocationGoogleModel(lat: 24.470901, lon: 39.612236);
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  CameraPosition position =
+      const CameraPosition(target: LatLng(24.470901, 39.612236), zoom: 10);
 
-   UserSignupModel? model;
+  UserSignupModel? model;
+  Set<Marker> markers = {};
 
-  void signup({
-    required double latitude,
-    required double longitude,
-    required String country,
-    required String state,
-    required String city,
-    required String neighborhood,
-    required String street,
-  }) async {
-    Map<String, dynamic> result = await DioHelper.register(
-        firstName: firstNameController.text,
-        lastName: lastNameController.text,
-        email: emailController.text,
-        phoneNumber: phoneController.text,
-        password: passwordController.text,
-        latitude: latitude,
-        longitude: longitude,
-        country: country,
-        state: state,
-        city: city,
-        neighborhood: neighborhood,
-        street: street);
-    await StorageHandler().setToken(model!.token);
-    await StorageHandler().setUserId(model!.userId.toString());
-    model = UserSignupModel.fromJson(json: result['data']);
-    Get.to(const MainScreen(),transition: Transition.rightToLeft, duration: const Duration(milliseconds: 700));
+  void signup() async {
+    await DioHelper.register(
+            firstName: firstNameController.text,
+            lastName: lastNameController.text,
+            email: emailController.text,
+            phoneNumber: phoneController.text,
+            password: passwordController.text,
+            latitude: location.lat,
+            longitude: location.lon,
+            country: country,
+            state: state,
+            city: city,
+            neighborhood: neighborhood,
+            street: street)
+        .then((value) async {
+      if (value['errors'].isNotNull) {
+        Get.log('error');
+        Get.snackbar(AppWord.warning, value['message']);
+        return value;
+      } else {
+        model = UserSignupModel.fromJson(json: value['data']);
+        await StorageHandler().setToken(model!.token);
+        await StorageHandler().setUserId(model!.userId.toString());
+        Get.offAll(const MainScreen(),
+            transition: Transition.rightToLeft,
+            duration: const Duration(milliseconds: 700));
+        return value;
+      }
+    });
+  }
+
+  void onGoogleMapTapped(LatLng position) {
+    location = LocationGoogleModel.fromLatLon(position);
+    markers = {
+      MarkerEntity.fromMarkerInfo(
+        info: MarkerInfo(
+          markerId: 'markerId',
+          title: 'You Location',
+          subTitle: 'You are here',
+          location: location,
+        ),
+      ),
+    };
+    location.toString();
+    update();
   }
 }

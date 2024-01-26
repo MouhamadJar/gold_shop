@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as g;
 import 'package:gold_shop/core/network/apps_headers.dart';
@@ -93,10 +95,11 @@ class DioHelper {
   }
 
   static Future<Map<String, dynamic>> productsByCity(
-      {required String city,required int subcategoryId}) async {
+      {required String city, required int subcategoryId}) async {
     late Response response;
     try {
-      response = await _dio.get('${EndPoints.productByCity}$subcategoryId', queryParameters: {'city': 'South%20Susana'});
+      response = await _dio.get('${EndPoints.productByCity}$subcategoryId',
+          queryParameters: {'city': 'South%20Susana'});
       print(response.data.toString());
       return response.data;
     } on DioException catch (error) {
@@ -141,11 +144,10 @@ class DioHelper {
     }
   }
 
-
   static Future<Map<String, dynamic>> priceFilter(
       {required int carat,
-        required double fromPrice,
-        required double toPrice}) async {
+      required double fromPrice,
+      required double toPrice}) async {
     late Response response;
     try {
       response = await _dio.get(
@@ -163,13 +165,13 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String,dynamic>> getCity()async{
+  static Future<Map<String, dynamic>> getCity() async {
     late Response response;
-    try{
+    try {
       response = await _dio.get(EndPoints.getCity);
-   return response.data;
-    }on DioException catch (error){
-return error.response!.data;
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
     }
   }
 
@@ -212,6 +214,7 @@ return error.response!.data;
   }) async {
     late Response response;
     try {
+      log('---REQUESTING SIGNUP---');
       response = await _dio.post(
         EndPoints.register,
         data: FormData.fromMap({
@@ -221,17 +224,19 @@ return error.response!.data;
           //'photo': MultipartFile.fromFile('filePath'),
           'phone_number': phoneNumber,
           'password': password,
-          'latitude': 10,
-          'longitude': 10,
-          'country': 'syria',
-          'state': 'dmascuse',
-          'city': 'mazeh',
-          'neighborhood': 'vellat',
-          'street': '98',
+          'latitude': latitude,
+          'longitude': longitude,
+          'country': country,
+          'state': state,
+          'city': city,
+          'neighborhood': neighborhood,
+          'street': street,
         }),
       );
+      log('done : ${response.data.toString()}');
       return response.data;
     } on DioException catch (error) {
+      log('error : ${error.response!.data}');
       return error.response!.data;
     }
   }
@@ -452,11 +457,11 @@ return error.response!.data;
       required String street}) async {
     late Response response;
     try {
-      response = await _dio.post(EndPoints.updateProfile, data: {
+      FormData body = FormData.fromMap({
         'first_name': firstName,
         'last_name': lastName,
         'email': email,
-        'photo': photo,
+        'photo': await MultipartFile.fromFile(photo),
         'longitude': longitude,
         'latitude': latitude,
         'country': country,
@@ -465,8 +470,16 @@ return error.response!.data;
         'neighborhood': neighborhood,
         'street': street,
       });
+      print('---REQUESTING EDIT PROFILE---');
+      print(_dio.options.headers.toString());
+      response = await _dio.post(EndPoints.updateProfile, data: body);
+      print(
+          '---DATA EDIT PROFILE---\nstate:success . \nbody : ${response.data}');
+
       return response.data;
     } on DioException catch (error) {
+      print(
+          '---DATA EDIT PROFILE---\nstate:error . \nerror : ${error.response!.data}');
       return error.response!.data;
     }
   }

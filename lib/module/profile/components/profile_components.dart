@@ -6,23 +6,26 @@ import 'package:get/get.dart';
 import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/images/images.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
 
 class ProfileLists extends StatelessWidget {
-  const ProfileLists({super.key,required this.image});
+  const ProfileLists({super.key, required this.image});
 
-  final List<Map<String,dynamic>> image;
+  final List<Map<String, dynamic>> image;
+
   @override
   Widget build(BuildContext context) {
+    // Get.log(image[1]['product'].toString());
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       padding: EdgeInsetsDirectional.symmetric(
         vertical: ScreenDimensions.heightPercentage(context, 2),
       ),
-      itemCount: image.length<10?image.length:10,
+      itemCount: image.length < 10 ? image.length : 10,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {},
         child: SizedBox(
@@ -37,10 +40,9 @@ class ProfileLists extends StatelessWidget {
                     height: ScreenDimensions.heightPercentage(context, 15),
                     width: ScreenDimensions.widthPercentage(context, 35),
                     padding: EdgeInsetsDirectional.only(
-                      end: ScreenDimensions.widthPercentage(context, 2),
-                      start: ScreenDimensions.widthPercentage(context, 2),
-                      bottom: ScreenDimensions.heightPercentage(context, 0)
-                    ),
+                        end: ScreenDimensions.widthPercentage(context, 2),
+                        start: ScreenDimensions.widthPercentage(context, 2),
+                        bottom: ScreenDimensions.heightPercentage(context, 0)),
                     alignment: AlignmentDirectional.center,
                     decoration: BoxDecoration(
                         color: CustomColors.white1,
@@ -56,7 +58,7 @@ class ProfileLists extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          image[index]['code'],
+                          image[index]['product']['code'].toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: AppFonts.smallTitleFont(context),
@@ -70,11 +72,19 @@ class ProfileLists extends StatelessWidget {
                           decoration: BoxDecoration(
                               border: Border.all(color: CustomColors.yellow),
                               color: CustomColors.white,
-                              borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 1))
-                          ),
+                              borderRadius: BorderRadius.circular(
+                                  ScreenDimensions.radius(context, 1))),
                           alignment: AlignmentDirectional.center,
-                          child: Text(AppWord.details,style: TextStyle(color: CustomColors.gold,fontWeight: FontWeight.bold,fontSize: AppFonts.smallTitleFont(context)),),
-                        ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                          child: Text(
+                            AppWord.details,
+                            style: TextStyle(
+                                color: CustomColors.gold,
+                                fontWeight: FontWeight.bold,
+                                fontSize: AppFonts.smallTitleFont(context)),
+                          ),
+                        ).paddingSymmetric(
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 1)),
                       ],
                     ),
                   ),
@@ -83,8 +93,8 @@ class ProfileLists extends StatelessWidget {
               Positioned(
                 top: ScreenDimensions.heightPercentage(context, 0),
                 child: AppNetworkImage(
-                  image[index]['images'][0]['image'],
-                  width: ScreenDimensions.widthPercentage(context, 22),
+                  baseUrlImages + image[index]['product']['images'][0]['image'],
+                  width: ScreenDimensions.widthPercentage(context, 10),
                 ),
               ),
             ],

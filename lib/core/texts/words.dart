@@ -75,6 +75,7 @@ class AppWord {
   static String get activatedAccount => 'الحساب موثق'.tr;
 
   static String get notActivatedAccount => 'الحساب غير موثق'.tr;
+
   static String get blockedAccount => 'عذرا الحساب محظور'.tr;
 
   static String get login => 'تسجيل الدخول'.tr;
@@ -208,6 +209,8 @@ class AppWord {
 
   static String get editProfile => 'تعديل الملف الشخصي'.tr;
 
+  static String get editProfileSuccessfully => 'تم تعديل الملف الشخصي بنجاح'.tr;
+
   static String get myPurchases => 'مشترياتي'.tr;
 
   static String get myReservedPurchases => 'مشترياتي المحجوزة'.tr;
@@ -248,7 +251,8 @@ class AppWord {
 
   static String get postDate => 'تاريخ العرض'.tr;
 
-  static String get doYouWantToPrintReport => 'أتريد طباعة التقرير بالتصنيفات الموجودة'.tr;
+  static String get doYouWantToPrintReport =>
+      'أتريد طباعة التقرير بالتصنيفات الموجودة'.tr;
 
   static String get yes => 'نعم'.tr;
 
@@ -461,33 +465,69 @@ class AppWord {
   static String get insurance => 'الرخصة'.tr;
 
   static String get insuranceImage => 'صورة الرخصة'.tr;
+
   static String get logout => 'تسجيل الخروج'.tr;
+
   static String get deal => 'العقد المتفق'.tr;
+
   static String get eSignaturePic => 'صورة التوقيع الالكتروني'.tr;
+
   static String get uploadPicture => 'تحميل الصورة'.tr;
+
   static String get done => 'تم'.tr;
+
   static String get enterProductCode => 'ادخل رمز المنتج المراد فحصه'.tr;
+
   static String get empty => 'فارغ'.tr;
+
   static String get invalidUserName => 'اسم مستخدم غير صالح'.tr;
+
   static String get invalidPhoneNumber => 'رقم غير صالح'.tr;
+
   static String get notNumber => 'ليس برقم'.tr;
+
   static String get invalidEmail => 'بريد الكتروني غير صالح'.tr;
+
   static String get invalidLength => 'قليل'.tr;
+
   static String get passwordIsNotMatch => 'كلمة السر غير مطابقة'.tr;
+
   static String get saveAndSend => 'حفظ وإرسال'.tr;
+
   static String get addNote => 'إضافة ملاحظة'.tr;
-  static String get invoiceWillBeSent => 'سيتم إرسال الفاتورة إلى البائع والمشتري'.tr;
-  static String get alsoInvoiceWillBeNamed => 'كما سيتم إصدار الفاتورة والتقرير باسم التطبيق للبائع والمشتري والمتجر'.tr;
+
+  static String get invoiceWillBeSent =>
+      'سيتم إرسال الفاتورة إلى البائع والمشتري'.tr;
+
+  static String get alsoInvoiceWillBeNamed =>
+      'كما سيتم إصدار الفاتورة والتقرير باسم التطبيق للبائع والمشتري والمتجر'
+          .tr;
+
   static String get areYouSure => 'هل أنت متأكد من معلومات التقرير'.tr;
-  static String get shopCommissionForCheckService => 'عمولة المتجر مقابل خدمة الفحص'.tr;
+
+  static String get shopCommissionForCheckService =>
+      'عمولة المتجر مقابل خدمة الفحص'.tr;
+
   static String get checkingServiceCommission => 'عمولة خدمة الفحص'.tr;
+
   static String get aboutMediatorShop => 'نبذة عن المتجر'.tr;
+
   static String get nothingToShow => 'لا يوجد شيء لعرضه'.tr;
+
   static String get youHaveToChooseCaliber => 'يجب اختيار العيار'.tr;
+
   static String get warning => 'تحذير'.tr;
+
   static String get noDataForThisFilter => 'لا يوجد بيانات مطابقة للفلترة'.tr;
-  static String get youHaveToLoginOrSignup => 'يرجى انشاء حساب او تسجيل الدخول'.tr;
+
+  static String get youHaveToLoginOrSignup =>
+      'يرجى انشاء حساب او تسجيل الدخول'.tr;
+
   static String get loggedOut => 'تم تسجيل الخروج بنجاح'.tr;
+
   static String get problemCreatedSuccessfully => 'تم إرسال المشكلة'.tr;
+
   static String get pleaseEnterDescription => 'الرجاء إرسال شرح عن المشكلة'.tr;
+
+  static String get doNotPickImage => 'لم يتم اختيار صورة'.tr;
 }
