@@ -32,7 +32,6 @@ class ProductDetailsController extends GetxController {
     Map<String, dynamic> data = await DioHelper.show(productId: productId);
     model = ProductDetailsModel.fromJson(json: data['data']);
     subcategoryADVS(subcategoryId: model!.subcategoryId);
-
     isLoading = false;
     update();
   }

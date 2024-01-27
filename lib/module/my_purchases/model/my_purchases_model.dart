@@ -1,18 +1,17 @@
 class MyPurchasesModel {
   final int id;
-
   final int userId;
   final int productId;
-  final int amount;
-  final int price;
+  final double amount;
+  final double price;
   final int cancel;
   final String code;
   final String createdAt;
   final String updatedAt;
-  final int totalAmount;
+  final double totalAmount;
   final String description;
   final int carat;
-  final int weight;
+  final double weight;
 
   MyPurchasesModel({
     required this.id,
@@ -41,7 +40,7 @@ class MyPurchasesModel {
       code: json['code'],
       createdAt: json['created_at'],
       updatedAt: json['updated_at'],
-      totalAmount:json[' total_amount'],
+      totalAmount:json['total_amount'],
       description: json['product']['description'],
       carat: json['product']['carat'],
       weight: json['product']['wight'],

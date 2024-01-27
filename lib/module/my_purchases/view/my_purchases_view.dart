@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
 import 'package:gold_shop/module/my_purchases/components/my_purchases_components.dart';
 import 'package:gold_shop/module/my_purchases/controller/my_purchases_controller.dart';
@@ -13,6 +14,7 @@ class MyPurchases extends GetView<MyPurchasesController> {
     return GetBuilder<MyPurchasesController>(
       initState:  (state){
         controller.getMyPurchases();
+        controller.products.clear();
       },
       builder: (_) {
         return Expanded(

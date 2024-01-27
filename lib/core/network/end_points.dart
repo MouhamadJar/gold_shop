@@ -64,6 +64,9 @@ static String profileListsReservedPurchases = '/api/app/lists/purchases/reserved
 static String profileListsSales = '/api/app/lists/sales';
 static String profileListsPurchases = '/api/app/lists/my/purchases';
 static String profileListsShowProduct = '/api/app/products/list/14';
+static String profileSalesList = '/api/app/lists/profile/sales';
+static String profilePurchasesList = '/api/app/lists/profile/my/purchases';
+static String profileMyProductsList = '/api/app/lists/profile/my/products';
 
 //app sort & filter my product
 static String sortMyProduct = '/api/app/lists/search/sort?created_at=1&list_type=0';

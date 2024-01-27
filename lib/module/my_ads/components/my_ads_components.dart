@@ -7,18 +7,33 @@ import 'package:get/get.dart';
 import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/images/images.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
+import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
 import 'package:gold_shop/module/ads_product/view/ads_product_view.dart';
+import 'package:gold_shop/module/my_ads/controller/my_ads_controller.dart';
 
-class MyAdsCard extends StatelessWidget {
+class MyAdsCard extends GetView<MyAdsController> {
   const MyAdsCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    int itemCount = 10;
-    return GridView.builder(
+    Get.put(MyAdsController());
+    return controller.isLoading
+        ? Center(
+      child: CircularProgressIndicator(
+        color: CustomColors.gold,
+      ),
+    )
+        : controller.products.isEmpty
+        ? Center(
+        child: Text(
+          AppWord.nothingToShow,
+          style: TextStyle(fontSize: AppFonts.subTitleFont(context)),
+        ))
+        : GridView.builder(
       padding: EdgeInsetsDirectional.symmetric(
         horizontal: ScreenDimensions.widthPercentage(context, 5),
         vertical: ScreenDimensions.heightPercentage(context, 2),
@@ -30,12 +45,12 @@ class MyAdsCard extends StatelessWidget {
         // childAspectRatio: ScreenDimensions.heightPercentage(context, 0.06),
         crossAxisCount: 2,
       ),
-      itemCount: itemCount,
+      itemCount: controller.products.length,
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {Get.to(const AdsProduct(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));},
         child: DelayedDisplay(
           slidingBeginOffset: const Offset(0,1),
-          delay: Duration(milliseconds: (index*100)+100),
+          delay: Duration(milliseconds: (index*10)+10),
           child: Stack(
             alignment: AlignmentDirectional.center,
             children: [
@@ -63,21 +78,18 @@ class MyAdsCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          AppWord.productContent,
+                          controller.products[index]['description'],
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: AppFonts.smallTitleFont(context),
                             overflow: TextOverflow.ellipsis,
                           ),
                           maxLines: 2,
-                        ),
-                        SizedBox(
-                          height: ScreenDimensions.heightPercentage(context, 1),
-                        ),
+                        ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 1)),
                         Row(
                           children: [
                             Text(
-                              '${AppWord.caliber} 18',
+                              '${AppWord.caliber} ${controller.products[index]['carat']}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: AppFonts.smallTitleFont(context),
@@ -85,7 +97,7 @@ class MyAdsCard extends StatelessWidget {
                             ),
                             const Spacer(),
                             Text(
-                              '${AppWord.grams} 5',
+                              '${AppWord.grams} ${controller.products[index]['wight']}',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: AppFonts.smallTitleFont(context),
@@ -93,26 +105,13 @@ class MyAdsCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            const Icon(Icons.visibility_outlined),
-                            Text(
-                              '20',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppFonts.smallTitleFont(context),
-                              ),
-                            ),
-                            const Spacer(),
-                            Text(
-                              '${AppWord.sad} 1200',
-                              style: TextStyle(
-                                color: CustomColors.gold,
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppFonts.smallTitleFont(context),
-                              ),
-                            ),
-                          ],
+                        Text(
+                          '${AppWord.sad} ${controller.products[index]['price']}',
+                          style: TextStyle(
+                            color: CustomColors.gold,
+                            fontWeight: FontWeight.bold,
+                            fontSize: AppFonts.smallTitleFont(context),
+                          ),
                         ),
                       ],
                     ),
@@ -120,11 +119,10 @@ class MyAdsCard extends StatelessWidget {
                 ),
               ),
               Positioned(
-                top: ScreenDimensions.heightPercentage(context, 0.01),
-                width: ScreenDimensions.widthPercentage(context, 30),
-                child: SvgPicture.asset(
-                  width: ScreenDimensions.widthPercentage(context, 25),
-                  AppImages.bannerImage1,
+                top: ScreenDimensions.heightPercentage(context, 0),
+                width: ScreenDimensions.widthPercentage(context, 20),
+                child: AppNetworkImage(
+                   baseUrlImages + controller.products[index]['images'][0]['image']
                 ),
               ),
             ],

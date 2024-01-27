@@ -39,8 +39,8 @@ class ProfileController extends GetxController {
   }
 
   void getPurchases() async {
-    Map<String, dynamic> data = await DioHelper.profileListsPurchases();
-    data['data']['data'].forEach((element) {
+    Map<String, dynamic> data = await DioHelper.profilePurchasesList();
+    data['data'].forEach((element) {
       myPurchases.add(element);
     });
     isLoadingPurchases = false;
@@ -48,9 +48,8 @@ class ProfileController extends GetxController {
   }
 
   void getSells() async {
-    Map<String, dynamic> data = await DioHelper.profileListsSales();
-    Get.log(data['data']['data'].toString());
-    data['data']['data'].forEach((element) {
+    Map<String, dynamic> data = await DioHelper.profileSalesList();
+    data['data'].forEach((element) {
       mySells.add(element);
     });
     isLoadingSells = false;
@@ -58,10 +57,8 @@ class ProfileController extends GetxController {
   }
 
   void getMyProducts() async {
-    Map<String, dynamic> data = await DioHelper.profileListsMyProducts();
-    data['data']['data'].forEach((element) {
-      myProducts.add(element);
-    });
+    Map<String, dynamic> data = await DioHelper.profileMyProductsList();
+    data['data'].forEach((element) {myProducts.add(element);});
     isLoadingMyProducts = false;
     update();
   }

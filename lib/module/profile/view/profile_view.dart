@@ -244,10 +244,8 @@ class Profile extends GetView<ProfileController> {
                             ],
                           ),
                         ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.widthPercentage(context, 5),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal: ScreenDimensions.widthPercentage(context, 5),
+                            vertical: ScreenDimensions.heightPercentage(context, 1)),
                         Directions(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -264,10 +262,8 @@ class Profile extends GetView<ProfileController> {
                             ],
                           ),
                         ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.widthPercentage(context, 5),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal: ScreenDimensions.widthPercentage(context, 5),
+                            vertical: ScreenDimensions.heightPercentage(context, 1)),
                         Text(
                           AppWord.myPurchasesAndPutAside,
                           style: TextStyle(
@@ -279,14 +275,11 @@ class Profile extends GetView<ProfileController> {
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.heightPercentage(context, 2),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal: ScreenDimensions.heightPercentage(context, 2),
+                            vertical: ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
+                            height: ScreenDimensions.heightPercentage(context, 22),
                             child: controller.isLoadingPurchases
                                 ? Center(
                                     child: CircularProgressIndicator(
@@ -307,7 +300,8 @@ class Profile extends GetView<ProfileController> {
                                       )),
                         TextButton(
                                 onPressed: () {
-                                  Get.to(const MyPurchasesHome(),
+                                  Get.to(
+                                      const MyPurchasesHome(),
                                       transition: Transition.zoom,
                                       duration:
                                           const Duration(milliseconds: 500));
@@ -316,12 +310,9 @@ class Profile extends GetView<ProfileController> {
                                   AppWord.viewAll,
                                   style: TextStyle(
                                       color: CustomColors.black,
-                                      fontSize:
-                                          AppFonts.smallTitleFont(context)),
+                                      fontSize: AppFonts.smallTitleFont(context)),
                                 ))
-                            .paddingSymmetric(
-                                horizontal: ScreenDimensions.widthPercentage(
-                                    context, 2)),
+                            .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                         Text(
                           AppWord.mySellsAndPutAside,
                           style: TextStyle(
@@ -333,14 +324,11 @@ class Profile extends GetView<ProfileController> {
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.heightPercentage(context, 2),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal: ScreenDimensions.heightPercentage(context, 2),
+                            vertical: ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
+                            height: ScreenDimensions.heightPercentage(context, 22),
                             child: controller.isLoadingSells
                                 ? Center(
                                     child: CircularProgressIndicator(

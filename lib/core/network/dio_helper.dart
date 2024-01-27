@@ -639,6 +639,40 @@ class DioHelper {
     }
   }
 
+  static Future<Map<String, dynamic>> profileSalesList() async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.profileSalesList,
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> profilePurchasesList() async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.profilePurchasesList,
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> profileMyProductsList() async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.profileMyProductsList,
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
 //app sort & filter my product
   static Future<Map<String, dynamic>> sortMyProduct() async {
     late Response response;

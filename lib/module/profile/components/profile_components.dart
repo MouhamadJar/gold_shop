@@ -19,7 +19,6 @@ class ProfileLists extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Get.log(image[1]['product'].toString());
     return ListView.builder(
       scrollDirection: Axis.horizontal,
       padding: EdgeInsetsDirectional.symmetric(
@@ -58,7 +57,7 @@ class ProfileLists extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          image[index]['product']['code'].toString(),
+                          image[index]['code'].toString(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: AppFonts.smallTitleFont(context),
@@ -93,7 +92,7 @@ class ProfileLists extends StatelessWidget {
               Positioned(
                 top: ScreenDimensions.heightPercentage(context, 0),
                 child: AppNetworkImage(
-                  baseUrlImages + image[index]['product']['images'][0]['image'],
+                  baseUrlImages + image[index]['image'],
                   width: ScreenDimensions.widthPercentage(context, 10),
                 ),
               ),
