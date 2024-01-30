@@ -14,7 +14,7 @@ import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
 import 'package:gold_shop/module/my_reserved_sells/controller/my_reserved_sells_controller.dart';
 import 'package:gold_shop/module/my_sells/controller/my_sells_controller.dart';
-import 'package:gold_shop/module/reserved_sell/view/reserved_sells_view.dart';
+import 'package:gold_shop/module/reserved_sell/view/reserved_sell_view.dart';
 
 class MyReservedSellsCard extends GetView<MyReservedSellsController> {
   const MyReservedSellsCard({super.key});
@@ -53,7 +53,7 @@ class MyReservedSellsCard extends GetView<MyReservedSellsController> {
                   itemCount: controller.products.length,
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
-                      Get.to(const ReservedSell(),
+                      Get.to( ReservedSell(productId: controller.products[index]['id'],),
                           transition: Transition.fadeIn,
                           duration: const Duration(milliseconds: 500));
                     },
@@ -64,11 +64,9 @@ class MyReservedSellsCard extends GetView<MyReservedSellsController> {
                         alignment: AlignmentDirectional.center,
                         children: [
                           Positioned(
-                            width:
-                                ScreenDimensions.widthPercentage(context, 40),
+                            width: ScreenDimensions.widthPercentage(context, 40),
                             top: ScreenDimensions.heightPercentage(context, 3),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 20),
+                            height: ScreenDimensions.heightPercentage(context, 20),
                             child: Directions(
                               child: Container(
                                 padding: EdgeInsetsDirectional.symmetric(

@@ -4,6 +4,7 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
 import 'package:gold_shop/module/Classification/view/classification_view.dart';
@@ -21,7 +22,7 @@ class Category extends GetView<HomeController> {
   Widget build(BuildContext context) {
     Get.put(HomeController());
     return GetBuilder<HomeController>(initState: (state) {
-      if(controller.categories.isEmpty) controller.getCategories();
+      if (controller.categories.isEmpty) controller.getCategories();
     }, builder: (_) {
       return controller.isLoading
           ? Center(
@@ -44,7 +45,10 @@ class Category extends GetView<HomeController> {
                 fadeIn: true,
                 child: GestureDetector(
                   onTap: () {
-                    Get.to( Classification(categoryId: controller.categories[index].id,pageTitle: controller.categories[index].name),
+                    Get.to(
+                        Classification(
+                            categoryId: controller.categories[index].id,
+                            pageTitle: controller.categories[index].name),
                         transition: Transition.rightToLeft,
                         duration: const Duration(milliseconds: 700));
                   },
@@ -64,7 +68,9 @@ class Category extends GetView<HomeController> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        AppNetworkImage(controller.categories[index].image, width: ScreenDimensions.widthPercentage(context, 20)),
+                        AppNetworkImage(
+                            baseUrlImages + controller.categories[index].image,
+                            width: ScreenDimensions.widthPercentage(context, 20)),
                         Text(
                           controller.categories[index].name,
                           style: TextStyle(

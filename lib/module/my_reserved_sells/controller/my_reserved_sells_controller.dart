@@ -6,7 +6,10 @@ class MyReservedSellsController extends GetxController{
   List<Map<String,dynamic>> products = [];
 
   void getMyReservedSells()async{
+    isLoading = true;
+    update();
     Map<String,dynamic> data = await DioHelper.profileListsSalesReservations();
     data['data']['data'].forEach((element){products.add(element);});
+    update();
   }
 }

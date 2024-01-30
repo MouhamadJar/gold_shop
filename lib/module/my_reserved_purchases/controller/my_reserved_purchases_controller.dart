@@ -6,6 +6,8 @@ class MyReservedPurchasesController extends GetxController{
   List<Map<String,dynamic>> products= [];
 
   void getMyReservedPurchases ()async{
+    isLoading = true;
+    update();
     Map<String,dynamic> data = await DioHelper.profileListsReservedPurchases();
     data['data']['data'].forEach((element){products.add(element['product']);});
     isLoading = false;

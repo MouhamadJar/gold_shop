@@ -49,7 +49,8 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
             delay: Duration(milliseconds: (index * 10) + 10),
             child: GestureDetector(
               onTap: () {
-                if (!(StorageHandler().hasToken)) {
+                if (!(StorageHandler().hasToken))
+                {
                   Get.dialog(
                       barrierDismissible: false,
                       Material(
@@ -132,7 +133,8 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                         ),
                       ));
                   return;
-                }else{Get.to( ProductDetails(productId: controller.product[index].id,),
+                }else{
+                  Get.to( ProductDetails(productId: controller.product[index].id,),
                     duration: const Duration(milliseconds: 700),
                     transition: Transition.rightToLeft);
                 }

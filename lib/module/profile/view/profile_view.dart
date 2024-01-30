@@ -1,5 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:ui';
+
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -14,6 +16,7 @@ import 'package:gold_shop/core/utils/dimensions.dart';
 import 'package:gold_shop/module/edit_profile/view/edit_profile_view.dart';
 import 'package:gold_shop/module/my_ads/view/my_ads_view.dart';
 import 'package:gold_shop/module/profile/controller/profile_controller.dart';
+import 'package:gold_shop/module/purchased_product/view/purchased_product_view.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/images/images.dart';
@@ -99,22 +102,42 @@ class Profile extends GetView<ProfileController> {
                                   child: CircleAvatar(
                                     backgroundColor: CustomColors.white1,
                                     radius: ScreenDimensions.radius(context, 9),
-                                    child: DelayedDisplay(
-                                      delay: const Duration(milliseconds: 100),
-                                      slidingBeginOffset: const Offset(0, 5),
-                                      child: controller.model['photo'] != null
-                                          ? AppNetworkImage(
+                                    child: controller.model['photo'] != null
+                                        ? GestureDetector(
+                                            onTap: () {
+                                              Get.dialog(BackdropFilter(
+                                                filter: ImageFilter.blur(
+                                                    sigmaY: 10, sigmaX: 10),
+                                                child: InteractiveViewer(
+                                                  child: AppNetworkImage(
+                                                    baseUrlImages +
+                                                        controller
+                                                            .model['photo'],
+                                                    fit: BoxFit.contain,
+                                                  ),
+                                                ),
+                                              ));
+                                            },
+                                            child: AppNetworkImage(
                                               baseUrlImages +
                                                   controller.model['photo'],
                                               shape: BoxShape.circle,
-                                            )
-                                          : Icon(
+                                              fit: BoxFit.contain,
+                                              width: ScreenDimensions
+                                                  .widthPercentage(context, 40),
+                                              height: ScreenDimensions
+                                                  .heightPercentage(
+                                                      context, 30),
+                                            ),
+                                          )
+                                        : DelayedDisplay(
+                                            child: Icon(
                                               Icons.person_2_outlined,
                                               size: ScreenDimensions
                                                   .heightPercentage(
                                                       context, 10),
                                             ),
-                                    ),
+                                          ),
                                   )),
                               Positioned(
                                 left: 0,
@@ -211,7 +234,8 @@ class Profile extends GetView<ProfileController> {
                                       gestureRecognizers: {
                                         Factory(
                                           () => EagerGestureRecognizer(
-                                              allowedButtonsFilter: (buttons) => true,
+                                              allowedButtonsFilter: (buttons) =>
+                                                  true,
                                               supportedDevices: {
                                                 PointerDeviceKind.touch
                                               }),
@@ -244,8 +268,10 @@ class Profile extends GetView<ProfileController> {
                             ],
                           ),
                         ).paddingSymmetric(
-                            horizontal: ScreenDimensions.widthPercentage(context, 5),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal:
+                                ScreenDimensions.widthPercentage(context, 5),
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 1)),
                         Directions(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -262,8 +288,10 @@ class Profile extends GetView<ProfileController> {
                             ],
                           ),
                         ).paddingSymmetric(
-                            horizontal: ScreenDimensions.widthPercentage(context, 5),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal:
+                                ScreenDimensions.widthPercentage(context, 5),
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 1)),
                         Text(
                           AppWord.myPurchasesAndPutAside,
                           style: TextStyle(
@@ -275,11 +303,14 @@ class Profile extends GetView<ProfileController> {
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
-                            horizontal: ScreenDimensions.heightPercentage(context, 2),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal:
+                                ScreenDimensions.heightPercentage(context, 2),
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
-                            height: ScreenDimensions.heightPercentage(context, 22),
+                            height:
+                                ScreenDimensions.heightPercentage(context, 22),
                             child: controller.isLoadingPurchases
                                 ? Center(
                                     child: CircularProgressIndicator(
@@ -296,12 +327,12 @@ class Profile extends GetView<ProfileController> {
                                         ),
                                       )
                                     : ProfileLists(
+                                        product: controller.myPurchases,
                                         image: controller.myPurchases,
                                       )),
                         TextButton(
                                 onPressed: () {
-                                  Get.to(
-                                      const MyPurchasesHome(),
+                                  Get.to(const MyPurchasesHome(),
                                       transition: Transition.zoom,
                                       duration:
                                           const Duration(milliseconds: 500));
@@ -310,9 +341,12 @@ class Profile extends GetView<ProfileController> {
                                   AppWord.viewAll,
                                   style: TextStyle(
                                       color: CustomColors.black,
-                                      fontSize: AppFonts.smallTitleFont(context)),
+                                      fontSize:
+                                          AppFonts.smallTitleFont(context)),
                                 ))
-                            .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                            .paddingSymmetric(
+                                horizontal: ScreenDimensions.widthPercentage(
+                                    context, 2)),
                         Text(
                           AppWord.mySellsAndPutAside,
                           style: TextStyle(
@@ -324,11 +358,14 @@ class Profile extends GetView<ProfileController> {
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
-                            horizontal: ScreenDimensions.heightPercentage(context, 2),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal:
+                                ScreenDimensions.heightPercentage(context, 2),
+                            vertical:
+                                ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
-                            height: ScreenDimensions.heightPercentage(context, 22),
+                            height:
+                                ScreenDimensions.heightPercentage(context, 22),
                             child: controller.isLoadingSells
                                 ? Center(
                                     child: CircularProgressIndicator(
@@ -344,26 +381,25 @@ class Profile extends GetView<ProfileController> {
                                                   context)),
                                         ),
                                       )
-                                    : ProfileLists(
+                                    : ProfileLists(toSold: true,
+                                        product: controller.mySells,
                                         image: controller.mySells,
                                       )),
                         TextButton(
-                                onPressed: () {
-                                  Get.to(const MySellsHome(),
-                                      transition: Transition.zoom,
-                                      duration:
-                                          const Duration(milliseconds: 500));
-                                },
-                                child: Text(
-                                  AppWord.viewAll,
-                                  style: TextStyle(
-                                      color: CustomColors.black,
-                                      fontSize:
-                                          AppFonts.smallTitleFont(context)),
-                                ))
-                            .paddingSymmetric(
-                                horizontal: ScreenDimensions.widthPercentage(
-                                    context, 2)),
+                            onPressed: () {
+                              Get.to(const MySellsHome(),
+                                  transition: Transition.zoom,
+                                  duration: const Duration(milliseconds: 500));
+                            },
+                            child: Text(
+                              AppWord.viewAll,
+                              style: TextStyle(
+                                  color: CustomColors.black,
+                                  fontSize: AppFonts.smallTitleFont(context)),
+                            )).paddingSymmetric(
+                          horizontal:
+                              ScreenDimensions.widthPercentage(context, 2),
+                        ),
                         Text(
                           AppWord.myAds,
                           style: TextStyle(
@@ -398,7 +434,8 @@ class Profile extends GetView<ProfileController> {
                                                   context)),
                                         ),
                                       )
-                                    : ProfileLists(
+                                    : ProfileLists(toMyProducts: true,
+                                        product: controller.myProducts,
                                         image: controller.myProducts,
                                       )),
                         TextButton(

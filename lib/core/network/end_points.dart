@@ -6,6 +6,7 @@ class EndPoints {
  static String privacy = '/api/policy/privacy';
  static String getAllCategories = '/api/categories';
  static String getAllSubCategories = '/api/categories/sub/';
+ static String homeADVS = '/api/advertisements/home';
  static String categoryADVS = '/api/advertisements/';
  static String subCategoryADVS = '/api/advertisements/sub/';
  static String allProducts = '/api/products/all/';
@@ -13,6 +14,9 @@ class EndPoints {
  static String sort = '/api/products/search/sort';
  static String filter = '/api/products/search/filter';
  static String getCity = '/api/address/city';
+ static String getCaratPrices = '/api/bursa/gold/carat';
+ static String getAllCaratPrices = '/api/bursa/gold/all/carat';
+ static String oneCaratPrice = '/api/bursa/gold/one/carat?carat=18k';
 
  //---------------------------------------------------------------------------------------------------
  //app user
@@ -63,7 +67,7 @@ static String profileListsSalesReservations = '/api/app/lists/sales/reserved';
 static String profileListsReservedPurchases = '/api/app/lists/purchases/reserved';
 static String profileListsSales = '/api/app/lists/sales';
 static String profileListsPurchases = '/api/app/lists/my/purchases';
-static String profileListsShowProduct = '/api/app/products/list/14';
+static String profileListsShowProduct = '/api/app/products/list/';
 static String profileSalesList = '/api/app/lists/profile/sales';
 static String profilePurchasesList = '/api/app/lists/profile/my/purchases';
 static String profileMyProductsList = '/api/app/lists/profile/my/products';

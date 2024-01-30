@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/module/category_products/components/category_products_components.dart';
 import 'package:gold_shop/module/category_products/controller/category_products_controller.dart';
@@ -50,6 +51,8 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
       ),
       body: GetBuilder<SubcategoryProductsController>(initState: (state) {
         controller.getAllProducts(subcategoryId: subcategoryId);
+        controller.product.clear();
+        controller.subcategoriesADVS.clear();
         controller.subcategoryADVS(subcategoryId: subcategoryId);
         controller.getCity();
       }, builder: (_) {
@@ -104,44 +107,38 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
             controller.isBannersEmpty
                 ? const SizedBox.shrink()
                 : AdvertisementBanner(
-                    items: [
-                      ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: controller.subcategoriesADVS.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            width: ScreenDimensions.screenWidth(context),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                    child: AppNetworkImage(controller.subcategoriesADVS[index].image,
-                                        fit: BoxFit.fitHeight)),
-                                Expanded(
-                                    child: Text(
-                                        controller
-                                            .subcategoriesADVS[index].paragraph,
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: AppFonts.smallTitleFont(
-                                                context))))
-                              ],
-                            ),
-                          );
-                        },
-                      )
-                    ],
-                  ),
-            controller.isLoading
-                ? Center(
-                    child: CircularProgressIndicator(
-                      color: CustomColors.gold,
+              itemBuilder: (context, index, realIndex) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: AppNetworkImage(
+                      baseUrlImages + controller.subcategoriesADVS[index].image,
+                      fit: BoxFit.fitHeight,
                     ),
-                  )
+                  ),
+                  Expanded(
+                    child: Text(
+                      controller.subcategoriesADVS[index].paragraph,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: AppFonts.smallTitleFont(context)),
+                    ),
+                  ),
+                ],
+              ),
+              itemCount: controller.subcategoriesADVS.length,
+            ),
+            controller.isLoading
+                ? Expanded(
+                  child: Center(
+                      child: CircularProgressIndicator(
+                        color: CustomColors.gold,
+                      ),
+                    ),
+                )
                 : controller.isSubcategoryEmpty
-                    ? Expanded(
+                  ? Expanded(
                       child: Center(
                           child: Text(
                             AppWord.nothingToShow,
@@ -152,7 +149,7 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
                           ),
                         ),
                     )
-                    : Expanded(
+                  : Expanded(
                         child: ProductsCard(
                           subcategoryId: subcategoryId,
                         ),

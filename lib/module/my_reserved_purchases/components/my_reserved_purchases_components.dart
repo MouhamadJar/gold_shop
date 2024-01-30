@@ -53,7 +53,7 @@ class ReservedCard extends GetView<MyReservedPurchasesController> {
                   itemCount: controller.products.length,
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
-                      Get.to(const ReservedPurchase(),
+                      Get.to(ReservedPurchase(productId: controller.products[index]['id'],),
                           transition: Transition.fadeIn,
                           duration: const Duration(milliseconds: 500));
                     },

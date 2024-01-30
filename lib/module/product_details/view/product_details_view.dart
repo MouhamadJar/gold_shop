@@ -67,37 +67,28 @@ class ProductDetails extends GetView<ProductDetailsController> {
                       controller.isBannersEmpty
                           ? const SizedBox.shrink()
                           : AdvertisementBanner(
-                              items: [
-                                ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemCount: controller.subcategoriesADVS.length,
-                                  itemBuilder: (BuildContext context, int index) {
-                                    return SizedBox(
-                                      width: ScreenDimensions.screenWidth(context),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                              child: AppNetworkImage(
-                                                  controller.subcategoriesADVS[index].image,
-                                                  fit: BoxFit.fitHeight)),
-                                          Expanded(
-                                              child: Text(
-                                                  controller.subcategoriesADVS[index].paragraph,
-                                                  textAlign: TextAlign.center,
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: AppFonts
-                                                          .smallTitleFont(
-                                                              context))))
-                                        ],
-                                      ),
-                                    );
-                                  },
-                                )
-                              ],
+                        itemBuilder: (context, index, realIndex) => Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: AppNetworkImage(
+                                baseUrlImages + controller.subcategoriesADVS[index].image,
+                                fit: BoxFit.fitHeight,
+                              ),
                             ),
+                            Expanded(
+                              child: Text(
+                                controller.subcategoriesADVS[index].paragraph,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: AppFonts.smallTitleFont(context)),
+                              ),
+                            ),
+                          ],
+                        ),
+                        itemCount: controller.subcategoriesADVS.length,
+                      ),
                       Expanded(
                         child: SingleChildScrollView(
                           child: Column(

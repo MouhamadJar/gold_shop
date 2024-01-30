@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/module/Classification/components/classification_components.dart';
@@ -77,36 +78,29 @@ class Classification extends GetView<ClassificationController> {
             ),
             controller.isBannersEmpty
                 ? const SizedBox.shrink()
-                : AdvertisementBanner(items: [
-                    ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: controller.categoriesADVS.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return SizedBox(
-                          width: ScreenDimensions.screenWidth(context),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                  child: AppNetworkImage(
-                                      controller.categoriesADVS[index].image,
-                                      fit: BoxFit.fitHeight)),
-                              Expanded(
-                                  child: Text(
-                                      controller
-                                          .categoriesADVS[index].paragraph,
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: AppFonts.smallTitleFont(
-                                              context))))
-                            ],
-                          ),
-                        );
-                      },
-                    )
-                  ]),
+                : AdvertisementBanner(
+              itemBuilder: (context, index, realIndex) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: AppNetworkImage(
+                      baseUrlImages + controller.categoriesADVS[index].image,
+                      fit: BoxFit.fitHeight,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      controller.categoriesADVS[index].paragraph,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: AppFonts.smallTitleFont(context)),
+                    ),
+                  ),
+                ],
+              ),
+              itemCount: controller.categoriesADVS.length,
+            ),
             Directions(
               child: Container(
                 width: ScreenDimensions.screenWidth(context),

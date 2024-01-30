@@ -9,6 +9,7 @@ class HomeController extends GetxController with StateMixin {
   bool isLoading =true;
   bool isCategoryEmpty =true;
   List<String> cities = [];
+  List<Map<String ,dynamic>> ads = [];
   String? selectedCity;
   bool isCityEmpty =true;
 
@@ -29,6 +30,13 @@ class HomeController extends GetxController with StateMixin {
       selectedCity = AppWord.chooseCity;
     });
     isCityEmpty = false;
+    update();
+  }
+
+  void homeADVS()async{
+    Map<String ,dynamic> data = await DioHelper.homeADVS();
+    data['data'].forEach((element){ads.add(element);});
+    print(ads.toString());
     update();
   }
 }

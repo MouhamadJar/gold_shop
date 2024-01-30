@@ -9,6 +9,7 @@ import '../../../../../core/colors/colors.dart';
 import '../../../../../core/images/images.dart';
 import '../../../../../core/texts/words.dart';
 import '../../../../../core/utils/app_fonts.dart';
+import '../../../../../core/utils/app_network_image.dart';
 import '../../../../../core/utils/dimensions.dart';
 
 class EditProduct extends StatelessWidget {
@@ -58,7 +59,29 @@ class EditProduct extends StatelessWidget {
                 SizedBox(
                   height: ScreenDimensions.heightPercentage(context, 3),
                 ),
-                AdvertisementBanner(items: [],),
+                AdvertisementBanner(
+                  itemBuilder: (context, index, realIndex) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: AppNetworkImage(
+                          '',
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: AppFonts.smallTitleFont(context)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  itemCount: 0,
+                ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(

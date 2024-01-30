@@ -37,7 +37,7 @@ class ProductsModel {
   final int id;
   final String description;
   final int weight;
-  final int carat;
+  final String carat;
   final int? views;
   final String productStatus;
   final int currentGoldPrice;
@@ -46,8 +46,8 @@ class ProductsModel {
   final bool toggle;
   final int userId;
   final int subcategoryId;
-  final int price;
-  final int? priceAfterDiscount;
+  final double price;
+  final double? priceAfterDiscount;
   final int horror;
   final List<Map<String, dynamic>> images;
   final Map<String, dynamic>? discount;

@@ -6,6 +6,8 @@ class MyPutAsideSellsController extends GetxController{
   List<Map<String,dynamic>> products = [];
 
   void getMyPutAsideProducts()async{
+    isLoading = true;
+    update();
     Map<String,dynamic> data = await DioHelper.profileListsSalesOnHold();
     data['data']['data'].forEach((element){products.add(element);});
     isLoading = false;

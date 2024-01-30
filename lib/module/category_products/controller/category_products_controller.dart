@@ -10,7 +10,7 @@ class SubcategoryProductsController extends GetxController {
   bool sold = true;
   bool reserved = true;
   bool putAside = true;
-  List<dynamic> subcategoriesADVS = [];
+  List<SubCategoryADVSModel> subcategoriesADVS = [];
   List<ProductsModel> product = [];
   List<ProductsModel> productByCity = [];
   List<dynamic> image = [];

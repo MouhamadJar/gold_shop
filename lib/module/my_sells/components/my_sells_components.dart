@@ -52,7 +52,7 @@ class MySellsCard extends GetView<MySellsController> {
                   itemCount: controller.products.length,
                   itemBuilder: (context, index) => GestureDetector(
                     onTap: () {
-                      Get.to(const SoldProduct(),
+                      Get.to( SoldProduct(productId: controller.products[index]['id'],),
                           transition: Transition.fadeIn,
                           duration: const Duration(milliseconds: 500));
                     },
@@ -139,10 +139,8 @@ class MySellsCard extends GetView<MySellsController> {
                             ),
                           ),
                           Positioned(
-                            top: ScreenDimensions.heightPercentage(
-                                context, 0),
-                            width:
-                                ScreenDimensions.widthPercentage(context, 20),
+                            top: ScreenDimensions.heightPercentage(context, 0),
+                            width: ScreenDimensions.widthPercentage(context, 20),
                             child: AppNetworkImage(
                                 baseUrlImages + controller.products[index]['images'][0]['image']),
                           ),

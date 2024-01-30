@@ -12,7 +12,7 @@ class ProductDetailsController extends GetxController {
   String buttonBackground = AppImages.buttonDarkBackground;
   ProductDetailsModel? model;
   bool isLoading = true;
-  List<dynamic> subcategoriesADVS = [];
+  List<SubCategoryADVSModel> subcategoriesADVS = [];
   bool isBannersEmpty = true;
 
   TextEditingController problemController = TextEditingController();
@@ -37,11 +37,8 @@ class ProductDetailsController extends GetxController {
   }
 
   void subcategoryADVS({required int subcategoryId}) async {
-    Map<String, dynamic> data =
-        await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
-    data['data'].forEach((element) {
-      subcategoriesADVS.add(SubCategoryADVSModel.fromJson(json: element));
-    });
+    Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
+    data['data'].forEach((element) {subcategoriesADVS.add(SubCategoryADVSModel.fromJson(json: element));});
     subcategoriesADVS.isEmpty ? isBannersEmpty : isBannersEmpty = false;
     update();
   }

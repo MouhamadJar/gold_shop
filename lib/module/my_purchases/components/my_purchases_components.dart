@@ -35,7 +35,8 @@ class PurchasesCard extends GetView<MyPurchasesController> {
           child: Text(
             AppWord.nothingToShow,
             style: TextStyle(fontSize: AppFonts.subTitleFont(context)),
-          )): GridView.builder(
+          ))
+          : GridView.builder(
               padding: EdgeInsetsDirectional.symmetric(
                 horizontal: ScreenDimensions.widthPercentage(context, 5),
                 vertical: ScreenDimensions.heightPercentage(context, 2),
@@ -50,7 +51,7 @@ class PurchasesCard extends GetView<MyPurchasesController> {
               itemCount: controller.products.length,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
-                  Get.to(const PurchasedProduct(),
+                  Get.to(PurchasedProduct(productId: controller.products[index]['id'],),
                       transition: Transition.fadeIn,
                       duration: const Duration(milliseconds: 500));
                 },

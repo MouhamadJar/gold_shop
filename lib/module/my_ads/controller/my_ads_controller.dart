@@ -28,6 +28,7 @@ class MyAdsController extends GetxController {
   void getMyProducts ()async{
     Map<String,dynamic> data = await DioHelper.profileListsMyProducts();
     data['data']['data'].forEach((element){products.add(element);});
+    print(products.toString());
     isLoading = false ;
     update();
   }

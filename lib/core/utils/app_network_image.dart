@@ -5,13 +5,14 @@ class AppNetworkImage extends StatelessWidget {
   final String url;
   final BoxShape? shape;
   final double? width;
+  final double? height;
   final BoxFit? fit;
-  const AppNetworkImage(this.url,{Key? key, this.shape,this.width,this.fit}) : super(key: key);
+  const AppNetworkImage(this.url,{Key? key, this.shape,this.width,this.height,this.fit}) : super(key: key);
 
 
   @override
   Widget build(BuildContext context) {
-    return ExtendedImage.network(fit: fit,
+    return ExtendedImage.network(fit: fit,filterQuality: FilterQuality.high,height: height,
       width: width,
       url,
       enableLoadState: true,

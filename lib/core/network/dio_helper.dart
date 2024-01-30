@@ -61,6 +61,16 @@ class DioHelper {
     }
   }
 
+  static Future<Map<String, dynamic>> homeADVS() async {
+    late Response response;
+    try {
+      response = await _dio.get(EndPoints.homeADVS);
+      return response.data ;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
   static Future<Map<String, dynamic>> categoryADVS(
       {required int categoryId}) async {
     late Response response;
@@ -79,6 +89,34 @@ class DioHelper {
       response = await _dio.get('${EndPoints.subCategoryADVS}$subcategoryId');
       return response.data;
     } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
+  static Future <Map<String,dynamic>> getCaratPrices()async{
+    late Response response ;
+    try{
+      response = await _dio.get(EndPoints.getCaratPrices);
+      return response.data;
+    }on DioException catch(error){
+      return error.response!.data;
+    }
+  }
+  static Future <Map<String,dynamic>> getAllCaratPrices()async{
+    late Response response ;
+    try{
+      response = await _dio.get(EndPoints.getAllCaratPrices);
+      return response.data;
+    }on DioException catch(error){
+      return error.response!.data;
+    }
+  }
+  static Future <Map<String,dynamic>> getOneCaratPrices()async{
+    late Response response ;
+    try{
+      response = await _dio.get(EndPoints.oneCaratPrice);
+      return response.data;
+    }on DioException catch(error){
       return error.response!.data;
     }
   }
@@ -627,11 +665,11 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> profileListsShowProduct() async {
+  static Future<Map<String, dynamic>> profileListsShowProduct({required int productId}) async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.profileListsShowProduct,
+        '${EndPoints.profileListsShowProduct}$productId',
       );
       return response.data;
     } on DioException catch (error) {
@@ -650,6 +688,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
+
   static Future<Map<String, dynamic>> profilePurchasesList() async {
     late Response response;
     try {
@@ -661,6 +700,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
+
   static Future<Map<String, dynamic>> profileMyProductsList() async {
     late Response response;
     try {

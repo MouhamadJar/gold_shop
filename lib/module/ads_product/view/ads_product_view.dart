@@ -8,6 +8,7 @@ import '../../../../core/images/images.dart';
 import '../../../../core/texts/words.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/dimensions.dart';
+import '../../../core/utils/app_network_image.dart';
 import '../../main/user/view/main_screen_view.dart';
 import '../components/ads_product_components.dart';
 
@@ -42,7 +43,29 @@ class AdsProduct extends StatelessWidget {
                 SizedBox(
                   height: ScreenDimensions.heightPercentage(context, 3),
                 ),
-                AdvertisementBanner(items: []),
+                AdvertisementBanner(
+                  itemBuilder: (context, index, realIndex) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: AppNetworkImage(
+                          '',
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          '',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: AppFonts.smallTitleFont(context)),
+                        ),
+                      ),
+                    ],
+                  ),
+                  itemCount: 0,
+                ),
                 Expanded(
                   child: SingleChildScrollView(
                     child: Column(
@@ -162,21 +185,28 @@ class AdsProduct extends StatelessWidget {
                                           color: CustomColors.shadow),
                                     ]),
                               ),
-                              Details(details: AppWord.details,
+                              Details(
+                                  details: AppWord.details,
                                   title: AppWord.manufacturer,
                                   picPath: AppImages.building),
-                              Details(details: AppWord.details,
-                                  title: AppWord.age, picPath: AppImages.age),
-                              Details(details: AppWord.details,
+                              Details(
+                                  details: AppWord.details,
+                                  title: AppWord.age,
+                                  picPath: AppImages.age),
+                              Details(
+                                  details: AppWord.details,
                                   title: AppWord.weight,
                                   picPath: AppImages.weightScale),
-                              Details(details: AppWord.details,
+                              Details(
+                                  details: AppWord.details,
                                   title: AppWord.gramPrice,
                                   picPath: AppImages.priceTag),
-                              Details(details: AppWord.details,
+                              Details(
+                                  details: AppWord.details,
                                   title: AppWord.productPrice,
                                   picPath: AppImages.priceTag),
-                              Details(details: AppWord.details,
+                              Details(
+                                  details: AppWord.details,
                                   title: AppWord.productCalibre,
                                   picPath: AppImages.scale),
                             ],
@@ -309,9 +339,7 @@ class AdsProduct extends StatelessWidget {
                                                                 .widthPercentage(
                                                                     context,
                                                                     3))),
-                                                    Text(
-                                                        AppWord
-                                                            .shareProductOnWhatsapp,
+                                                    Text(AppWord.shareProductOnWhatsapp,
                                                         style: TextStyle(
                                                             fontWeight:
                                                                 FontWeight.bold,
@@ -578,8 +606,7 @@ class AdsProduct extends StatelessWidget {
                             ],
                           ),
                           onTap: () {
-                            Get.dialog(
-                                Material(
+                            Get.dialog(Material(
                               color: Colors.transparent,
                               child: BackdropFilter(
                                 filter:
@@ -615,50 +642,69 @@ class AdsProduct extends StatelessWidget {
                                             onTap: () {
                                               Get.back();
                                               Future.any([
-                                              Get.dialog(
-                                                  Material(
+                                                Get.dialog(Material(
                                                   color: Colors.transparent,
                                                   child: BackdropFilter(
-                                                          filter:
-                                                              ImageFilter.blur(
-                                                                  sigmaX: 10,
-                                                                  sigmaY: 10),
-                                                          child: Container(
-                                                            margin: EdgeInsetsDirectional.only(
-                                                                top: ScreenDimensions
+                                                      filter: ImageFilter.blur(
+                                                          sigmaX: 10,
+                                                          sigmaY: 10),
+                                                      child: Container(
+                                                        margin: EdgeInsetsDirectional.only(
+                                                            top:
+                                                                ScreenDimensions.heightPercentage(
+                                                                    context, 5),
+                                                            bottom: ScreenDimensions
+                                                                .heightPercentage(
+                                                                    context,
+                                                                    60),
+                                                            start: ScreenDimensions
+                                                                .widthPercentage(
+                                                                    context, 5),
+                                                            end: ScreenDimensions
+                                                                .widthPercentage(
+                                                                    context,
+                                                                    5)),
+                                                        alignment:
+                                                            AlignmentDirectional
+                                                                .center,
+                                                        decoration: BoxDecoration(
+                                                            color: CustomColors
+                                                                .gold,
+                                                            borderRadius: BorderRadius.circular(
+                                                                ScreenDimensions
                                                                     .heightPercentage(
-                                                                        context, 5),
-                                                                bottom: ScreenDimensions
-                                                                    .heightPercentage(
-                                                                        context, 60),
-                                                                start: ScreenDimensions.widthPercentage(context, 5),
-                                                              end: ScreenDimensions.widthPercentage(context, 5)
-                                                            ),
-                                                            alignment: AlignmentDirectional.center,
-                                                            decoration: BoxDecoration(color: CustomColors.gold,borderRadius: BorderRadius.circular(ScreenDimensions.heightPercentage(context, 1))),
-                                                            child: Text(
-                                                              AppWord
-                                                                  .youCantDeleteProductSold,
-                                                              style: TextStyle(
-                                                                  fontSize: AppFonts
-                                                                      .smallTitleFont(
-                                                                          context)),
-                                                            ),
-                                                          )),
+                                                                        context,
+                                                                        1))),
+                                                        child: Text(
+                                                          AppWord
+                                                              .youCantDeleteProductSold,
+                                                          style: TextStyle(
+                                                              fontSize: AppFonts
+                                                                  .smallTitleFont(
+                                                                      context)),
+                                                        ),
+                                                      )),
                                                 )),
-                                                Future.delayed(const Duration(seconds: 3)).then((_) {
+                                                Future.delayed(const Duration(
+                                                        seconds: 3))
+                                                    .then((_) {
                                                   Get.back();
-                                                  Get.offAll(()=>
-                                                      const MainScreen(),
+                                                  Get.offAll(
+                                                      () => const MainScreen(),
                                                       transition:
-                                                      Transition.fadeIn,
-                                                      duration:
-                                                      const Duration(
-                                                          milliseconds:
-                                                          500));
+                                                          Transition.fadeIn,
+                                                      duration: const Duration(
+                                                          milliseconds: 500));
                                                 }),
                                               ]);
-                                              Get.snackbar('', AppWord.deleteRequestHasBeenSent,snackStyle: SnackStyle.GROUNDED,duration: const Duration(milliseconds: 2500));
+                                              Get.snackbar(
+                                                  '',
+                                                  AppWord
+                                                      .deleteRequestHasBeenSent,
+                                                  snackStyle:
+                                                      SnackStyle.GROUNDED,
+                                                  duration: const Duration(
+                                                      milliseconds: 2500));
                                             },
                                             child: Container(
                                               alignment:

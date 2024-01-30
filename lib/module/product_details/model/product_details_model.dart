@@ -5,7 +5,7 @@ class ProductDetailsModel {
   final String description;
   final String age;
   final int weight;
-  final int carat;
+  final String carat;
   final int subcategoryId;
   final int currentGoldPrice;
   final int profit;
@@ -20,7 +20,7 @@ class ProductDetailsModel {
   final String productStatus;
   final String createdAt;
   final String updatedAt;
-  final int price;
+  final double price;
   final int? priceAfterDiscount;
   final int horror;
   List<dynamic> images;

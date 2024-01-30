@@ -3,23 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
-import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/buy_order/view/buy_order_view.dart';
-import 'package:gold_shop/module/reserved_purchase/controller/reserved_purchase_controller.dart';
+import 'package:gold_shop/module/reserved_sell/components/reserved_sell_components.dart';
+import 'package:gold_shop/module/reserved_sell/controller/reserved_sell_controller.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/images/images.dart';
 import '../../../../core/texts/words.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../core/utils/app_network_image.dart';
-import '../components/reserved_purchase_components.dart';
 
-class ReservedPurchase extends GetView<ReservedPurchaseController> {
-  const ReservedPurchase({super.key,required this.productId});
-  final int productId;
+class ReservedSell extends GetView<ReservedSellController> {
+  const ReservedSell({super.key,required this.productId});
+final int productId;
   @override
   Widget build(BuildContext context) {
-    Get.put(ReservedPurchaseController());
+    Get.put(ReservedSellController());
     return SafeArea(
       child: Directions(
         child: Scaffold(
@@ -37,14 +36,12 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
             elevation: 1,
             backgroundColor: CustomColors.white,
           ),
-          body: GetBuilder<ReservedPurchaseController>(
+          body: GetBuilder<ReservedSellController>(
             initState: (state){
               controller.getProductDetails(productId: productId);
             },
             builder: (_) {
-              return controller.isLoading
-                  ? Center(child: CircularProgressIndicator(color: CustomColors.gold,),)
-                  : SizedBox(
+              return SizedBox(
                 width: ScreenDimensions.screenWidth(context),
                 height: ScreenDimensions.screenHeight(context),
                 child: Column(
@@ -53,19 +50,19 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                     SizedBox(
                       height: ScreenDimensions.heightPercentage(context, 3),
                     ),
-                    controller.isBannersEmpty?const SizedBox.shrink():AdvertisementBanner(
+                    AdvertisementBanner(
                       itemBuilder: (context, index, realIndex) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: AppNetworkImage(
-                              baseUrlImages + controller.subcategoriesADVS[index].image,
+                              '',
                               fit: BoxFit.fitHeight,
                             ),
                           ),
                           Expanded(
                             child: Text(
-                              controller.subcategoriesADVS[index].paragraph,
+                              '',
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
@@ -74,7 +71,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                           ),
                         ],
                       ),
-                      itemCount: controller.subcategoriesADVS.length,
+                      itemCount: 0,
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -82,49 +79,61 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                           children: [
                             RichText(
                                 text: TextSpan(children: [
-                              TextSpan(
-                                  text: '${AppWord.productState} : ',
-                                  style: TextStyle(
-                                      fontSize: AppFonts.subTitleFont(context),
-                                      color: CustomColors.yellow,
-                                      shadows: [
-                                        Shadow(
-                                            blurRadius: 3,
-                                            color: CustomColors.shadow),
-                                      ])),
-                              TextSpan(
-                                  text: AppWord.reserved,
-                                  style: TextStyle(
-                                      fontSize: AppFonts.subTitleFont(context),
-                                      color: CustomColors.yellow,
-                                      shadows: [
-                                        Shadow(
-                                            blurRadius: 3,
-                                            color: CustomColors.shadow),
-                                      ])),
-                            ])),
+                                  TextSpan(
+                                      text: '${AppWord.productState} : ',
+                                      style: TextStyle(
+                                          fontSize: AppFonts.subTitleFont(context),
+                                          color: CustomColors.yellow,
+                                          shadows: [
+                                            Shadow(
+                                                blurRadius: 3,
+                                                color: CustomColors.shadow),
+                                          ])),
+                                  TextSpan(
+                                      text: AppWord.reserved,
+                                      style: TextStyle(
+                                          fontSize: AppFonts.subTitleFont(context),
+                                          color: CustomColors.yellow,
+                                          shadows: [
+                                            Shadow(
+                                                blurRadius: 3,
+                                                color: CustomColors.shadow),
+                                          ])),
+                                ])),
                             GestureDetector(
                               onTap: () {
                                 Get.dialog(InteractiveViewer(
                                     child:
-                                        AppNetworkImage(baseUrlImages + controller.model!.images[0]['image'],),),);
+                                    SvgPicture.asset(AppImages.bannerImage1)));
                               },
                               child: Container(
                                 padding: EdgeInsetsDirectional.symmetric(
                                   vertical:
-                                      ScreenDimensions.heightPercentage(context, 2),
+                                  ScreenDimensions.heightPercentage(context, 2),
                                 ),
                                 width: ScreenDimensions.screenWidth(context),
                                 height:
-                                    ScreenDimensions.heightPercentage(context, 25),
-                                child: AppNetworkImage(baseUrlImages + controller.model!.images[0]['image']),
+                                ScreenDimensions.heightPercentage(context, 25),
+                                child: SvgPicture.asset(AppImages.bannerImage1),
                               ),
                             ),
                             SizedBox(
                               height:
-                                  ScreenDimensions.heightPercentage(context, 10),
-                              child: ProductImages(image: controller.model!.images,
-                                itemCount: controller.model!.images.length,
+                              ScreenDimensions.heightPercentage(context, 10),
+                              child: const ProductImages(
+                                itemCount: 5,
+                              ),
+                            ),
+                            SizedBox(
+                              height: ScreenDimensions.heightPercentage(context, 4),
+                              width: ScreenDimensions.screenWidth(context),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  ScrollingContainer(color: CustomColors.white),
+                                  ScrollingContainer(color: CustomColors.yellow),
+                                  ScrollingContainer(color: CustomColors.white),
+                                ],
                               ),
                             ),
                             Directions(
@@ -133,10 +142,10 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                 children: [
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '${controller.model!.code}',
+                                        'GN12345',
                                         style: TextStyle(
                                           fontSize: AppFonts.subTitleFont(context),
                                           color: CustomColors.black,
@@ -145,28 +154,33 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                       RichText(
                                           text: TextSpan(
                                               children: [
-                                            TextSpan(
-                                              text: '${AppWord.productName} ',
-                                            ),
-                                            TextSpan(
-                                              text: '${AppWord.caliber} ',
-                                            ),
-                                            TextSpan(
-                                              text: '${controller.model!.carat}',
-                                            ),
-                                          ],
+                                                TextSpan(
+                                                  text: '${AppWord.productName} ',
+                                                ),
+                                                TextSpan(
+                                                  text: '${AppWord.caliber} ',
+                                                ),
+                                                const TextSpan(
+                                                  text: '18',
+                                                ),
+                                              ],
                                               style: TextStyle(
                                                   color: CustomColors.black,
                                                   fontSize: AppFonts.subTitleFont(
                                                       context)))),
                                     ],
                                   ),
-                                  Text(
-                                    controller.model!.description,
-                                    style: TextStyle(
-                                        fontSize:
-                                            AppFonts.smallTitleFont(context)),
-                                  ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                                  Padding(
+                                    padding: EdgeInsets.symmetric(
+                                        vertical: ScreenDimensions.heightPercentage(
+                                            context, 1)),
+                                    child: Text(
+                                      AppWord.description,
+                                      style: TextStyle(
+                                          fontSize:
+                                          AppFonts.smallTitleFont(context)),
+                                    ),
+                                  ),
                                   Text(
                                     AppWord.productDetails,
                                     style: TextStyle(
@@ -178,38 +192,28 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                               color: CustomColors.shadow),
                                         ]),
                                   ),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.manufacturer!,
+                                  Details(details: AppWord.details,
                                       title: AppWord.manufacturer,
                                       picPath: AppImages.building),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.age.toString(),
+                                  Details(details: AppWord.details,
                                       title: AppWord.age, picPath: AppImages.age),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.weight.toString(),
+                                  Details(details: AppWord.details,
                                       title: AppWord.weight,
                                       picPath: AppImages.weightScale),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.currentGoldPrice.toString(),
+                                  Details(details: AppWord.details,
                                       title: AppWord.gramPrice,
                                       picPath: AppImages.priceTag),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.price.toString(),
+                                  Details(details: AppWord.details,
                                       title: AppWord.productPrice,
                                       picPath: AppImages.priceTag),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.carat.toString(),
+                                  Details(details: AppWord.details,
                                       title: AppWord.productCalibre,
                                       picPath: AppImages.scale),
                                 ],
                               ),
-                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
+                            ).paddingSymmetric(
+                                horizontal:
+                                ScreenDimensions.widthPercentage(context, 5)),
                             Directions(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -225,36 +229,36 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                               color: CustomColors.shadow),
                                         ]),
                                   ),
-                                  ReservedPurchaseProcessDetails(
+                                  ReservedSellProcessDetails(
                                       title: AppWord.amountPaid,
                                       subtitle: AppWord.sad,
-                                      amount: (controller.model!.price+controller.model!.currentGoldPrice+controller.model!.profit).toString()),
-                                  ReservedPurchaseProcessDetails(
+                                      amount: '2310'),
+                                  ReservedSellProcessDetails(
                                       title: AppWord.productPrice,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.price.toString()),
-                                  ReservedPurchaseProcessDetails(
+                                      amount: '2000'),
+                                  ReservedSellProcessDetails(
                                       title: AppWord.gramPrice,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.currentGoldPrice.toString()),
-                                  ReservedPurchaseProcessDetails(
+                                      amount: '300'),
+                                  ReservedSellProcessDetails(
                                       title: AppWord.appServiceCost,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.profit.toString()),
-                                  ReservedPurchaseProcessDetails(
-                                    title: AppWord.vendorName,
-                                    subtitle: '${controller.model!.firstName}  ${controller.model!.lastName}',
+                                      amount: '10'),
+                                  ReservedSellProcessDetails(
+                                    title: AppWord.buyerName,
+                                    subtitle: AppWord.buyerName,
                                   ),
-                                  ReservedPurchaseProcessDetails(
-                                    title: AppWord.vendorNumber,
-                                    subtitle: controller.model!.phoneNumber,
+                                  ReservedSellProcessDetails(
+                                    title: AppWord.buyerNumber,
+                                    subtitle: '904358345',
                                   ),
                                 ],
                               ).paddingSymmetric(
                                   vertical:
-                                      ScreenDimensions.heightPercentage(context, 2),
+                                  ScreenDimensions.heightPercentage(context, 2),
                                   horizontal:
-                                      ScreenDimensions.widthPercentage(context, 5)),
+                                  ScreenDimensions.widthPercentage(context, 5)),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -267,7 +271,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                 ),
                                 SizedBox(
                                   width:
-                                      ScreenDimensions.widthPercentage(context, 1),
+                                  ScreenDimensions.widthPercentage(context, 1),
                                 ),
                                 SvgPicture.asset(
                                   AppImages.location,
@@ -277,11 +281,11 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                             Container(
                               width: ScreenDimensions.screenWidth(context),
                               height:
-                                  ScreenDimensions.heightPercentage(context, 15),
+                              ScreenDimensions.heightPercentage(context, 15),
                               decoration: BoxDecoration(border: Border.all()),
                             ).paddingSymmetric(
                                 vertical:
-                                    ScreenDimensions.heightPercentage(context, 2)),
+                                ScreenDimensions.heightPercentage(context, 2)),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -301,29 +305,29 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                                 margin: EdgeInsetsDirectional.only(
                                                     top: ScreenDimensions
                                                         .heightPercentage(
-                                                            context, 5),
+                                                        context, 5),
                                                     bottom: ScreenDimensions
                                                         .heightPercentage(
-                                                            context, 70),
+                                                        context, 70),
                                                     start: ScreenDimensions
                                                         .widthPercentage(
-                                                            context, 5),
+                                                        context, 5),
                                                     end: ScreenDimensions
                                                         .widthPercentage(
-                                                            context, 5)),
+                                                        context, 5)),
                                                 padding: EdgeInsetsDirectional.all(
                                                     ScreenDimensions
                                                         .widthPercentage(
-                                                            context, 3)),
+                                                        context, 3)),
                                                 color: CustomColors.white,
                                                 child: Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.end,
+                                                  CrossAxisAlignment.end,
                                                   children: [
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                       children: [
                                                         GestureDetector(
                                                             onTap: () {
@@ -333,43 +337,43 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                                                 AppImages.x,
                                                                 width: ScreenDimensions
                                                                     .widthPercentage(
-                                                                        context,
-                                                                        3))),
+                                                                    context,
+                                                                    3))),
                                                         Text(
                                                             AppWord
                                                                 .shareProductOnWhatsapp,
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                    FontWeight.bold,
+                                                                FontWeight.bold,
                                                                 fontSize: AppFonts
                                                                     .smallTitleFont(
-                                                                        context))),
+                                                                    context))),
                                                       ],
                                                     ),
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                       children: [
                                                         Container(
                                                             padding: EdgeInsetsDirectional
                                                                 .all(ScreenDimensions
-                                                                    .widthPercentage(
-                                                                        context,
-                                                                        4)),
+                                                                .widthPercentage(
+                                                                context,
+                                                                4)),
                                                             decoration:
-                                                                BoxDecoration(
-                                                                    boxShadow: [
+                                                            BoxDecoration(
+                                                                boxShadow: [
                                                                   BoxShadow(
                                                                       blurRadius: 5,
                                                                       color:
-                                                                          CustomColors
-                                                                              .shadow,
+                                                                      CustomColors
+                                                                          .shadow,
                                                                       blurStyle:
-                                                                          BlurStyle
-                                                                              .outer,
+                                                                      BlurStyle
+                                                                          .outer,
                                                                       spreadRadius:
-                                                                          1)
+                                                                      1)
                                                                 ]),
                                                             child: SvgPicture.asset(
                                                                 AppImages
@@ -378,7 +382,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                                     ).paddingSymmetric(
                                                         vertical: ScreenDimensions
                                                             .heightPercentage(
-                                                                context, 5)),
+                                                            context, 5)),
                                                   ],
                                                 ),
                                               ),
@@ -403,29 +407,29 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                                 margin: EdgeInsetsDirectional.only(
                                                     top: ScreenDimensions
                                                         .heightPercentage(
-                                                            context, 5),
+                                                        context, 5),
                                                     bottom: ScreenDimensions
                                                         .heightPercentage(
-                                                            context, 45),
+                                                        context, 45),
                                                     start: ScreenDimensions
                                                         .widthPercentage(
-                                                            context, 5),
+                                                        context, 5),
                                                     end: ScreenDimensions
                                                         .widthPercentage(
-                                                            context, 5)),
+                                                        context, 5)),
                                                 padding: EdgeInsetsDirectional.all(
                                                     ScreenDimensions
                                                         .widthPercentage(
-                                                            context, 3)),
+                                                        context, 3)),
                                                 color: CustomColors.white,
                                                 child: Column(
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
+                                                  CrossAxisAlignment.center,
                                                   children: [
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                       children: [
                                                         GestureDetector(
                                                             onTap: () {
@@ -435,21 +439,21 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                                                 AppImages.x,
                                                                 width: ScreenDimensions
                                                                     .widthPercentage(
-                                                                        context,
-                                                                        3))),
+                                                                    context,
+                                                                    3))),
                                                         Text(AppWord.reportProblem,
                                                             style: TextStyle(
                                                                 fontWeight:
-                                                                    FontWeight.bold,
+                                                                FontWeight.bold,
                                                                 fontSize: AppFonts
                                                                     .smallTitleFont(
-                                                                        context))),
+                                                                    context))),
                                                       ],
                                                     ),
                                                     Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      MainAxisAlignment
+                                                          .spaceEvenly,
                                                       children: [
                                                         AppPopUpMenu(
                                                             title: '',
@@ -460,77 +464,77 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                                           style: TextStyle(
                                                             fontSize: AppFonts
                                                                 .smallTitleFont(
-                                                                    context),
+                                                                context),
                                                           ),
                                                         ),
                                                       ],
                                                     ).paddingSymmetric(
                                                       vertical: ScreenDimensions
                                                           .heightPercentage(
-                                                              context, 4),
+                                                          context, 4),
                                                     ),
                                                     Text(
                                                       AppWord.describeProblem,
                                                       style: TextStyle(
                                                           fontSize: AppFonts
                                                               .smallTitleFont(
-                                                                  context)),
+                                                              context)),
                                                     ).paddingOnly(
                                                         left: ScreenDimensions
                                                             .widthPercentage(
-                                                                context, 60)),
+                                                            context, 60)),
                                                     Container(
                                                       height: ScreenDimensions
                                                           .heightPercentage(
-                                                              context, 15),
+                                                          context, 15),
                                                       margin: EdgeInsetsDirectional
                                                           .symmetric(
-                                                              horizontal:
-                                                                  ScreenDimensions
-                                                                      .widthPercentage(
-                                                                          context,
-                                                                          8)),
+                                                          horizontal:
+                                                          ScreenDimensions
+                                                              .widthPercentage(
+                                                              context,
+                                                              8)),
                                                       decoration: BoxDecoration(
                                                           border: Border.all()),
                                                       child: TextFormField(
                                                         maxLines: 5,
                                                         decoration:
-                                                            const InputDecoration(
+                                                        const InputDecoration(
                                                           enabledBorder:
-                                                              InputBorder.none,
+                                                          InputBorder.none,
                                                         ),
                                                       ).paddingSymmetric(
                                                           horizontal:
-                                                              ScreenDimensions
-                                                                  .widthPercentage(
-                                                                      context, 7)),
+                                                          ScreenDimensions
+                                                              .widthPercentage(
+                                                              context, 7)),
                                                     ).paddingSymmetric(
                                                         vertical: ScreenDimensions
                                                             .heightPercentage(
-                                                                context, 2)),
+                                                            context, 2)),
                                                     AppButton(
-                                                            text: Text(
-                                                              AppWord.send,
-                                                              style: TextStyle(
-                                                                  color:
-                                                                      CustomColors
-                                                                          .white,
-                                                                  fontSize: AppFonts
-                                                                      .smallTitleFont(
-                                                                          context),
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold),
-                                                            ),
-                                                            onTap: () {
-                                                              Get.back();
-                                                            },
-                                                            buttonBackground: AppImages
-                                                                .buttonLiteBackground)
+                                                        text: Text(
+                                                          AppWord.send,
+                                                          style: TextStyle(
+                                                              color:
+                                                              CustomColors
+                                                                  .white,
+                                                              fontSize: AppFonts
+                                                                  .smallTitleFont(
+                                                                  context),
+                                                              fontWeight:
+                                                              FontWeight
+                                                                  .bold),
+                                                        ),
+                                                        onTap: () {
+                                                          Get.back();
+                                                        },
+                                                        buttonBackground: AppImages
+                                                            .buttonLiteBackground)
                                                         .paddingSymmetric(
-                                                            vertical: ScreenDimensions
-                                                                .heightPercentage(
-                                                                    context, 1)),
+                                                        vertical: ScreenDimensions
+                                                            .heightPercentage(
+                                                            context, 1)),
                                                   ],
                                                 ),
                                               ),
@@ -543,8 +547,35 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                 ],
                               ).paddingSymmetric(
                                   vertical:
-                                      ScreenDimensions.widthPercentage(context, 2)),
+                                  ScreenDimensions.widthPercentage(context, 2)),
                             ),
+                            Container(
+                              margin: EdgeInsetsDirectional.symmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
+                              alignment: AlignmentDirectional.centerEnd,
+                              child: Text(
+                                AppWord.confirmPayingProcess,
+                                style: TextStyle(
+                                    fontSize: AppFonts.smallTitleFont(context)),
+                              ),
+                            ),
+                            Container(
+                              height:
+                              ScreenDimensions.heightPercentage(context, 10),
+                              margin: EdgeInsetsDirectional.symmetric(
+                                  horizontal:
+                                  ScreenDimensions.widthPercentage(context, 8)),
+                              decoration: BoxDecoration(border: Border.all()),
+                              child: TextFormField(
+                                maxLines: 5,
+                                decoration: const InputDecoration(
+                                  enabledBorder: InputBorder.none,
+                                ),
+                              ).paddingSymmetric(
+                                  horizontal:
+                                  ScreenDimensions.widthPercentage(context, 7)),
+                            ).paddingSymmetric(
+                                vertical:
+                                ScreenDimensions.heightPercentage(context, 2)),
                             GestureDetector(onTap: (){
                               Get.to(const BuyOrder(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));
                             },
@@ -575,7 +606,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                               buttonBackground: AppImages.buttonDarkBackground,
                             ).paddingSymmetric(
                                 vertical:
-                                    ScreenDimensions.heightPercentage(context, 1)),
+                                ScreenDimensions.heightPercentage(context, 1)),
                           ],
                         ),
                       ),

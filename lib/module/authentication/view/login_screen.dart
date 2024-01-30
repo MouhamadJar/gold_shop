@@ -6,8 +6,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/validtor/app_validator.dart';
 import 'package:gold_shop/module/authentication/controller/user/user_login_controller.dart';
-import 'package:gold_shop/module/home/view/home_view.dart';
-import 'package:gold_shop/module/main/user/view/main_screen_view.dart';
 import '../../../core/components/components.dart';
 import '../../../core/texts/words.dart';
 import '../../../core/utils/app_fonts.dart';

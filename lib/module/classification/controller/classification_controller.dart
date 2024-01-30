@@ -10,27 +10,32 @@ class ClassificationController extends GetxController {
   bool isBannersEmpty = true;
   bool isSubcategoryEmpty = true;
   List<dynamic> subcategories = [];
-  List<dynamic> categoriesADVS = [];
-  List<String> paragraph =[];
-  List<String> image =[];
+  List<CategoryADVSModel> categoriesADVS = [];
+  List<String> paragraph = [];
+  List<String> image = [];
   List<String> cities = [];
   String? selectedCity;
-  bool isCityEmpty =true;
-
-
+  bool isCityEmpty = true;
 
   void getSubcategories({required int categoryId}) async {
-    Map<String, dynamic> data = await DioHelper.getAllSubCategories(categoryId: categoryId);
+    Map<String, dynamic> data =
+        await DioHelper.getAllSubCategories(categoryId: categoryId);
     subcategories.clear();
-    data['data']['data'].forEach((element) {subcategories.add(ClassificationCategoriesModel.fromJson(json: element));});
-    subcategories.isEmpty?isSubcategoryEmpty:isSubcategoryEmpty=false;
-    isLoading= false;
+    data['data']['data'].forEach((element) {
+      subcategories.add(ClassificationCategoriesModel.fromJson(json: element));
+    });
+    subcategories.isEmpty ? isSubcategoryEmpty : isSubcategoryEmpty = false;
+    isLoading = false;
     update();
   }
+
   void categoryADVS({required int categoryId}) async {
-    Map<String, dynamic> data = await DioHelper.categoryADVS(categoryId: categoryId);
-    data['data'].forEach((element) {categoriesADVS.add(CategoryADVSModel.fromJson(json: element));});
-    categoriesADVS.isEmpty?isBannersEmpty:isBannersEmpty =false;
+    Map<String, dynamic> data =
+        await DioHelper.categoryADVS(categoryId: categoryId);
+    data['data'].forEach((element) {
+      categoriesADVS.add(CategoryADVSModel.fromJson(json: element));
+    });
+    categoriesADVS.isEmpty ? isBannersEmpty : isBannersEmpty = false;
     update();
   }
 
@@ -43,4 +48,6 @@ class ClassificationController extends GetxController {
     isCityEmpty = false;
     update();
   }
+
+
 }

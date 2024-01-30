@@ -11,11 +11,26 @@ import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
+import 'package:gold_shop/module/ads_product/view/ads_product_view.dart';
+import 'package:gold_shop/module/my_ads/view/my_ads_view.dart';
+import 'package:gold_shop/module/sold_product/view/sold_product_view.dart';
+
+import '../../purchased_product/view/purchased_product_view.dart';
 
 class ProfileLists extends StatelessWidget {
-  const ProfileLists({super.key, required this.image});
+  const ProfileLists(
+      {super.key,
+      required this.image,
+      this.productType,
+      required this.product,
+      this.toSold = false,
+      this.toMyProducts = false});
 
   final List<Map<String, dynamic>> image;
+  final int? productType;
+  final List<Map<String, dynamic>> product;
+  final bool toSold;
+  final bool toMyProducts;
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +41,17 @@ class ProfileLists extends StatelessWidget {
       ),
       itemCount: image.length < 10 ? image.length : 10,
       itemBuilder: (context, index) => GestureDetector(
-        onTap: () {},
+        onTap: () {
+          if (toSold) {
+            Get.to(SoldProduct(productId: product[index]['product_id']));
+            return;
+          }
+          if (toMyProducts) {
+            Get.to(AdsProduct());
+            return;
+          }
+          Get.to(PurchasedProduct(productId: product[index]['product_id']));
+        },
         child: SizedBox(
           width: ScreenDimensions.widthPercentage(context, 40),
           child: Stack(
