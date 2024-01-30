@@ -10,6 +10,7 @@ class MyReservedSellsController extends GetxController{
     update();
     Map<String,dynamic> data = await DioHelper.profileListsSalesReservations();
     data['data']['data'].forEach((element){products.add(element);});
+    isLoading = false;
     update();
   }
 }

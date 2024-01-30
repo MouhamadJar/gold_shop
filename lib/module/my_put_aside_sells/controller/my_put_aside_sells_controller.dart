@@ -8,9 +8,12 @@ class MyPutAsideSellsController extends GetxController{
   void getMyPutAsideProducts()async{
     isLoading = true;
     update();
+    Get.log('req');
     Map<String,dynamic> data = await DioHelper.profileListsSalesOnHold();
     data['data']['data'].forEach((element){products.add(element);});
+    Get.log('before');
     isLoading = false;
     update();
+    Get.log('after');
   }
 }

@@ -15,8 +15,8 @@ class MyReservedSells extends GetView<MyReservedSellsController> {
     Get.put(MyReservedSellsController());
     return GetBuilder<MyReservedSellsController>(
       initState: (state){
-        controller.getMyReservedSells();
         controller.products.clear();
+        controller.getMyReservedSells();
       },
       builder: (_) {
         return const Expanded(child: MyReservedSellsCard());

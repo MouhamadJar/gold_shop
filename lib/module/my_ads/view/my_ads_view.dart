@@ -22,7 +22,6 @@ class MyAds extends GetView<MyAdsController> {
     Get.put(MyAdsController());
     return GetBuilder<MyAdsController>(initState: (state) {
       controller.getMyProducts();
-      controller.products.clear();
     }, builder: (_) {
       return SafeArea(
         child: Scaffold(
@@ -59,166 +58,173 @@ class MyAds extends GetView<MyAdsController> {
                                 ScreenDimensions.heightPercentage(context, 2),
                           ),
                         ),
-                        Directions(
-                          child: PopupMenuButton(
-                            color: CustomColors.white,
-                            elevation: 1,
-                            itemBuilder: (BuildContext context) {
-                              return [
-                                PopupMenuItem(
-                                  child:
-                                      GetBuilder<MyAdsController>(builder: (_) {
-                                    return Row(
-                                      children: [
-                                        Checkbox(
-                                          value: controller.dateIsChecked,
-                                          onChanged: (value) {
-                                            controller.dateCheck();
-                                            controller.dateIsChecked = value!;
-                                            Get.back();
-                                          },
-                                          activeColor: CustomColors.gold,
+                        PopupMenuButton(
+                          color: CustomColors.white,
+                          elevation: 1,
+                          itemBuilder: (BuildContext context) {
+                            return [
+                              PopupMenuItem(
+                                child:
+                                    GetBuilder<MyAdsController>(builder: (_) {
+                                  return Row(
+                                    children: [
+                                      Checkbox(
+                                        value: controller.dateIsChecked,
+                                        onChanged: (value) {
+                                          controller.dateCheck(true);
+                                          // controller.dateIsChecked = true;
+                                          Get.back();
+                                        },
+                                        activeColor: CustomColors.gold,
+                                      ),
+                                      Text(
+                                        AppWord.otn,
+                                        style: TextStyle(
+                                          fontSize:
+                                              AppFonts.smallTitleFont(context),
                                         ),
-                                        Text(
-                                          AppWord.otn,
-                                          style: TextStyle(
-                                            fontSize: AppFonts.smallTitleFont(
-                                                context),
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  }),
-                                ),
-                                PopupMenuItem(
-                                  child:
-                                      GetBuilder<MyAdsController>(builder: (_) {
-                                    return Row(
-                                      children: [
-                                        Checkbox(
-                                          value: !controller.dateIsChecked,
-                                          onChanged: (value) {
-                                            controller.dateCheck();
-                                            controller.dateIsChecked = !value!;
-                                            Get.back();
-                                          },
-                                          activeColor: CustomColors.gold,
+                                      )
+                                    ],
+                                  );
+                                }),
+                                onTap: () {
+                                  controller.dateCheck(true);
+                                },
+                              ),
+                              PopupMenuItem(
+                                child:
+                                    GetBuilder<MyAdsController>(builder: (_) {
+                                  return Row(
+                                    children: [
+                                      Checkbox(
+                                        value: !controller.dateIsChecked,
+                                        onChanged: (value) {
+                                          controller.dateCheck(false);
+                                          Get.back();
+                                        },
+                                        activeColor: CustomColors.gold,
+                                      ),
+                                      Text(
+                                        AppWord.nto,
+                                        style: TextStyle(
+                                          fontSize:
+                                              AppFonts.smallTitleFont(context),
                                         ),
-                                        Text(
-                                          AppWord.nto,
-                                          style: TextStyle(
-                                            fontSize: AppFonts.smallTitleFont(
-                                                context),
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  }),
+                                      )
+                                    ],
+                                  );
+                                }),
+                                onTap: () {
+                                  controller.dateCheck(false);
+                                },
+                              ),
+                            ];
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                AppWord.sortByDate,
+                                style: TextStyle(
+                                  color: CustomColors.black,
+                                  fontSize: AppFonts.smallTitleFont(context),
                                 ),
-                              ];
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  AppWord.sortByDate,
-                                  style: TextStyle(
-                                    color: CustomColors.black,
-                                    fontSize: AppFonts.smallTitleFont(context),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: ScreenDimensions.widthPercentage(
-                                      context, 2),
-                                ),
-                                SvgPicture.asset(
-                                  AppImages.sort,
-                                  height: ScreenDimensions.heightPercentage(
-                                      context, 2),
-                                ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                width: ScreenDimensions.widthPercentage(
+                                    context, 2),
+                              ),
+                              SvgPicture.asset(
+                                AppImages.sort,
+                                height: ScreenDimensions.heightPercentage(
+                                    context, 2),
+                              ),
+                            ],
                           ),
                         ),
-                        Directions(
-                          child: PopupMenuButton(
-                            color: CustomColors.white,
-                            elevation: 1,
-                            itemBuilder: (BuildContext context) {
-                              return [
-                                PopupMenuItem(
-                                  child:
-                                      GetBuilder<MyAdsController>(builder: (_) {
-                                    return Row(
-                                      children: [
-                                        Checkbox(
-                                          value: controller.priceIsChecked,
-                                          onChanged: (value) {
-                                            controller.priceCheck();
-                                            controller.priceIsChecked = value!;
-                                            Get.back();
-                                          },
-                                          activeColor: CustomColors.gold,
+                        PopupMenuButton(
+                          color: CustomColors.white,
+                          elevation: 1,
+                          itemBuilder: (BuildContext context) {
+                            return [
+                              PopupMenuItem(
+                                child:
+                                    GetBuilder<MyAdsController>(builder: (_) {
+                                  return Row(
+                                    children: [
+                                      Checkbox(
+                                        value: controller.priceIsChecked,
+                                        onChanged: (value) {
+                                          controller.priceCheck(true);
+                                          Get.back();
+                                        },
+                                        activeColor: CustomColors.gold,
+                                      ),
+                                      Text(
+                                        AppWord.htl,
+                                        style: TextStyle(
+                                          fontSize:
+                                              AppFonts.smallTitleFont(context),
                                         ),
-                                        Text(
-                                          AppWord.htl,
-                                          style: TextStyle(
-                                            fontSize: AppFonts.smallTitleFont(
-                                                context),
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  }),
-                                ),
-                                PopupMenuItem(
-                                  child:
-                                      GetBuilder<MyAdsController>(builder: (_) {
-                                    return Row(
-                                      children: [
-                                        Checkbox(
-                                          value: !controller.priceIsChecked,
-                                          onChanged: (value) {
-                                            controller.priceCheck();
-                                            controller.priceIsChecked = !value!;
-                                            Get.back();
-                                          },
-                                          activeColor: CustomColors.gold,
+                                      )
+                                    ],
+                                  );
+                                }),
+                                onTap: () {
+                                  controller.priceCheck(true);
+
+                                },
+                              ),
+                              PopupMenuItem(
+                                child:
+                                    GetBuilder<MyAdsController>(builder: (_) {
+                                  return Row(
+                                    children: [
+                                      Checkbox(
+                                        value: !controller.priceIsChecked,
+                                        onChanged: (value) {
+                                          controller.priceCheck(false);
+                                          Get.back();
+                                        },
+                                        activeColor: CustomColors.gold,
+                                      ),
+                                      Text(
+                                        AppWord.lth,
+                                        style: TextStyle(
+                                          fontSize:
+                                              AppFonts.smallTitleFont(context),
                                         ),
-                                        Text(
-                                          AppWord.lth,
-                                          style: TextStyle(
-                                            fontSize: AppFonts.smallTitleFont(
-                                                context),
-                                          ),
-                                        )
-                                      ],
-                                    );
-                                  }),
+                                      )
+                                    ],
+                                  );
+                                }),
+                                onTap: () {
+                                  controller.priceCheck(false);
+
+                                },
+                              ),
+                            ];
+                          },
+                          child: Row(
+                            children: [
+                              Text(
+                                AppWord.sortByPrice,
+                                style: TextStyle(
+                                  color: CustomColors.black,
+                                  fontSize: AppFonts.smallTitleFont(context),
                                 ),
-                              ];
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                  AppWord.sortByPrice,
-                                  style: TextStyle(
-                                    color: CustomColors.black,
-                                    fontSize: AppFonts.smallTitleFont(context),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: ScreenDimensions.widthPercentage(
-                                      context, 2),
-                                ),
-                                SvgPicture.asset(
-                                  AppImages.sort,
-                                  height: ScreenDimensions.heightPercentage(
-                                      context, 2),
-                                ),
-                              ],
-                            ),
+                              ),
+                              SizedBox(
+                                width: ScreenDimensions.widthPercentage(
+                                    context, 2),
+                              ),
+                              SvgPicture.asset(
+                                AppImages.sort,
+                                height: ScreenDimensions.heightPercentage(
+                                    context, 2),
+                              ),
+                            ],
                           ),
-                        ),
+                        )
                       ],
                     ).paddingSymmetric(
                         vertical:

@@ -6,30 +6,56 @@ class MyAdsController extends GetxController {
   bool dateIsChecked = false;
   bool priceIsChecked = false;
   bool isLoading = true;
-  List<Map<String,dynamic>> products = [];
+  List<Map<String, dynamic>> products = [];
 
-  void dateCheck(){
-    if(dateIsChecked){
-      dateIsChecked = true;
-    }else{
-      dateIsChecked = false;
-    }
-    update();
-  }
-  void priceCheck(){
-    if(priceIsChecked){
-      priceIsChecked = true;
-    }else{
-      priceIsChecked = false;
-    }
-    update();
+  void dateCheck(bool newVal) {
+    dateIsChecked = newVal;
+    sortProductsByDate();
   }
 
-  void getMyProducts ()async{
-    Map<String,dynamic> data = await DioHelper.profileListsMyProducts();
-    data['data']['data'].forEach((element){products.add(element);});
+  void priceCheck(bool newVal) {
+    priceIsChecked = newVal;
+    sortProductsByPrice();
+  }
+
+  void getMyProducts() async {
+    isLoading = true;
+    update();
+    Map<String, dynamic> data = await DioHelper.profileListsMyProducts();
+    products.clear();
+    data['data']['data'].forEach((element) {
+      products.add(element);
+    });
     print(products.toString());
-    isLoading = false ;
+    isLoading = false;
+    update();
+  }
+
+  void sortProductsByPrice() async {
+    isLoading = true;
+    update();
+    Map<String, dynamic> data =
+        await DioHelper.sortMyProductByPrice(fromUpToDownPrice: priceIsChecked);
+    products.clear();
+    data['data']['data'].forEach((element) {
+      products.add(element);
+    });
+    print(products.toString());
+    isLoading = false;
+    update();
+  }
+
+  void sortProductsByDate() async {
+    isLoading = true;
+    update();
+    Map<String, dynamic> data =
+    await DioHelper.sortMyProductByDate(fromUpToDownDate: dateIsChecked);
+    products.clear();
+    data['data']['data'].forEach((element) {
+      products.add(element);
+    });
+    print(products.toString());
+    isLoading = false;
     update();
   }
 }
