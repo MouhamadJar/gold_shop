@@ -17,7 +17,6 @@ class HomeController extends GetxController with StateMixin {
     Map<String, dynamic> data = await DioHelper.getAllCategories();
     categories.clear();
     Get.log('REQUESTING');
-
     data ['data']['data'].forEach((element){categories.add(CategoriesModel.frmJson(json: element));});
     isLoading =false;
     update();

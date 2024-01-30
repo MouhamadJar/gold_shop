@@ -11,8 +11,8 @@ class MyPutAsideSells extends GetView<MyPutAsideSellsController> {
   Widget build(BuildContext context) {
     Get.put(MyPutAsideSellsController());
     return GetBuilder<MyPutAsideSellsController>(initState: (state) {
-      controller.getMyPutAsideProducts();
       controller.products.clear();
+      controller.getMyPutAsideProducts();
     }, builder: (_) {
       return const Expanded(child: MyPutAsideSellsCard());
     });

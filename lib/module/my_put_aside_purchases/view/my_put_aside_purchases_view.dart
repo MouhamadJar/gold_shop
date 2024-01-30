@@ -12,8 +12,8 @@ class MyPutAsidePurchases extends GetView<MyPutAsidePurchasesController> {
     Get.put(MyPutAsidePurchasesController());
     return GetBuilder<MyPutAsidePurchasesController>(
       initState: (state){
-        controller.getMyPutAsidePurchases();
         controller.products.clear();
+        controller.getMyPutAsidePurchases();
       },
       builder: (_) {
         return Expanded(
