@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'core/general_controllers/problems_controller.dart';
 import 'core/storage_handler/storage_handler.dart';
 import 'core/dictionary/dictionary.dart';
 import 'module/splash/view/splash_view.dart';
@@ -28,8 +29,13 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         useMaterial3: true,
       ),
+      onInit: onAppInit,
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
     );
   }
+}
+
+void onAppInit () {
+  Get.put(ProblemsController());
 }

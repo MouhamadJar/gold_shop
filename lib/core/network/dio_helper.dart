@@ -473,12 +473,28 @@ class DioHelper {
     try {
       response = await _dio.post(EndPoints.problemStore, data: {
         'description': description,
-        'type': type,
+        'problem_type_id': type,
         'product_id': productId,
       });
+      print('Success while send problem : ${response.data}');
       return true;
     } on DioException catch (error) {
+      print('Error while send problem : ${error.response!.data}');
       return false;
+    }
+  }
+
+  static Future<Map<String, dynamic>> getProblemTypes() async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.problemTypes,
+      );
+      print('Success while send problem : ${response.data}');
+      return response.data;
+    } on DioException catch (error) {
+      print('Error while send problem : ${error.response!.data}');
+      return error.response!.data;
     }
   }
 
@@ -730,6 +746,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
+
   static Future<Map<String, dynamic>> sortMyProductByDate({
     required bool fromUpToDownDate,
   }) async {
@@ -749,11 +766,11 @@ class DioHelper {
     required String to,
     required String subcategoryId,
     required String categoryId,
-}) async {
+  }) async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.filterMyProductByPrice(subcategoryId,categoryId,from, to),
+        EndPoints.filterMyProductByPrice(subcategoryId, categoryId, from, to),
       );
       return response.data;
     } on DioException catch (error) {
@@ -766,11 +783,11 @@ class DioHelper {
     required String to,
     required String subcategoryId,
     required String categoryId,
-}) async {
+  }) async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.filterMyProductByDate(subcategoryId,categoryId,from, to),
+        EndPoints.filterMyProductByDate(subcategoryId, categoryId, from, to),
       );
       return response.data;
     } on DioException catch (error) {
@@ -852,13 +869,13 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> rateBySeller(
-      {required int buyerRating,
-      required String buyerMessage,
-      required int serviceRating,
-      required String serviceMessage,
-      required int productId,
-      }) async {
+  static Future<Map<String, dynamic>> rateBySeller({
+    required int buyerRating,
+    required String buyerMessage,
+    required int serviceRating,
+    required String serviceMessage,
+    required int productId,
+  }) async {
     late Response response;
     try {
       response = await _dio.post('${EndPoints.rateBySeller}$productId', data: {
