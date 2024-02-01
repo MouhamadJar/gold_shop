@@ -6,7 +6,7 @@ import '../model/categories_model.dart';
 
 class CategoriesController extends GetxController{
 bool isLoading = true;
-List <dynamic> categories = [];
+List <CategoriesModel> categories = [];
   void getCategories() async {
     Map<String, dynamic> data = await DioHelper.getAllCategories();
     categories.clear();

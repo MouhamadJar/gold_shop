@@ -66,4 +66,19 @@ class SubcategoryProductsController extends GetxController {
     isCityEmpty = false;
     update();
   }
+
+  String getProductState(String state){
+    switch (state){
+      case '0' :
+        return AppWord.available;
+      case '1' :
+        return AppWord.putAside;
+      case '2' :
+        return AppWord.reserved;
+      case '3' :
+        return AppWord.sold;
+      default :
+        return AppWord.sold;
+    }
+  }
 }

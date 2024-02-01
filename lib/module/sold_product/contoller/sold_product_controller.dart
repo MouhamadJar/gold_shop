@@ -41,8 +41,13 @@ class SoldProductController extends GetxController{
         buyerMessage: buyerMessageController.text,
         serviceRating: serviceStars!,
         serviceMessage: serviceMessageController.text, productId: productId);
-   Get.snackbar(AppWord.done, '${AppWord.rateBuyer} ${AppWord.done}');
-   Get.back();
+    if(data['message']== 'rated successfully.'){
+      Get.back();
+      Get.snackbar(AppWord.done, '${AppWord.rateVendor} ${AppWord.done}');}
+    else{
+      Get.back();
+      Get.snackbar(AppWord.note, AppWord.youCantRateMoreThanOneTime);
+    }
   update();
 
   }

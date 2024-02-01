@@ -101,7 +101,7 @@ class EndPoints {
       '/api/app/lists/search/filter/sales?category_id=1&subcategory_id=2&from_created_at=2023-12-05&to_created_at=2024-12-12&list_type=0';
 
 //app rate
-  static String rateByBuyer = '/api/app/rate/buyer/14';
+  static String rateByBuyer = '/api/app/rate/buyer/';
   static String rateBySeller = '/api/app/rate/seller/';
 
 //-------------------------------------------------------------------------------------------------------

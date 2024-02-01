@@ -14,11 +14,6 @@ class PutAsideSellController extends GetxController{
   List<SubCategoryADVSModel> subcategoriesADVS=[];
 
 
-  TextEditingController buyerMessageController = TextEditingController();
-  TextEditingController serviceMessageController = TextEditingController();
-  int? buyerStars;
-  int? serviceStars;
-
 
 
   void subcategoryADVS({required int subcategoryId}) async {
@@ -38,15 +33,5 @@ class PutAsideSellController extends GetxController{
     update();
   }
 
-  void rateForSeller({required int productId})async{
-    Map<String ,dynamic> data = await DioHelper.rateBySeller(
-        buyerRating: buyerStars!,
-        buyerMessage: buyerMessageController.text,
-        serviceRating: serviceStars!,
-        serviceMessage: serviceMessageController.text, productId: productId);
-    Get.snackbar(AppWord.done, '${AppWord.rateBuyer} ${AppWord.done}');
-    Get.back();
-    update();
 
-  }
 }

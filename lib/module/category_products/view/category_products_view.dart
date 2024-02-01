@@ -27,14 +27,10 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          Padding(
-            padding: EdgeInsetsDirectional.all(
-                ScreenDimensions.widthPercentage(context, 2)),
-            child: SvgPicture.asset(
-              AppImages.saudiArabia,
-              height: ScreenDimensions.heightPercentage(context, 5),
-            ),
-          ),
+          SvgPicture.asset(
+            AppImages.saudiArabia,
+            height: ScreenDimensions.heightPercentage(context, 5),
+          ).paddingAll(ScreenDimensions.widthPercentage(context, 2)),
         ],
         centerTitle: true,
         title: Text(

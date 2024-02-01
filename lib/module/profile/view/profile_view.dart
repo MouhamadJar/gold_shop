@@ -69,10 +69,8 @@ class Profile extends GetView<ProfileController> {
                                 child: Transform.rotate(
                                   angle: -120,
                                   child: Container(
-                                    width:
-                                        ScreenDimensions.screenWidth(context),
-                                    height: ScreenDimensions.heightPercentage(
-                                        context, 20),
+                                    width: ScreenDimensions.screenWidth(context),
+                                    height: ScreenDimensions.heightPercentage(context, 20),
                                     decoration: BoxDecoration(
                                       gradient: LinearGradient(
                                         colors: [
@@ -222,10 +220,8 @@ class Profile extends GetView<ProfileController> {
                         delegate: SliverChildBuilderDelegate(
                             (context, index) => Container(
                                   width: ScreenDimensions.screenWidth(context),
-                                  height: ScreenDimensions.heightPercentage(
-                                      context, 25),
-                                  decoration:
-                                      BoxDecoration(border: Border.all()),
+                                  height: ScreenDimensions.heightPercentage(context, 25),
+                                  decoration: BoxDecoration(border: Border.all()),
                                   child: GoogleMap(
                                       onMapCreated: (mapController) {
                                         controller.mapController =

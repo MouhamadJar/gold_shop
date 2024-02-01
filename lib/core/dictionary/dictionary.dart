@@ -140,6 +140,8 @@ class Dictionary extends Translations {
           AppWord.buyerNumber: 'Buyer\'s number',
           AppWord.editProductInfo: 'Edit product information',
           AppWord.rateBuyer: 'Rate buyer',
+          AppWord.youCantRateMoreThanOneTime: 'You can\'t rate more than one time',
+          AppWord.note: 'Note',
           AppWord.available: 'Available',
           AppWord.deleteProduct: 'Delete product',
           AppWord.areYouSureYouWantToDeleteProduct:
@@ -397,6 +399,8 @@ class Dictionary extends Translations {
           AppWord.buyerNumber: AppWord.buyerNumber,
           AppWord.editProductInfo: AppWord.editProductInfo,
           AppWord.rateBuyer: AppWord.rateBuyer,
+          AppWord.note: AppWord.note,
+          AppWord.youCantRateMoreThanOneTime: AppWord.youCantRateMoreThanOneTime,
           AppWord.available: AppWord.available,
           AppWord.deleteProduct: AppWord.deleteProduct,
           AppWord.areYouSureYouWantToDeleteProduct:

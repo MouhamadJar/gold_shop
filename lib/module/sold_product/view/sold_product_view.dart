@@ -378,7 +378,6 @@ class SoldProduct extends GetView<SoldProductController> {
                                                                 ),
                                                                 onTap: () {
                                                                   controller.rateForSeller(productId: controller.model!.id);
-                                                                  print(productId);
                                                                 },
                                                                 buttonBackground: AppImages.buttonLiteBackground))
                                                       ],

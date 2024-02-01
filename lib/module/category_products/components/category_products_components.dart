@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
@@ -176,8 +177,7 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                               maxLines: 2,
                             ),
                             SizedBox(
-                              height:
-                              ScreenDimensions.heightPercentage(context, 1),
+                              height: ScreenDimensions.heightPercentage(context, 1),
                             ),
                             Row(
                               children: [
@@ -245,7 +245,7 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                         color: CustomColors.red,
                         width: ScreenDimensions.widthPercentage(context, 14),
                         child: Text(
-                          controller.product[index].productStatus,
+                          controller.getProductState(controller.product[index].productStatus),
                           textAlign: TextAlign.center,
                           style: TextStyle(color: CustomColors.white, fontSize: 10),
                         ),
@@ -253,11 +253,10 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                     ),
                   ),
                   Positioned(
-                    top: ScreenDimensions.heightPercentage(context, 0.01),
-                    width: ScreenDimensions.widthPercentage(context, 30),
+                    top: ScreenDimensions.heightPercentage(context, 0),
+                    width: ScreenDimensions.widthPercentage(context, 20),
                     child: AppNetworkImage(
-                      controller.product[index].images.first['image'],
-                      width: ScreenDimensions.widthPercentage(context, 25),
+                      baseUrlImages + controller.product[index].images.first['image'],
                     ),
                   ),
                 ],

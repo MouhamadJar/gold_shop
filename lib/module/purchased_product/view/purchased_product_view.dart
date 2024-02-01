@@ -116,9 +116,7 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                       barrierDismissible: true,
                                       InteractiveViewer(
                                         child: AppNetworkImage(
-                                          baseUrlImages +
-                                              controller
-                                                  .model!.images.first['image'],
+                                          baseUrlImages + controller.model!.images.first['image'],
 
                                         ),
                                       ).paddingSymmetric(
@@ -129,17 +127,12 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                   },
                                   child: Container(
                                     padding: EdgeInsetsDirectional.symmetric(
-                                      vertical:
-                                          ScreenDimensions.heightPercentage(
-                                              context, 2),
+                                      vertical: ScreenDimensions.heightPercentage(context, 2),
                                     ),
-                                    width:
-                                        ScreenDimensions.screenWidth(context),
-                                    height: ScreenDimensions.heightPercentage(
-                                        context, 25),
-                                    child: AppNetworkImage(baseUrlImages +
-                                        controller
-                                            .model!.images.first['image']),
+                                    width: ScreenDimensions.screenWidth(context),
+                                    height: ScreenDimensions.heightPercentage(context, 25),
+                                    child: AppNetworkImage(
+                                        baseUrlImages + controller.model!.images.first['image']),
                                   ),
                                 ),
                                 SizedBox(
@@ -372,27 +365,33 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                                           ],
                                                         ),
                                                         RateField(
-                                                            title: AppWord
-                                                                .rateVendor),
+                                                          controller: controller.sellerMessageController,
+                                                            onRatingUpdate: (starsNumber){
+                                                            controller.sellerStars = starsNumber.toInt();
+                                                            },
+                                                            title: AppWord.rateVendor),
                                                         RateField(
-                                                            title: AppWord
-                                                                .rateProduct),
+                                                          controller: controller.productMessageController,
+                                                            onRatingUpdate: (starsNumber){
+                                                            controller.productStars = starsNumber.toInt();
+                                                            },
+                                                            title: AppWord.rateProduct),
                                                         RateField(
-                                                            title: AppWord
-                                                                .rateService),
+                                                          controller: controller.serviceMessageController,
+                                                            onRatingUpdate: (starsNumber){
+                                                            controller.serviceStars = starsNumber.toInt();
+                                                            },
+                                                            title: AppWord.rateService),
                                                         Center(
                                                             child: AppButton(
                                                                 text: Text(
                                                                   AppWord.send,
                                                                   style: TextStyle(
-                                                                      color: CustomColors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          AppFonts.smallTitleFont(
-                                                                              context)),
+                                                                      color: CustomColors.white,
+                                                                      fontSize: AppFonts.smallTitleFont(context)),
                                                                 ),
                                                                 onTap: () {
-                                                                  Get.back();
+                                                                  controller.rateForBuyer(productId: controller.model!.id);
                                                                 },
                                                                 buttonBackground:
                                                                     AppImages

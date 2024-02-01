@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 
+import '../../../core/texts/words.dart';
 import '../../category_products/model/category_products_model.dart';
 
 class PurchasedProductController extends GetxController {
@@ -9,6 +11,14 @@ class PurchasedProductController extends GetxController {
   bool isBannersEmpty = true;
  ProfileProductPurchasesModel? model;
  List<SubCategoryADVSModel> subcategoriesADVS=[];
+
+
+  TextEditingController sellerMessageController = TextEditingController();
+  TextEditingController serviceMessageController = TextEditingController();
+  TextEditingController productMessageController = TextEditingController();
+  int? sellerStars;
+  int? productStars;
+  int? serviceStars;
 
   void subcategoryADVS({required int subcategoryId}) async {
     Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
@@ -27,4 +37,26 @@ class PurchasedProductController extends GetxController {
    subcategoryADVS(subcategoryId: model!.subcategoryId);
    update();
  }
+
+
+  void rateForBuyer({required int productId})async{
+    Map<String ,dynamic> data = await DioHelper.rateByBuyer(
+        sellerRating: sellerStars!,
+        sellerMessage: sellerMessageController.text,
+        serviceRating: serviceStars!,
+        serviceMessage: serviceMessageController.text,
+        productId: productId,
+        productRating: productStars!,
+        productMessage: productMessageController.text);
+    if(data['message']== 'rated successfully.'){
+      Get.back();
+      Get.snackbar(AppWord.done, '${AppWord.rateVendor} ${AppWord.done}');}
+    else{
+      Get.back();
+      Get.snackbar(AppWord.note, AppWord.youCantRateMoreThanOneTime);
+    }
+    print(data.toString());
+    update();
+
+  }
 }

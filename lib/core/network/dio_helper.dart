@@ -835,10 +835,12 @@ class DioHelper {
       required int productRating,
       required String productMessage,
       required int serviceRating,
-      required String serviceMessage}) async {
+      required String serviceMessage,
+      required int productId,
+      }) async {
     late Response response;
     try {
-      response = await _dio.post(EndPoints.rateByBuyer, data: {
+      response = await _dio.post('${EndPoints.rateByBuyer}$productId', data: {
         'seller_number_of_stars': sellerRating,
         'seller_message': sellerMessage,
         'product_number_of_stars': productRating,

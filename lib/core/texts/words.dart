@@ -278,6 +278,9 @@ class AppWord {
   static String get resellRequest => 'طلب إعادة البيع'.tr;
 
   static String get rateVendor => 'تقييم البائع'.tr;
+  static String get note => 'ملاحظة'.tr;
+
+  static String get youCantRateMoreThanOneTime => 'لايمكنك ان تقيم اكثر من مرة'.tr;
 
   static String get rateProduct => 'تقييم المنتج'.tr;
 
