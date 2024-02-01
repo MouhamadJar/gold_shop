@@ -116,7 +116,7 @@ class ReservedCard extends GetView<MyReservedPurchasesController> {
                                         ),
                                         const Spacer(),
                                         Text(
-                                          '${AppWord.grams} ${controller.products[index]['wight']}',
+                                          '${AppWord.grams} ${controller.products[index]['wight'].toInt()}',
                                           style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: AppFonts.smallTitleFont(
