@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
@@ -218,29 +219,10 @@ class Profile extends GetView<ProfileController> {
                       ])),
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
-                            (context, index) => Container(
-                                  width: ScreenDimensions.screenWidth(context),
-                                  height: ScreenDimensions.heightPercentage(context, 25),
-                                  decoration: BoxDecoration(border: Border.all()),
-                                  child: GoogleMap(
-                                      onMapCreated: (mapController) {
-                                        controller.mapController =
-                                            mapController;
-                                      },
-                                      gestureRecognizers: {
-                                        Factory(
-                                          () => EagerGestureRecognizer(
-                                              allowedButtonsFilter: (buttons) =>
-                                                  true,
-                                              supportedDevices: {
-                                                PointerDeviceKind.touch
-                                              }),
-                                        ),
-                                      },
-                                      initialCameraPosition:
-                                          controller.position!,
-                                      markers: {controller.marker!}),
-                                ).paddingSymmetric(
+                            (context, index) => AppGoogleMap(
+                              cameraPosition: controller.position!,
+                              markers: {controller.marker!},
+                            ).paddingSymmetric(
                                     vertical: ScreenDimensions.heightPercentage(
                                         context, 2)),
                             childCount: 1,

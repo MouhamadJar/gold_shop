@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'core/general_controllers/google_map_controller.dart';
 import 'core/general_controllers/problems_controller.dart';
 import 'core/storage_handler/storage_handler.dart';
 import 'core/dictionary/dictionary.dart';
@@ -38,4 +39,5 @@ class MyApp extends StatelessWidget {
 
 void onAppInit () {
   Get.put(ProblemsController());
+  Get.put(AppGoogleMapController());
 }
