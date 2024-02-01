@@ -8,6 +8,7 @@ import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/module/invoice/view/invoice_view.dart';
 import 'package:gold_shop/module/product_details/controller/product_details_controller.dart';
 import '../../../core/colors/colors.dart';
+import '../../../core/components/problem_dialog.dart';
 import '../../../core/images/images.dart';
 import '../../../core/network/dio_helper.dart';
 import '../../../core/texts/words.dart';
@@ -525,150 +526,9 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                       title: AppWord.reportProblem,
                                       picPath: AppImages.report,
                                       onTap: () {
-                                        Get.dialog(
-                                          Directions(
-                                            child: Material(
-                                              color: Colors.transparent,
-                                              child: BackdropFilter(
-                                                filter: ImageFilter.blur(
-                                                    sigmaY: 10, sigmaX: 10),
-                                                child: Container(
-                                                  margin: EdgeInsetsDirectional.only(
-                                                      top: ScreenDimensions
-                                                          .heightPercentage(
-                                                              context, 5),
-                                                      bottom: ScreenDimensions
-                                                          .heightPercentage(
-                                                              context, 45),
-                                                      start: ScreenDimensions
-                                                          .widthPercentage(
-                                                              context, 5),
-                                                      end: ScreenDimensions
-                                                          .widthPercentage(
-                                                              context, 5)),
-                                                  padding: EdgeInsetsDirectional.all(
-                                                          ScreenDimensions
-                                                              .widthPercentage(
-                                                                  context, 3)),
-                                                  color: CustomColors.white,
-                                                  child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceBetween,
-                                                        children: [
-                                                          GestureDetector(
-                                                              onTap: () {
-                                                                Get.back();
-                                                              },
-                                                              child: SvgPicture.asset(
-                                                                  AppImages.x,
-                                                                  width: ScreenDimensions
-                                                                      .widthPercentage(
-                                                                          context,
-                                                                          3))),
-                                                          Text(
-                                                              AppWord
-                                                                  .reportProblem,
-                                                              style: TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
-                                                                  fontSize: AppFonts
-                                                                      .smallTitleFont(
-                                                                          context))),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .spaceEvenly,
-                                                        children: [
-                                                          AppPopUpMenu(
-                                                              title: '',
-                                                              items: [],
-                                                              onSelected:
-                                                                  (value) {}),
-                                                          Text(
-                                                            AppWord
-                                                                .defineProblem,
-                                                            style: TextStyle(
-                                                              fontSize: AppFonts
-                                                                  .smallTitleFont(
-                                                                      context),
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ).paddingSymmetric(
-                                                        vertical: ScreenDimensions
-                                                            .heightPercentage(
-                                                                context, 4),
-                                                      ),
-                                                      Text(
-                                                        AppWord.describeProblem,
-                                                        style: TextStyle(
-                                                            fontSize: AppFonts
-                                                                .smallTitleFont(
-                                                                    context)),
-                                                      ).paddingOnly(
-                                                          left: ScreenDimensions
-                                                              .widthPercentage(
-                                                                  context, 60)),
-                                                      Container(
-                                                        height: ScreenDimensions.heightPercentage(context, 15),
-                                                        margin: EdgeInsetsDirectional.symmetric(
-                                                            horizontal:
-                                                                ScreenDimensions
-                                                                    .widthPercentage(
-                                                                        context,
-                                                                        8)),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                                border: Border
-                                                                    .all()),
-                                                        child: TextFormField(
-                                                          controller: controller.problemController,
-                                                          maxLines: 5,
-                                                          decoration: const InputDecoration(border: InputBorder.none,
-                                                            enabledBorder: InputBorder.none,
-                                                          ),
-                                                        ).paddingSymmetric(
-                                                            horizontal: ScreenDimensions.widthPercentage(context, 7)),
-                                                      ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
-                                                      AppButton(
-                                                              text: Text(
-                                                                AppWord.send,
-                                                                style: TextStyle(
-                                                                    color: CustomColors
-                                                                        .white,
-                                                                    fontSize: AppFonts
-                                                                        .smallTitleFont(
-                                                                            context),
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold),
-                                                              ),
-                                                              onTap: () {
-                                                                controller.reportProblem();
-                                                              },
-                                                              buttonBackground:
-                                                                  AppImages
-                                                                      .buttonLiteBackground)
-                                                          .paddingSymmetric(
-                                                              vertical: ScreenDimensions
-                                                                  .heightPercentage(
-                                                                      context,
-                                                                      1)),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
+                                        showProblemDialog(
+                                          context: context,
+                                          productId: controller.model!.id,
                                         );
                                       },
                                     ),

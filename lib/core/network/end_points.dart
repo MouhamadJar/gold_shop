@@ -45,6 +45,7 @@ class EndPoints {
 
 //app problems
   static String problemStore = '/api/app/problems';
+  static String problemTypes = '$problemStore/type';
 
 //app profile
   static String updateProfile = '/api/app/profile/${StorageHandler().userId}';
