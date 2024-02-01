@@ -49,7 +49,7 @@ class MyAdsCard extends GetView<MyAdsController> {
           ),
           itemCount: controller.products.length,
           itemBuilder: (context, index) => GestureDetector(
-            onTap: () {Get.to(const AdsProduct(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));},
+            onTap: () {Get.to( AdsProduct(productId: controller.products[index]['id'],),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));},
             child: DelayedDisplay(
               slidingBeginOffset: const Offset(0,1),
               delay: Duration(milliseconds: (index*10)+10),

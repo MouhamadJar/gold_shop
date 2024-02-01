@@ -10,6 +10,7 @@ class ReservedPurchaseController extends GetxController {
   ProfileProductPurchasesModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS=[];
 
+
   void subcategoryADVS({required int subcategoryId}) async {
     Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
     data['data'].forEach((element) {subcategoriesADVS.add(SubCategoryADVSModel.fromJson(json: element));});

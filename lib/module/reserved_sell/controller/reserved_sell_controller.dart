@@ -1,7 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../core/components/components.dart';
 import '../../../core/network/dio_helper.dart';
+import '../../../core/texts/words.dart';
 import '../../category_products/model/category_products_model.dart';
 
 class ReservedSellController extends GetxController {
@@ -9,7 +11,8 @@ class ReservedSellController extends GetxController {
   bool isBannersEmpty = true;
   ProfileProductPurchasesModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS=[];
-  List <int> subcategoryId = [];
+
+
 
   void subcategoryADVS({required int subcategoryId}) async {
     Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
@@ -27,4 +30,6 @@ class ReservedSellController extends GetxController {
     subcategoryADVS(subcategoryId: model!.subcategoryId);
     update();
   }
+
+
 }

@@ -452,11 +452,11 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> delete() async {
+  static Future<Map<String, dynamic>> delete({required int productId}) async {
     late Response response;
     try {
       response = await _dio.delete(
-        EndPoints.delete,
+        '${EndPoints.delete}$productId',
       );
       return response.data;
     } on DioException catch (error) {
@@ -856,10 +856,12 @@ class DioHelper {
       {required int buyerRating,
       required String buyerMessage,
       required int serviceRating,
-      required String serviceMessage}) async {
+      required String serviceMessage,
+      required int productId,
+      }) async {
     late Response response;
     try {
-      response = await _dio.post(EndPoints.rateBySeller, data: {
+      response = await _dio.post('${EndPoints.rateBySeller}$productId', data: {
         'buyer_number_of_stars': buyerRating,
         'buyer_message': buyerMessage,
         'service_number_of_stars': serviceRating,

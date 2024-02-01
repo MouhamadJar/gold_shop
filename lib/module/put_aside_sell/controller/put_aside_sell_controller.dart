@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/texts/words.dart';
 
 import '../../../core/components/components.dart';
 import '../../../core/network/dio_helper.dart';
+import '../../../core/texts/words.dart';
 import '../../category_products/model/category_products_model.dart';
 
-class SoldProductController extends GetxController{
+class PutAsideSellController extends GetxController{
+
   bool isLoading  = true;
   bool isBannersEmpty = true;
   ProfileProductPurchasesModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS=[];
-  List <int> subcategoryId = [];
+
 
   TextEditingController buyerMessageController = TextEditingController();
   TextEditingController serviceMessageController = TextEditingController();
   int? buyerStars;
   int? serviceStars;
+
+
 
   void subcategoryADVS({required int subcategoryId}) async {
     Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
@@ -41,9 +44,9 @@ class SoldProductController extends GetxController{
         buyerMessage: buyerMessageController.text,
         serviceRating: serviceStars!,
         serviceMessage: serviceMessageController.text, productId: productId);
-   Get.snackbar(AppWord.done, '${AppWord.rateBuyer} ${AppWord.done}');
-   Get.back();
-  update();
+    Get.snackbar(AppWord.done, '${AppWord.rateBuyer} ${AppWord.done}');
+    Get.back();
+    update();
 
   }
 }

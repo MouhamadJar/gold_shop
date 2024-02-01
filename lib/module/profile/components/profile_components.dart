@@ -43,14 +43,14 @@ class ProfileLists extends StatelessWidget {
       itemBuilder: (context, index) => GestureDetector(
         onTap: () {
           if (toSold) {
-            Get.to(SoldProduct(productId: product[index]['product_id']));
+            Get.to(SoldProduct(productId: product[index]['product_id']),transition: Transition.zoom,duration: const Duration(milliseconds: 500));
             return;
           }
           if (toMyProducts) {
-            Get.to(AdsProduct());
+            Get.to(AdsProduct(productId: product[index]['product_id'],),transition: Transition.zoom,duration: const Duration(milliseconds: 500));
             return;
           }
-          Get.to(PurchasedProduct(productId: product[index]['product_id']));
+          Get.to(PurchasedProduct(productId: product[index]['product_id']),transition: Transition.zoom,duration: const Duration(milliseconds: 500));
         },
         child: SizedBox(
           width: ScreenDimensions.widthPercentage(context, 40),

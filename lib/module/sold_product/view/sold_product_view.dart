@@ -150,7 +150,7 @@ class SoldProduct extends GetView<SoldProductController> {
                                             MainAxisAlignment.spaceBetween,
                                         children: [
                                           Text(
-                                            'GN12345',
+                                            '${controller.model!.code}',
                                             style: TextStyle(
                                               fontSize: AppFonts.subTitleFont(
                                                   context),
@@ -167,8 +167,8 @@ class SoldProduct extends GetView<SoldProductController> {
                                                 TextSpan(
                                                   text: '${AppWord.caliber} ',
                                                 ),
-                                                const TextSpan(
-                                                  text: '18',
+                                                TextSpan(
+                                                  text: controller.model!.carat.toString(),
                                                 ),
                                               ],
                                                   style: TextStyle(
@@ -178,17 +178,12 @@ class SoldProduct extends GetView<SoldProductController> {
                                                               context)))),
                                         ],
                                       ),
-                                      Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            vertical: ScreenDimensions
-                                                .heightPercentage(context, 1)),
-                                        child: Text(
-                                          AppWord.description,
-                                          style: TextStyle(
-                                              fontSize: AppFonts.smallTitleFont(
-                                                  context)),
-                                        ),
-                                      ),
+                                      Text(
+                                        controller.model!.description,
+                                        style: TextStyle(
+                                            fontSize: AppFonts.smallTitleFont(
+                                                context)),
+                                      ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
                                       Text(
                                         AppWord.productDetails,
                                         style: TextStyle(
@@ -202,27 +197,33 @@ class SoldProduct extends GetView<SoldProductController> {
                                             ]),
                                       ),
                                       Details(
-                                          details: AppWord.details,
+                                          withIcon: true,
+                                          details: controller.model!.manufacturer!.toString(),
                                           title: AppWord.manufacturer,
                                           picPath: AppImages.building),
                                       Details(
-                                          details: AppWord.details,
+                                          withIcon: true,
+                                          details: controller.model!.age.toString(),
                                           title: AppWord.age,
                                           picPath: AppImages.age),
                                       Details(
-                                          details: AppWord.details,
+                                          withIcon: true,
+                                          details: controller.model!.weight.toString(),
                                           title: AppWord.weight,
                                           picPath: AppImages.weightScale),
                                       Details(
-                                          details: AppWord.details,
+                                          withIcon: true,
+                                          details: controller.model!.currentGoldPrice.toString(),
                                           title: AppWord.gramPrice,
                                           picPath: AppImages.priceTag),
                                       Details(
-                                          details: AppWord.details,
+                                          withIcon: true,
+                                          details: controller.model!.price.toString(),
                                           title: AppWord.productPrice,
                                           picPath: AppImages.priceTag),
                                       Details(
-                                          details: AppWord.details,
+                                          withIcon: true,
+                                          details: controller. model!.carat.toString(),
                                           title: AppWord.productCalibre,
                                           picPath: AppImages.scale),
                                     ],
@@ -250,35 +251,31 @@ class SoldProduct extends GetView<SoldProductController> {
                                       SoldProcessDetails(
                                           title: AppWord.amountPaid,
                                           subtitle: AppWord.sad,
-                                          amount: '2310'),
+                                          amount: (controller.model!.price + controller.model!.profit+controller.model!.currentGoldPrice).toString()),
                                       SoldProcessDetails(
                                           title: AppWord.productPrice,
                                           subtitle: AppWord.sad,
-                                          amount: '2000'),
+                                          amount: controller.model!.price.toString()),
                                       SoldProcessDetails(
                                           title: AppWord.gramPrice,
                                           subtitle: AppWord.sad,
-                                          amount: '300'),
+                                          amount: controller.model!.currentGoldPrice.toString()),
                                       SoldProcessDetails(
                                           title: AppWord.appServiceCost,
                                           subtitle: AppWord.sad,
-                                          amount: '10'),
+                                          amount: controller.model!.profit.toString()),
                                       SoldProcessDetails(
                                         title: AppWord.buyerName,
-                                        subtitle: AppWord.buyerName,
+                                        subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
                                       ),
                                       SoldProcessDetails(
                                         title: AppWord.buyerNumber,
-                                        subtitle: '904358345',
+                                        subtitle: controller.model!.phoneNumber,
                                       ),
                                     ],
                                   ).paddingSymmetric(
-                                      vertical:
-                                          ScreenDimensions.heightPercentage(
-                                              context, 2),
-                                      horizontal:
-                                          ScreenDimensions.widthPercentage(
-                                              context, 5)),
+                                      vertical: ScreenDimensions.heightPercentage(context, 2),
+                                      horizontal: ScreenDimensions.widthPercentage(context, 5)),
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
@@ -306,8 +303,7 @@ class SoldProduct extends GetView<SoldProductController> {
                                   decoration:
                                       BoxDecoration(border: Border.all()),
                                 ).paddingSymmetric(
-                                    vertical: ScreenDimensions.heightPercentage(
-                                        context, 2)),
+                                    vertical: ScreenDimensions.heightPercentage(context, 2)),
                                 Directions(
                                   child: Row(
                                     mainAxisAlignment:
@@ -337,23 +333,14 @@ class SoldProduct extends GetView<SoldProductController> {
                                                         end: ScreenDimensions
                                                             .widthPercentage(
                                                                 context, 5)),
-                                                    padding: EdgeInsetsDirectional
-                                                        .all(ScreenDimensions
-                                                            .widthPercentage(
-                                                                context, 3)),
+                                                    padding: EdgeInsetsDirectional.all(ScreenDimensions.widthPercentage(context, 3)),
                                                     color: CustomColors.white,
                                                     child: Column(
-                                                      crossAxisAlignment:
-                                                          CrossAxisAlignment
-                                                              .end,
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment
-                                                              .spaceEvenly,
+                                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                                       children: [
                                                         Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .start,
+                                                          mainAxisAlignment: MainAxisAlignment.start,
                                                           children: [
                                                             GestureDetector(
                                                                 onTap: () {
@@ -368,31 +355,32 @@ class SoldProduct extends GetView<SoldProductController> {
                                                           ],
                                                         ),
                                                         RateField(
-                                                            title: AppWord
-                                                                .rateBuyer),
+                                                          controller: controller.buyerMessageController,
+                                                          onRatingUpdate: (starsNumber){
+                                                            controller.buyerStars = starsNumber.toInt();
+                                                          },
+                                                            title: AppWord.rateBuyer),
                                                         RateField(
-                                                            title: AppWord
-                                                                .rateProduct),
+                                                            onRatingUpdate: (starsNumber){},
+                                                            title: AppWord.rateProduct),
                                                         RateField(
-                                                            title: AppWord
-                                                                .rateService),
+                                                          controller: controller.serviceMessageController,
+                                                            onRatingUpdate: (starsNumber){
+                                                            controller.serviceStars = starsNumber.toInt();
+                                                            },
+                                                            title: AppWord.rateService),
                                                         Center(
                                                             child: AppButton(
                                                                 text: Text(
                                                                   AppWord.send,
-                                                                  style: TextStyle(
-                                                                      color: CustomColors
-                                                                          .white,
-                                                                      fontSize:
-                                                                          AppFonts.smallTitleFont(
-                                                                              context)),
+                                                                  style: TextStyle(color: CustomColors.white,
+                                                                      fontSize: AppFonts.smallTitleFont(context)),
                                                                 ),
                                                                 onTap: () {
-                                                                  Get.back();
+                                                                  controller.rateForSeller(productId: controller.model!.id);
+                                                                  print(productId);
                                                                 },
-                                                                buttonBackground:
-                                                                    AppImages
-                                                                        .buttonLiteBackground))
+                                                                buttonBackground: AppImages.buttonLiteBackground))
                                                       ],
                                                     ),
                                                   ),
@@ -678,22 +666,18 @@ class SoldProduct extends GetView<SoldProductController> {
                                               context, 2)),
                                 ),
                                 Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Container(
                                       alignment: AlignmentDirectional.center,
-                                      width: ScreenDimensions.widthPercentage(
-                                          context, 30),
-                                      height: ScreenDimensions.heightPercentage(
-                                          context, 5),
+                                      width: ScreenDimensions.widthPercentage(context, 30),
+                                      height: ScreenDimensions.heightPercentage(context, 5),
                                       color: CustomColors.gold,
                                       child: Text(
                                         AppWord.shopReport,
                                         style: TextStyle(
                                             color: CustomColors.white,
-                                            fontSize: AppFonts.smallTitleFont(
-                                                context),
+                                            fontSize: AppFonts.smallTitleFont(context),
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),

@@ -64,9 +64,11 @@ class SoldProcessDetails extends StatelessWidget {
 }
 
 class RateField extends StatelessWidget {
-  const RateField({super.key, required this.title});
+  const RateField({super.key, required this.title,this.onRatingUpdate,this.controller});
 
   final String title;
+  final void Function(double)? onRatingUpdate;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +83,7 @@ class RateField extends StatelessWidget {
                   itemBuilder: (BuildContext context, int index) {
                     return SvgPicture.asset(AppImages.yellowStar);
                   },
-                  onRatingUpdate: (double value) {},
+                  onRatingUpdate: onRatingUpdate!,
                   itemCount: 5,
                   itemSize: ScreenDimensions.heightPercentage(context, 2),
                 )
@@ -102,12 +104,12 @@ class RateField extends StatelessWidget {
               horizontal: ScreenDimensions.widthPercentage(context, 2)),
           decoration: BoxDecoration(border: Border.all()),
           child: TextFormField(
+            controller: controller,
             maxLines: 4,
-            decoration: const InputDecoration(
+            decoration: const InputDecoration(border: InputBorder.none,
               enabledBorder: InputBorder.none,
             ),
-          ).paddingSymmetric(
-              horizontal: ScreenDimensions.widthPercentage(context, 7)),
+          ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 7)),
         ),
       ],
     );

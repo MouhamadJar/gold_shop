@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/texts/words.dart';
 
@@ -6,17 +5,12 @@ import '../../../core/components/components.dart';
 import '../../../core/network/dio_helper.dart';
 import '../../category_products/model/category_products_model.dart';
 
-class SoldProductController extends GetxController{
+class AdsProductController extends GetxController{
   bool isLoading  = true;
   bool isBannersEmpty = true;
   ProfileProductPurchasesModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS=[];
-  List <int> subcategoryId = [];
-
-  TextEditingController buyerMessageController = TextEditingController();
-  TextEditingController serviceMessageController = TextEditingController();
-  int? buyerStars;
-  int? serviceStars;
+  String deleteMessage = '';
 
   void subcategoryADVS({required int subcategoryId}) async {
     Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
@@ -35,15 +29,34 @@ class SoldProductController extends GetxController{
     update();
   }
 
-  void rateForSeller({required int productId})async{
-    Map<String ,dynamic> data = await DioHelper.rateBySeller(
-        buyerRating: buyerStars!,
-        buyerMessage: buyerMessageController.text,
-        serviceRating: serviceStars!,
-        serviceMessage: serviceMessageController.text, productId: productId);
-   Get.snackbar(AppWord.done, '${AppWord.rateBuyer} ${AppWord.done}');
-   Get.back();
-  update();
+  String getProductState(String state){
+    switch (state){
+      case '0' :
+        return AppWord.available;
+      case '1' :
+        return AppWord.putAside;
+      case '2' :
+        return AppWord.reserved;
+      case '3' :
+        return AppWord.sold;
+      default :
+        return AppWord.sold;
+    }
+  }
 
+  void deleteProduct ({required int productId})async{
+    Map<String,dynamic> data = await DioHelper.delete(productId: productId);
+    deleteMessage  = data ['message'];
+    Get.snackbar(
+        AppWord.done,
+        AppWord
+            .deleteRequestHasBeenSent,
+        snackStyle: SnackStyle
+            .GROUNDED,
+        duration:
+        const Duration(
+            milliseconds:
+            2500));
+    update();
   }
 }

@@ -41,7 +41,7 @@ class EndPoints {
   static String restoreOrResell = '/api/app/products/restore/14';
   static String show = '/api/app/products/';
   static String update = '/api/app/products/14';
-  static String delete = '/api/app/products/13';
+  static String delete = '/api/app/products/';
 
 //app problems
   static String problemStore = '/api/app/problems';
@@ -102,7 +102,7 @@ class EndPoints {
 
 //app rate
   static String rateByBuyer = '/api/app/rate/buyer/14';
-  static String rateBySeller = '/api/app/rate/seller/14';
+  static String rateBySeller = '/api/app/rate/seller/';
 
 //-------------------------------------------------------------------------------------------------------
 //app store
