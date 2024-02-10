@@ -277,6 +277,51 @@ class DioHelper {
     }
   }
 
+  static Future<Map<String, dynamic>> registerStore({
+    required String name,
+    required String email,
+    required String phoneNumber,
+    required String password,
+    required double latitude,
+    required double longitude,
+    required String country,
+    required String state,
+    required String city,
+    required String neighborhood,
+    required String street,
+    required String cost,
+    required List<String> numbers,
+  }) async {
+    late Response response;
+    try {
+      log('---REQUESTING SIGNUP---');
+      response = await _dio.post(
+        EndPoints.registerStore,
+        data:{
+          'name': name,
+          'email': email,
+          'phone_number': phoneNumber,
+          'password': password,
+          'latitude': latitude,
+          'longitude': longitude,
+          'country': country,
+          'state': state,
+          'city': city,
+          'neighborhood': neighborhood,
+          'street': street,
+          'numbers': numbers,
+          'cost': cost,
+          'description': 'description',
+        },
+      );
+      log('done : ${response.data.toString()}');
+      return response.data;
+    } on DioException catch (error) {
+      log('error : ${error.response!.data}');
+      return error.response!.data;
+    }
+  }
+
   static Future<Map<String, dynamic>> logout() async {
     late Response response;
     try {
