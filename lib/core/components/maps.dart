@@ -15,12 +15,14 @@ class AppGoogleMap extends GetView<AppGoogleMapController> {
     this.cameraPosition,
     this.height,
     this.width,
+    this.onTap,
   });
 
-  final Set<MarkerEntity> markers;
+  final Set<Marker> markers;
   final CameraPosition? cameraPosition;
   final double? width;
   final double? height;
+  final Function(LatLng)? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +34,7 @@ class AppGoogleMap extends GetView<AppGoogleMapController> {
         onMapCreated: (mapController) {
           controller.mapController = mapController;
         },
+        onTap: onTap,
         gestureRecognizers: {
           Factory(
             () => EagerGestureRecognizer(

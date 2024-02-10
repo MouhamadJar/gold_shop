@@ -55,6 +55,7 @@ class EndPoints {
   //app auth
   static String login = '/api/user/login';
   static String register = '/api/user/register';
+  static String registerStore = '/api/store/register';
   static String logout = '/api/user/logout';
 
   //app products
