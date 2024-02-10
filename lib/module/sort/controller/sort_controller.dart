@@ -9,16 +9,16 @@ class SortController extends GetxController{
   SubcategoryProductsController subcategoryProductsController = Get.find();
 
   bool caratHTL = false;
-  bool caratLTH = true;
+  bool caratLTH = false;
   bool priceHTL = false;
-  bool priceLTH = true;
+  bool priceLTH = false;
   bool weightHTL = false;
-  bool weightLTH = true;
+  bool weightLTH = false;
 
-  bool? carat;
-  bool? price;
-  bool? weight;
-//
+  int? carat ;
+  int? price ;
+  int? weight;
+
 // void caratCheckHTL(){
 //   caratHTL == true?caratHTL = false: caratHTL = true;
 //   caratLTH =false;
@@ -35,28 +35,41 @@ class SortController extends GetxController{
 //   update();
 // }
 // void caratCheckLTH(){
-//   caratHTL == true?caratLTH = false:caratLTH =true;
+//   caratLTH == true?caratLTH = false:caratLTH =true;
 //   caratHTL =false;
 //   update();
 // }
 // void priceCheckLTH(){
-//   priceHTL == true?priceLTH = false:priceLTH =true;
+//   priceLTH == true?priceLTH = false:priceLTH =true;
 //    priceHTL = false;
 //   update();
 // }
 // void weightCheckLTH(){
-//   weightHTL == true?weightLTH = false:weightLTH =true;
+//   weightLTH == true?weightLTH = false:weightLTH =true;
 //   weightHTL = false;
 //   update();
 // }
 
+  void lthValuesCheck(){
+    caratLTH == true ? carat = 0 : carat = null;
+    priceLTH == true ? price = 0 : price = null;
+    weightLTH == true ? weight = 0: weight= null;
+    update();
+  }
+  void htlValuesCheck(){
+    caratHTL == true ? carat = 1: carat = null;
+    priceHTL == true ? price = 1 : price = null;
+    weightHTL == true ? weight = 1: weight= null;
+    update();
+  }
+
   void sort ()async {
-    Map<String,dynamic> data = await DioHelper.sort(carat: carat!, price: price!, weight: weight!);
-    price = priceLTH;
-    weight = weightLTH;
-    carat = caratLTH;
+    print(priceLTH);
+    print(carat);
+    print(price);
+    print(weight);
+    Map<String,dynamic> data = await DioHelper.sort(carat: carat, price: price, weight: weight);
     data['data']['data'].forEach((element){products.add(ProductsModel.fromJson(json: element));});
-    Get.log(data.toString());
     subcategoryProductsController.product = products;
     subcategoryProductsController.update();
     Get.back();

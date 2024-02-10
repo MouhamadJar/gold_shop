@@ -13,7 +13,6 @@ class ProfileController extends GetxController {
   bool isLoadingMyProducts = true;
   CameraPosition? position;
   GoogleMapController? mapController ;
-
   MarkerEntity? marker;
   Map<String, dynamic> model = {};
   ProfileModel? user;

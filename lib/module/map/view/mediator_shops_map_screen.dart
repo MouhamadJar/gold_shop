@@ -26,17 +26,7 @@ class MediatorShopsMapScreen extends GetView<MediatorShopsMapController> {
             fontSize: AppFonts.subTitleFont(context),
           ),
         ),
-        leading: Builder(builder: (context) {
-          return GestureDetector(
-            onTap: () {
-              Scaffold.of(context).openDrawer();
-            },
-            child: SvgPicture.asset(
-              AppImages.moreIcon,
-              fit: BoxFit.scaleDown,
-            ),
-          );
-        }),
+        leading: GestureDetector(onTap : (){Get.back();},child: Icon(Icons.arrow_back)),
         elevation: 1,
         backgroundColor: CustomColors.white,
       ),

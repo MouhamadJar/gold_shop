@@ -67,7 +67,7 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        Get.to(const FilterScreen());
+                        Get.to(const FilterScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700));
                       },
                       child: SvgPicture.asset(AppImages.filter,
                           height:
@@ -78,7 +78,7 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Get.to(const SortScreen());
+                        Get.to(const SortScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700));
                       },
                       child: SvgPicture.asset(
                         AppImages.sort,

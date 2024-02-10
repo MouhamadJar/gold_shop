@@ -118,7 +118,8 @@ class ProfileLists extends StatelessWidget {
                 top: ScreenDimensions.heightPercentage(context, 0),
                 child: AppNetworkImage(
                   baseUrlImages + image[index]['image'],
-                  width: ScreenDimensions.widthPercentage(context, 10),
+                  width: ScreenDimensions.widthPercentage(context, 15),
+                  height: ScreenDimensions.heightPercentage(context, 10),
                 ),
               ),
             ],

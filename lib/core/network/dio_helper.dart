@@ -148,14 +148,10 @@ class DioHelper {
   }
 
   static Future<Map<String, dynamic>> sort(
-      {required bool carat, required bool price, required bool weight}) async {
+      {int? carat,  int? price,  int? weight}) async {
     late Response response;
     try {
-      response = await _dio.get(EndPoints.sort, data: {
-        'carat': carat,
-        'price': price,
-        'wight': weight,
-      });
+      response = await _dio.get(EndPoints.sorts(carat: carat,price: price,weight: weight),);
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -463,6 +459,17 @@ class DioHelper {
       return error.response!.data;
     }
   }
+  static Future<Map<String, dynamic>> appCommission() async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.appCommission,
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
 
 //app problems
   static Future<bool> problemStore(
@@ -561,27 +568,27 @@ class DioHelper {
   }
 
 //app contact us
-  static Future<Map<String, dynamic>> contactUsStore({
+  static Future<bool> contactUsStore({
     required String description,
-    required String type,
   }) async {
     late Response response;
     try {
       response = await _dio.post(EndPoints.contactUsStore, data: {
         'description': description,
-        'type': type,
+        'type': 'problem',
       });
-      return response.data;
+      return true;
     } on DioException catch (error) {
-      return error.response!.data;
+      return false;
     }
   }
 
 //app orders
-  static Future<Map<String, dynamic>> ordersOnHold() async {
+  static Future<Map<String, dynamic>> ordersOnHold({required int productId}) async {
     late Response response;
     try {
-      response = await _dio.get(EndPoints.onHold);
+      response = await _dio.post('${EndPoints.onHold}$productId');
+      print(response.data.toString());
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -592,6 +599,50 @@ class DioHelper {
     late Response response;
     try {
       response = await _dio.post(EndPoints.sale, data: {'code': code});
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> paymentInfo() async {
+    late Response response;
+    try {
+      response = await _dio.get(EndPoints.paymentInfo);
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> bankInfo() async {
+    late Response response;
+    try {
+      response = await _dio.get(EndPoints.bankInfo);
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> notificationImage({required int orderId,required String image}) async {
+    late Response response;
+    try {
+      response = await _dio.post('${EndPoints.notificationImage}$orderId',
+          data: {
+        'image': image
+      });
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
+
+//reports
+
+
+  static Future<Map<String, dynamic>> invoice({required int orderId}) async {
+    late Response response;
+    try {
+      response = await _dio.get('${EndPoints.invoice}$orderId');
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -796,11 +847,13 @@ class DioHelper {
   }
 
 //app sort & filter purchases
-  static Future<Map<String, dynamic>> sortPurchases() async {
+  static Future<Map<String, dynamic>> sortMyPurchasesByPrice({
+    required bool fromUpToDownPrice,
+  }) async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.sortPurchases,
+        EndPoints.sortMyPurchasesByPrice(fromUpToDownPrice ? 1 : 0),
       );
       return response.data;
     } on DioException catch (error) {
@@ -808,11 +861,47 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> filterPurchases() async {
+  static Future<Map<String, dynamic>> sortMyPurchasesByDate({
+    required bool fromUpToDownDate,
+  }) async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.filterPurchases,
+        EndPoints.sortMyPurchasesByDate(fromUpToDownDate ? 1 : 0),
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
+  static Future<Map<String, dynamic>> filterMyPurchasesByDate({
+    required String from,
+    required String to,
+    required String subcategoryId,
+    required String categoryId,
+  }) async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.filterMyPurchasesByDate(subcategoryId, categoryId, from, to),
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
+  static Future<Map<String, dynamic>> filterMyPurchasesByPrice({
+    required String from,
+    required String to,
+    required String subcategoryId,
+    required String categoryId,
+  }) async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.filterMyPurchaseByPrice(subcategoryId, categoryId, from, to),
       );
       return response.data;
     } on DioException catch (error) {
@@ -821,11 +910,13 @@ class DioHelper {
   }
 
 //app sort & filter sales
-  static Future<Map<String, dynamic>> sortSales() async {
+  static Future<Map<String, dynamic>> sortMySalesByPrice({
+    required bool fromUpToDownPrice,
+  }) async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.sortSales,
+        EndPoints.sortMySellsByPrice(fromUpToDownPrice ? 1 : 0),
       );
       return response.data;
     } on DioException catch (error) {
@@ -833,11 +924,47 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> filterSales() async {
+  static Future<Map<String, dynamic>> sortMySalesByDate({
+    required bool fromUpToDownDate,
+  }) async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.filterSales,
+        EndPoints.sortMySellsByDate(fromUpToDownDate ? 1 : 0),
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
+  static Future<Map<String, dynamic>> filterMySalesByDate({
+    required String from,
+    required String to,
+    required String subcategoryId,
+    required String categoryId,
+  }) async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.filterMySellsByDate(subcategoryId, categoryId, from, to),
+      );
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
+  static Future<Map<String, dynamic>> filterMySalesByPrice({
+    required String from,
+    required String to,
+    required String subcategoryId,
+    required String categoryId,
+  }) async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.filterMySellsByPrice(subcategoryId, categoryId, from, to),
       );
       return response.data;
     } on DioException catch (error) {

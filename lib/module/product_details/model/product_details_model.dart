@@ -1,14 +1,14 @@
 class ProductDetailsModel {
   final int id;
-  final String code;
+  final dynamic code;
   final int userId;
   final String description;
-  final String age;
-  final int weight;
-  final String carat;
+  final dynamic age;
+  final dynamic weight;
+  final dynamic carat;
   final int subcategoryId;
-  final int currentGoldPrice;
-  final int profit;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
   final dynamic? addition;
   final dynamic? details;
   final String manufacturer;
@@ -20,9 +20,9 @@ class ProductDetailsModel {
   final String productStatus;
   final String createdAt;
   final String updatedAt;
-  final double price;
-  final int? priceAfterDiscount;
-  final int horror;
+  final dynamic price;
+  final dynamic? priceAfterDiscount;
+  final dynamic horror;
   List<dynamic> images;
 
   ProductDetailsModel({
@@ -42,7 +42,7 @@ class ProductDetailsModel {
     required this.manufacturerType,
     required this.toggle,
     required this.deliveryType,
-     this.phoneNumber,
+    this.phoneNumber,
     required this.views,
     required this.productStatus,
     required this.createdAt,
@@ -55,7 +55,7 @@ class ProductDetailsModel {
 
   factory ProductDetailsModel.fromJson({required Map<String, dynamic> json}) {
     List<Map<String, dynamic>> tmp = [];
-    if(json['images'].isNotEmpty) {
+    if (json['images'].isNotEmpty) {
       json['images'].forEach((element) {
         tmp.add(element);
       });
@@ -86,6 +86,28 @@ class ProductDetailsModel {
       priceAfterDiscount: json['price_after_discount'],
       horror: json['horror'],
       images: tmp,
+    );
+  }
+}
+
+class PutAsideModel {
+  final double price;
+  final int orderId;
+  final double gramPrice;
+
+  final double? totalAmount;
+
+  PutAsideModel({
+    required this.price,
+    required this.orderId,
+    required this.gramPrice,
+    this.totalAmount,
+  });
+
+  factory PutAsideModel.fromJson({required Map<String, dynamic> json}) {
+    return PutAsideModel(
+      price: json['price'],
+      gramPrice: json['gram_price'], orderId: json['id'],
     );
   }
 }

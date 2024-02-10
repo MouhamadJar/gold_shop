@@ -284,10 +284,12 @@ class AppDialog extends StatelessWidget {
       this.card2,
       required this.onTap,
       required this.buttonName,
-      required this.buttonButtonBackground});
+      required this.buttonButtonBackground,
+      this.expand =false
+      });
 
   final String title;
-
+  final bool expand;
   final String description;
   final Widget card1;
   final Widget? card2;
@@ -298,82 +300,80 @@ class AppDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Directions(
-      child: Container(
-          decoration: BoxDecoration(border: Border.all()),
-          padding: EdgeInsetsDirectional.symmetric(
-              vertical: ScreenDimensions.heightPercentage(context, 20),
-              horizontal: ScreenDimensions.widthPercentage(context, 5)),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-            child: Container(
-              padding: EdgeInsetsDirectional.all(
-                  ScreenDimensions.widthPercentage(context, 5)),
-              color: Colors.white,
-              child: Column(
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: Container(
+          margin: EdgeInsets.symmetric(
+              vertical: expand?ScreenDimensions.heightPercentage(context, 14):ScreenDimensions.heightPercentage(context, 25),
+              horizontal: ScreenDimensions.widthPercentage(context, 5),
+          ),
+          padding: EdgeInsetsDirectional.all(
+              ScreenDimensions.widthPercentage(context, 5)),
+          color: Colors.white,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      GestureDetector(
-                        child: SvgPicture.asset(AppImages.x,
-                            width:
-                                ScreenDimensions.widthPercentage(context, 3)),
-                        onTap: () {
-                          Get.back();
-                        },
-                      ),
-                      Text(
-                        title,
-                        textAlign: TextAlign.center,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: AppFonts.subTitleFont(context) - 2,
-                          color: CustomColors.yellow,
-                          fontWeight: FontWeight.bold,
-                          shadows: [
-                            Shadow(blurRadius: 3, color: CustomColors.shadow),
-                          ],
-                        ),
-                      ),
-                    ],
+                  GestureDetector(
+                    child: SvgPicture.asset(AppImages.x,
+                        width:
+                            ScreenDimensions.widthPercentage(context, 3)),
+                    onTap: () {
+                      Get.back();
+                    },
                   ),
                   Text(
-                    description,
-                    textAlign: TextAlign.right,
+                    title,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: AppFonts.smallTitleFont(context),
+                      fontSize: AppFonts.subTitleFont(context) - 2,
+                      color: CustomColors.yellow,
+                      fontWeight: FontWeight.bold,
+                      shadows: [
+                        Shadow(blurRadius: 3, color: CustomColors.shadow),
+                      ],
                     ),
-                  ).paddingSymmetric(
-                      vertical: ScreenDimensions.heightPercentage(context, 2)),
-                  Container(
-                      alignment: AlignmentDirectional.center,
-                      width: ScreenDimensions.widthPercentage(context, 70),
-                      child: card1.paddingSymmetric(
-                          vertical:
-                              ScreenDimensions.heightPercentage(context, 2))),
-                  Container(
-                      width: ScreenDimensions.widthPercentage(context, 70),
-                      alignment: AlignmentDirectional.center,
-                      child: card2!.paddingSymmetric(
-                          vertical:
-                              ScreenDimensions.heightPercentage(context, 2))),
-                  AppButton(
-                    onTap: onTap,
-                    text: Text(
-                      buttonName,
-                      style: TextStyle(
-                          color: CustomColors.white,
-                          fontSize: AppFonts.smallTitleFont(context),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    buttonBackground: buttonButtonBackground,
-                  ).paddingOnly(
-                      bottom: ScreenDimensions.heightPercentage(context, 1),
-                      top: ScreenDimensions.heightPercentage(context, 5)),
+                  ),
                 ],
               ),
-            ),
-          )),
+              Text(
+                description,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: AppFonts.smallTitleFont(context),
+                ),
+              ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+              Container(
+                  alignment: AlignmentDirectional.center,
+                  width: ScreenDimensions.widthPercentage(context, 70),
+                  child: card1.paddingSymmetric(
+                      vertical:
+                          ScreenDimensions.heightPercentage(context, 2))),
+              Container(
+                  width: ScreenDimensions.widthPercentage(context, 70),
+                  alignment: AlignmentDirectional.center,
+                  child: card2!.paddingSymmetric(
+                      vertical:
+                          ScreenDimensions.heightPercentage(context, 2))),
+              AppButton(
+                onTap: onTap,
+                text: Text(
+                  buttonName,
+                  style: TextStyle(
+                      color: CustomColors.white,
+                      fontSize: AppFonts.smallTitleFont(context),
+                      fontWeight: FontWeight.bold),
+                ),
+                buttonBackground: buttonButtonBackground,
+              ).paddingOnly(
+                  bottom: ScreenDimensions.heightPercentage(context, 1),
+                  top: ScreenDimensions.heightPercentage(context, 5)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
@@ -589,12 +589,9 @@ class PricesBar extends GetView<PricesBarController> {
                       child: DelayedDisplay(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: CustomColors.red,
-                            ),
                             Text(
                               '${AppWord.sad} ${controller.model!.carat24.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             SizedBox(
                               width:
@@ -617,12 +614,9 @@ class PricesBar extends GetView<PricesBarController> {
                       child: DelayedDisplay(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: CustomColors.red,
-                            ),
                             Text(
                               '${AppWord.sad} ${controller.model!.carat21.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             SizedBox(
                               width:
@@ -645,12 +639,9 @@ class PricesBar extends GetView<PricesBarController> {
                       child: DelayedDisplay(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: CustomColors.red,
-                            ),
                             Text(
                               '${AppWord.sad} ${controller.model!.carat22.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             SizedBox(
                               width:
@@ -673,12 +664,9 @@ class PricesBar extends GetView<PricesBarController> {
                       child: DelayedDisplay(
                         child: Row(
                           children: [
-                            Icon(
-                              Icons.arrow_drop_down,
-                              color: CustomColors.red,
-                            ),
                             Text(
                               '${AppWord.sad} ${controller.model!.carat18.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             SizedBox(
                               width:

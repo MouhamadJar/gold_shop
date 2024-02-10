@@ -6,7 +6,7 @@ import 'package:gold_shop/core/images/images.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
-import '../../controller/my_ads_filter_controller.dart';
+import '../controller/my_ads_filter_controller.dart';
 import '../components/my_sells_filter_components.dart';
 
 class MyAdsFilter extends GetView<MyAdsFilterController> {
@@ -120,7 +120,7 @@ class MyAdsFilter extends GetView<MyAdsFilterController> {
                                     context, 3),
                                 decoration: BoxDecoration(border: Border.all()),
                                 child: Directions(
-                                  child: TextFormField(
+                                  child: TextFormField(textAlign: TextAlign.center,
                                     onChanged: (value) {
                                       controller.dateController1.clear();
                                       controller.dateController2.clear();
@@ -165,6 +165,7 @@ class MyAdsFilter extends GetView<MyAdsFilterController> {
                                     context, 3),
                                 decoration: BoxDecoration(border: Border.all()),
                                 child: TextFormField(
+                                  textAlign: TextAlign.center,
                                   onChanged: (value) {
                                     controller.dateController1.clear();
                                     controller.dateController2.clear();
@@ -229,6 +230,7 @@ class MyAdsFilter extends GetView<MyAdsFilterController> {
                                 decoration: BoxDecoration(border: Border.all()),
                                 child: Directions(
                                   child: TextFormField(
+                                    textAlign: TextAlign.center,
                                     onChanged: (value) {
                                       controller.priceController1.clear();
                                       controller.priceController2.clear();
@@ -267,6 +269,7 @@ class MyAdsFilter extends GetView<MyAdsFilterController> {
                                     context, 3),
                                 decoration: BoxDecoration(border: Border.all()),
                                 child: TextFormField(
+                                  textAlign: TextAlign.center,
                                   onChanged: (value) {
                                     controller.priceController1.clear();
                                     controller.priceController2.clear();

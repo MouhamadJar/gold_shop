@@ -19,6 +19,7 @@ import 'package:gold_shop/module/product_details/view/product_details_view.dart'
 import '../../../core/images/images.dart';
 import '../../../core/storage_handler/storage_handler.dart';
 import '../../authentication/view/login_screen.dart';
+import '../../main/user/view/main_screen_view.dart';
 
 class ProductsCard extends GetView<SubcategoryProductsController> {
   const ProductsCard({super.key, required this.subcategoryId});
@@ -40,7 +41,6 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
           crossAxisSpacing: ScreenDimensions.heightPercentage(context, 4),
           mainAxisSpacing: ScreenDimensions.widthPercentage(context, 2),
           mainAxisExtent: ScreenDimensions.heightPercentage(context, 25),
-          // childAspectRatio: ScreenDimensions.heightPercentage(context, 0.06),
           crossAxisCount: 2,
         ),
         itemCount: controller.product.length,
@@ -126,6 +126,36 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                                               AppFonts.smallTitleFont(
                                                   context))),
                                     ),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.offAll(const MainScreen(),
+                                          transition: Transition.rightToLeft,
+                                          duration: const Duration(
+                                              milliseconds: 700));
+                                    },
+                                    child: Container(
+                                      height:
+                                      ScreenDimensions.heightPercentage(
+                                          context, 5),
+                                      width:
+                                      ScreenDimensions.heightPercentage(
+                                          context, 20),
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                          color: CustomColors.white,
+                                          border: Border.all(),
+                                          borderRadius: BorderRadius.circular(
+                                              ScreenDimensions
+                                                  .heightPercentage(
+                                                  context, 1))),
+                                      child: Text(AppWord.later,
+                                          style: TextStyle(
+                                              color: CustomColors.black,
+                                              fontSize:
+                                              AppFonts.smallTitleFont(
+                                                  context))),
+                                    ),
                                   )
                                 ],
                               ),
@@ -144,11 +174,11 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                 alignment: AlignmentDirectional.center,
                 children: [
                   Positioned(
-                    width: ScreenDimensions.widthPercentage(context, 40),
-                    top: ScreenDimensions.heightPercentage(context, 3),
-                    height: ScreenDimensions.heightPercentage(context, 20),
+                    top: ScreenDimensions.heightPercentage(context, 5),
                     child: Directions(
                       child: Container(
+                        width: ScreenDimensions.widthPercentage(context, 40),
+                        height: ScreenDimensions.heightPercentage(context, 20),
                         padding: EdgeInsetsDirectional.symmetric(
                           horizontal:
                           ScreenDimensions.widthPercentage(context, 3),
@@ -218,7 +248,7 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                                   alignment: AlignmentDirectional.centerEnd,
                                   width: ScreenDimensions.widthPercentage(context, 20),
                                   child: Text(
-                                    '${AppWord.sad} ${controller.product[index].price}',
+                                    '${AppWord.sad} ${controller.product[index].price.toInt()}',
                                     style: TextStyle(
                                       overflow: TextOverflow.ellipsis,
                                       color: CustomColors.gold,
@@ -237,13 +267,14 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                   ),
                   Positioned(
                     left: -ScreenDimensions.widthPercentage(context, 3),
-                    top: ScreenDimensions.heightPercentage(context, 5),
+                    top: ScreenDimensions.heightPercentage(context, 6),
                     child: Transform.rotate(
                       angle: 5.5,
                       child: Container(
                         alignment: AlignmentDirectional.center,
                         color: CustomColors.red,
-                        width: ScreenDimensions.widthPercentage(context, 14),
+                        width: ScreenDimensions.widthPercentage(context, 17),
+                        height: ScreenDimensions.heightPercentage(context, 1.5),
                         child: Text(
                           controller.getProductState(controller.product[index].productStatus),
                           textAlign: TextAlign.center,
@@ -254,9 +285,10 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                   ),
                   Positioned(
                     top: ScreenDimensions.heightPercentage(context, 0),
-                    width: ScreenDimensions.widthPercentage(context, 20),
                     child: AppNetworkImage(
                       baseUrlImages + controller.product[index].images.first['image'],
+                      width: ScreenDimensions.widthPercentage(context, 20),
+                      height: ScreenDimensions.heightPercentage(context, 14),
                     ),
                   ),
                 ],

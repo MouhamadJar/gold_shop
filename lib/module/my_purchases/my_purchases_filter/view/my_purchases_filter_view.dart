@@ -6,33 +6,34 @@ import 'package:gold_shop/core/images/images.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
-import '../components/my_sells_filter_components.dart';
+import 'package:gold_shop/module/my_purchases/my_purchases_filter/controller/my_purchases_filter_controller.dart';
 
-class MySellsFilter extends StatelessWidget {
-  const MySellsFilter({super.key});
+import '../components/my_purchases_filter_components.dart';
+
+class MyPurchasesFilter extends GetView<MyPurchasesFilterController> {
+  const MyPurchasesFilter({super.key});
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController priceController1 = TextEditingController();
-    TextEditingController priceController2 = TextEditingController();
-    TextEditingController dateController1 = TextEditingController();
-    TextEditingController dateController2 = TextEditingController();
+    Get.put(MyPurchasesFilterController());
     return SafeArea(
         child: Directions(
-          child: Scaffold(
-            backgroundColor: CustomColors.white,
-            appBar: AppBar(
-              elevation: 1,
-              backgroundColor: CustomColors.white,
-              title: Text(
-                AppWord.mySellsFilter,
-                style: TextStyle(
-                    fontSize: AppFonts.subTitleFont(context),
-                    fontWeight: FontWeight.bold),
-              ),
-              centerTitle: true,
-            ),
-            body: SizedBox(
+      child: Scaffold(resizeToAvoidBottomInset: false,
+        backgroundColor: CustomColors.white,
+        appBar: AppBar(
+          elevation: 1,
+          backgroundColor: CustomColors.white,
+          title: Text(
+            AppWord.myPurchasesFilter,
+            style: TextStyle(
+                fontSize: AppFonts.subTitleFont(context),
+                fontWeight: FontWeight.bold),
+          ),
+          centerTitle: true,
+        ),
+        body: GetBuilder<MyPurchasesFilterController>(
+          builder: (_) {
+            return SizedBox(
               width: ScreenDimensions.screenWidth(context),
               height: ScreenDimensions.screenHeight(context),
               child: Column(
@@ -43,8 +44,21 @@ class MySellsFilter extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MySellsDropDownMenu(
-                            title: '', items: const [], onSelected: (value) {}),
+                        MyPurchasesDropDownMenu(
+                            title:controller.selectedCategory != null
+                            ?controller.selectedCategory!['name']
+                            :AppWord.productCategory,
+                            items: controller.categories
+                                .map((e) => PopupMenuItem(
+                              value: e,
+                              onTap: () {
+                                controller.getAllSubcategories(e['id']);
+                                controller.selectedCategory = e;
+                                controller.update();
+                              },
+                              child: Text(e['name']),
+                            ))
+                                .toList(),onSelected: (value) {}),
                         SizedBox(
                           width: ScreenDimensions.widthPercentage(context, 10),
                         ),
@@ -63,8 +77,20 @@ class MySellsFilter extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        MySellsDropDownMenu(
-                            title: '', items: const [], onSelected: (value) {}),
+                        MyPurchasesDropDownMenu(
+                            title: controller.selectedSubcategory != null
+                                ? controller.selectedSubcategory!['name']
+                                : AppWord.productClassification,
+                            items: controller.subcategories
+                                .map((e) => PopupMenuItem(
+                              child: Text(e['name']),
+                              value: e,
+                            ))
+                                .toList(),
+                            onSelected: (value) {
+                              controller.selectedSubcategory = value;
+                              controller.update();
+                            }),
                         SizedBox(
                           width: ScreenDimensions.widthPercentage(context, 10),
                         ),
@@ -90,20 +116,20 @@ class MySellsFilter extends StatelessWidget {
                               children: [
                                 Container(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 40),
+                                      ScreenDimensions.widthPercentage(context, 40),
                                   height:
-                                  ScreenDimensions.heightPercentage(context, 3),
+                                      ScreenDimensions.heightPercentage(context, 3),
                                   decoration: BoxDecoration(border: Border.all()),
                                   child: Directions(
-                                    child: TextFormField(
+                                    child: TextFormField(textAlign: TextAlign.center,
                                       onChanged: (value) {
                                         if (int.parse(value) >
-                                            int.parse(priceController2.text)) {
-                                          priceController1.text =
-                                              priceController2.text;
+                                            int.parse(controller.priceController2.text)) {
+                                          controller.priceController1.text =
+                                              controller.priceController2.text;
                                         }
                                       },
-                                      controller: priceController1,
+                                      controller: controller.priceController1,
                                       decoration: const InputDecoration(
                                         border: InputBorder.none,
                                       ),
@@ -113,7 +139,7 @@ class MySellsFilter extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 2),
+                                      ScreenDimensions.widthPercentage(context, 2),
                                 ),
                                 Text(
                                   AppWord.from,
@@ -130,19 +156,20 @@ class MySellsFilter extends StatelessWidget {
                               children: [
                                 Container(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 40),
+                                      ScreenDimensions.widthPercentage(context, 40),
                                   height:
-                                  ScreenDimensions.heightPercentage(context, 3),
+                                      ScreenDimensions.heightPercentage(context, 3),
                                   decoration: BoxDecoration(border: Border.all()),
                                   child: TextFormField(
+                                    textAlign: TextAlign.center,
                                     onChanged: (value) {
                                       if (int.parse(value) <
-                                          int.parse(priceController1.text)) {
-                                        priceController2.text =
-                                            priceController1.text;
+                                          int.parse(controller.priceController1.text)) {
+                                        controller.priceController2.text =
+                                            controller.priceController1.text;
                                       }
                                     },
-                                    controller: priceController2,
+                                    controller: controller.priceController2,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
                                     ),
@@ -151,7 +178,7 @@ class MySellsFilter extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 2),
+                                      ScreenDimensions.widthPercentage(context, 2),
                                 ),
                                 Text(
                                   AppWord.to,
@@ -190,16 +217,17 @@ class MySellsFilter extends StatelessWidget {
                               children: [
                                 Container(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 40),
+                                      ScreenDimensions.widthPercentage(context, 40),
                                   height:
-                                  ScreenDimensions.heightPercentage(context, 3),
+                                      ScreenDimensions.heightPercentage(context, 3),
                                   decoration: BoxDecoration(border: Border.all()),
                                   child: Directions(
-                                    child: TextFormField(
+                                    child: TextFormField(textAlign: TextAlign.center,
                                       onChanged: (value) {},
-                                      controller: dateController1,
+                                      controller: controller.dateController1,
                                       decoration: const InputDecoration(
                                         border: InputBorder.none,
+                                        hintText: 'yyyy-mm-dd',
                                       ),
                                       keyboardType: TextInputType.datetime,
                                     ),
@@ -207,7 +235,7 @@ class MySellsFilter extends StatelessWidget {
                                 ),
                                 SizedBox(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 2),
+                                      ScreenDimensions.widthPercentage(context, 2),
                                 ),
                                 Text(
                                   AppWord.from,
@@ -224,22 +252,23 @@ class MySellsFilter extends StatelessWidget {
                               children: [
                                 Container(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 40),
+                                      ScreenDimensions.widthPercentage(context, 40),
                                   height:
-                                  ScreenDimensions.heightPercentage(context, 3),
+                                      ScreenDimensions.heightPercentage(context, 3),
                                   decoration: BoxDecoration(border: Border.all()),
-                                  child: TextFormField(
+                                  child: TextFormField(textAlign: TextAlign.center,
                                     onChanged: (value) {},
-                                    controller: dateController2,
+                                    controller: controller.dateController2,
                                     decoration: const InputDecoration(
                                       border: InputBorder.none,
+                                      hintText: 'yyyy-mm-dd',
                                     ),
                                     keyboardType: TextInputType.datetime,
                                   ),
                                 ),
                                 SizedBox(
                                   width:
-                                  ScreenDimensions.widthPercentage(context, 2),
+                                      ScreenDimensions.widthPercentage(context, 2),
                                 ),
                                 Text(
                                   AppWord.to,
@@ -255,7 +284,7 @@ class MySellsFilter extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             Text(
-                              AppWord.sellDate,
+                              AppWord.purchaseDate,
                               style: TextStyle(
                                   fontSize: AppFonts.smallTitleFont(context),
                                   fontWeight: FontWeight.bold),
@@ -266,26 +295,26 @@ class MySellsFilter extends StatelessWidget {
                     ).paddingSymmetric(
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                   ),
-                  SizedBox(
-                    width: ScreenDimensions.widthPercentage(context, 80),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MySellsDropDownMenu(
-                            title: '', items: const [], onSelected: (value) {}),
-                        SizedBox(
-                          width: ScreenDimensions.widthPercentage(context, 10),
-                        ),
-                        Text(
-                          AppWord.productState,
-                          style: TextStyle(
-                              fontSize: AppFonts.smallTitleFont(context),
-                              fontWeight: FontWeight.bold),
-                        ),
-                      ],
-                    ).paddingSymmetric(
-                        vertical: ScreenDimensions.heightPercentage(context, 2)),
-                  ),
+                  // SizedBox(
+                  //   width: ScreenDimensions.widthPercentage(context, 80),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       MyPurchasesDropDownMenu(
+                  //           title: '', items: const [], onSelected: (value) {}),
+                  //       SizedBox(
+                  //         width: ScreenDimensions.widthPercentage(context, 10),
+                  //       ),
+                  //       Text(
+                  //         AppWord.productState,
+                  //         style: TextStyle(
+                  //             fontSize: AppFonts.smallTitleFont(context),
+                  //             fontWeight: FontWeight.bold),
+                  //       ),
+                  //     ],
+                  //   ).paddingSymmetric(
+                  //       vertical: ScreenDimensions.heightPercentage(context, 2)),
+                  // ),
                   const Spacer(),
                   Center(
                       child: AppButton(
@@ -296,14 +325,16 @@ class MySellsFilter extends StatelessWidget {
                               fontSize: AppFonts.smallTitleFont(context),
                             ),
                           ),
-                          onTap: () {},
+                          onTap: controller.filter,
                           buttonBackground: AppImages.buttonLiteBackground))
                 ],
               ).paddingSymmetric(
                   vertical: ScreenDimensions.heightPercentage(context, 3),
                   horizontal: ScreenDimensions.widthPercentage(context, 3)),
-            ),
-          ),
-        ));
+            );
+          }
+        ),
+      ),
+    ));
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/texts/words.dart';
 
-import '../../../core/network/dio_helper.dart';
-import 'my_ads_controller.dart';
+import '../../../../core/network/dio_helper.dart';
+import '../../controller/my_ads_controller.dart';
 
 class MyAdsFilterController extends GetxController {
   TextEditingController priceController1 = TextEditingController();

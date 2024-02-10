@@ -6,6 +6,7 @@ import 'package:gold_shop/module/product_details/model/product_details_model.dar
 
 import '../../../core/images/images.dart';
 import '../../category_products/model/category_products_model.dart';
+import '../../invoice/view/invoice_view.dart';
 
 class ProductDetailsController extends GetxController {
   bool isChecked = false;
@@ -14,6 +15,12 @@ class ProductDetailsController extends GetxController {
   bool isLoading = true;
   List<SubCategoryADVSModel> subcategoriesADVS = [];
   bool isBannersEmpty = true;
+  bool putAsideLoading = true;
+  PutAsideModel? putAsideModel;
+
+  bool contactUsLoading = false;
+
+  TextEditingController contactUsController = TextEditingController();
 
   TextEditingController problemController = TextEditingController();
 
@@ -56,5 +63,33 @@ class ProductDetailsController extends GetxController {
       Get.back();
       Get.snackbar('', AppWord.problemCreatedSuccessfully);
     }
+  }
+
+  void addProductToPutAside({required int productId})async{
+    Map<String,dynamic> data = await DioHelper.ordersOnHold(productId: productId);
+      putAsideModel = PutAsideModel.fromJson(json: data['data']);
+      Get.back();
+    Get.to(Invoice(orderId: putAsideModel!.orderId,),transition: Transition.zoom,duration: const Duration(milliseconds: 500));
+      update();
+  }
+
+  void contactUsMessage() async {
+    isLoading = true;
+    update();
+    await DioHelper.contactUsStore(description: contactUsController.text
+    ).then((value) {
+      Get.log(value.toString());
+      if (value) {
+        Get.back();
+        contactUsController.clear();
+        isLoading = false;
+        update();
+        Get.snackbar(AppWord.done, '');
+      } else {
+        isLoading = false;
+        update();
+        Get.snackbar(AppWord.warning, 'check your connection');
+      }
+    });
   }
 }

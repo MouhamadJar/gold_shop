@@ -39,10 +39,10 @@ class HomeScreen extends GetView<HomeController> {
                   ? const SizedBox.shrink()
                   : AppPopUpMenu(
                       title: controller.selectedCity!,
-                      items: controller.cities
-                          .map((element) => PopupMenuItem(
+                      items: controller.cities.map((element) => PopupMenuItem(
                                 value: element,
-                                child: Text(element,
+                                child: Text(
+                                    element,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
                                         fontSize:

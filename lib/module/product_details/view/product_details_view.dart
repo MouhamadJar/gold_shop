@@ -64,32 +64,39 @@ class ProductDetails extends GetView<ProductDetailsController> {
                   height: ScreenDimensions.screenHeight(context),
                   child: Column(
                     children: [
-                      const PricesBar().paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 3)),
+                      const PricesBar().paddingOnly(
+                          bottom:
+                              ScreenDimensions.heightPercentage(context, 3)),
                       controller.isBannersEmpty
                           ? const SizedBox.shrink()
                           : AdvertisementBanner(
-                        itemBuilder: (context, index, realIndex) => Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: AppNetworkImage(
-                                baseUrlImages + controller.subcategoriesADVS[index].image,
-                                fit: BoxFit.fitHeight,
+                              itemBuilder: (context, index, realIndex) => Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Expanded(
+                                    child: AppNetworkImage(
+                                      baseUrlImages +
+                                          controller
+                                              .subcategoriesADVS[index].image,
+                                      fit: BoxFit.fitHeight,
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      controller
+                                          .subcategoriesADVS[index].paragraph,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              AppFonts.smallTitleFont(context)),
+                                    ),
+                                  ),
+                                ],
                               ),
+                              itemCount: controller.subcategoriesADVS.length,
                             ),
-                            Expanded(
-                              child: Text(
-                                controller.subcategoriesADVS[index].paragraph,
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: AppFonts.smallTitleFont(context)),
-                              ),
-                            ),
-                          ],
-                        ),
-                        itemCount: controller.subcategoriesADVS.length,
-                      ),
                       Expanded(
                         child: SingleChildScrollView(
                           child: Column(
@@ -118,12 +125,15 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                 ),
                               ),
                               SizedBox(
-                                height: ScreenDimensions.heightPercentage(context, 10),
+                                height: ScreenDimensions.heightPercentage(
+                                    context, 10),
                                 child: ProductImages(
                                   image: controller.model!.images,
                                   itemCount: controller.model!.images.length,
                                 ),
-                              ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
+                              ).paddingOnly(
+                                  bottom: ScreenDimensions.heightPercentage(
+                                      context, 2)),
                               Directions(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -212,27 +222,17 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                                     sigmaY: 10, sigmaX: 10),
                                                 child: Container(
                                                   margin: EdgeInsetsDirectional.only(
-                                                      top: ScreenDimensions
-                                                          .heightPercentage(
-                                                              context, 5),
-                                                      bottom: ScreenDimensions
-                                                          .heightPercentage(
-                                                              context, 50),
-                                                      start: ScreenDimensions
-                                                          .widthPercentage(
-                                                              context, 5),
-                                                      end: ScreenDimensions
-                                                          .widthPercentage(
-                                                              context, 5)),
-                                                  padding:
-                                                      EdgeInsetsDirectional.all(
+                                                      top: ScreenDimensions.heightPercentage(context, 5),
+                                                      bottom: ScreenDimensions.heightPercentage(context, 40),
+                                                      start: ScreenDimensions.widthPercentage(context, 5),
+                                                      end: ScreenDimensions.widthPercentage(context, 5)),
+                                                  padding: EdgeInsetsDirectional.all(
                                                           ScreenDimensions
                                                               .widthPercentage(
                                                                   context, 3)),
                                                   color: CustomColors.white,
                                                   child: Column(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment.end,
+                                                    crossAxisAlignment: CrossAxisAlignment.end,
                                                     children: [
                                                       Row(
                                                         mainAxisAlignment:
@@ -363,10 +363,7 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                                                         14)),
                                                           ),
                                                         ],
-                                                      ).paddingSymmetric(
-                                                          vertical: ScreenDimensions
-                                                              .heightPercentage(
-                                                                  context, 3)),
+                                                      ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 3)),
                                                       Text(
                                                         AppWord.typeMessage,
                                                         style: TextStyle(
@@ -374,41 +371,43 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                                               .smallTitleFont(
                                                                   context),
                                                         ),
-                                                      ).paddingSymmetric(
-                                                          horizontal:
-                                                              ScreenDimensions
-                                                                  .widthPercentage(
-                                                                      context,
-                                                                      5)),
+                                                      ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
                                                       Container(
-                                                        height: ScreenDimensions
-                                                            .heightPercentage(
-                                                                context, 18),
+                                                        height: ScreenDimensions.heightPercentage(context, 18),
                                                         margin: EdgeInsetsDirectional.symmetric(
-                                                            horizontal:
-                                                                ScreenDimensions
-                                                                    .widthPercentage(
-                                                                        context,
-                                                                        8)),
+                                                            horizontal: ScreenDimensions.widthPercentage(context, 8)),
                                                         decoration:
                                                             BoxDecoration(
                                                                 border: Border
                                                                     .all()),
-                                                        child: TextFormField(
+                                                        child: TextFormField(controller: controller.contactUsController,
                                                           maxLines: 6,
                                                           decoration:
                                                               const InputDecoration(
-                                                            enabledBorder:
-                                                                InputBorder
-                                                                    .none,
+                                                            border: InputBorder.none,
+                                                            enabledBorder: InputBorder.none,
                                                           ),
                                                         ).paddingSymmetric(
-                                                            horizontal:
-                                                                ScreenDimensions
-                                                                    .widthPercentage(
-                                                                        context,
-                                                                        7)),
+                                                            horizontal: ScreenDimensions.widthPercentage(context, 7)),
                                                       ),
+                                                      Center(
+                                                              child: GetBuilder<ProductDetailsController>(
+                                                                builder: (_) {
+                                                                  return controller.isLoading? Center(child: CircularProgressIndicator(color: CustomColors.gold,)):AppButton(
+                                                                      text: Text(
+                                                                        AppWord.send,
+                                                                        style: TextStyle(
+                                                                            color: CustomColors.white,
+                                                                            fontWeight: FontWeight.bold,
+                                                                            fontSize: AppFonts.smallTitleFont(context)),
+                                                                      ),
+                                                                      onTap: () {
+                                                                        controller.contactUsMessage();
+                                                                        },
+                                                                      buttonBackground: AppImages.buttonLiteBackground);
+                                                                }
+                                                              ))
+                                                          .paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 3))
                                                     ],
                                                   ),
                                                 ),
@@ -539,7 +538,101 @@ class ProductDetails extends GetView<ProductDetailsController> {
                               ),
                               AppButton(
                                 onTap: () {
-                                  Get.to(const Invoice(),transition: Transition.zoom,duration: const Duration(milliseconds: 500));
+                                  Get.dialog(
+                                      barrierDismissible: true,
+                                      GetBuilder<ProductDetailsController>(
+                                      builder: (_) {
+                                    return Material(
+                                      color: Colors.transparent,
+                                      child:  BackdropFilter(
+                                              filter: ImageFilter.blur(
+                                                  sigmaX: 10, sigmaY: 10),
+                                              child: AppDialog(
+                                                  title: AppWord.addToPutAside,
+                                                  description: AppWord.pleaseConfirmYourPurchase,
+                                                  card1: Directions(
+                                                    child: RichText(
+                                                      text: TextSpan(
+                                                        style: TextStyle(
+                                                            color: CustomColors
+                                                                .black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontSize: AppFonts.smallTitleFont(context)),
+                                                        children: [
+                                                          TextSpan(
+                                                              text: AppWord
+                                                                  .youMustPayADeposit),
+                                                          const TextSpan(text: ' : '),
+                                                          TextSpan(
+                                                              text: ' ${controller.model!.horror.toInt()} '),
+                                                          TextSpan(
+                                                              text:
+                                                                  AppWord.sad),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  card2: const SizedBox.shrink(),
+                                                  onTap: () {
+                                                    Get.back();
+                                                    Get.dialog(Material(
+                                                      color: Colors.transparent,
+                                                      child: BackdropFilter(
+                                                        filter: ImageFilter.blur(sigmaX: 10,sigmaY: 10),
+                                                        child: Container(
+                                                          alignment: Alignment.center,
+                                                          margin: EdgeInsets.symmetric(
+                                                            vertical: ScreenDimensions.heightPercentage(context, 40),
+                                                            horizontal: ScreenDimensions.widthPercentage(context, 5),
+                                                          ),
+                                                          padding: EdgeInsetsDirectional.all(
+                                                              ScreenDimensions.widthPercentage(context, 5)),
+                                                          color: Colors.white,
+                                                        child: Column(
+                                                          children: [
+                                                            Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: [
+                                                            Text(AppWord.areYouSureAddingThisProductToPutAsides,style: TextStyle(fontSize: AppFonts.smallTitleFont(context),fontWeight: FontWeight.bold,color: CustomColors.black),).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 5)),
+                                                            GestureDetector(
+                                                              child: SvgPicture.asset(AppImages.x,
+                                                                  width:
+                                                                  ScreenDimensions.widthPercentage(context, 3)),
+                                                              onTap: () {
+                                                                Get.back();
+                                                              },
+                                                            ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 5)),
+                                                          ],
+                                                        ),
+                                                            Row(
+                                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                              children: [
+                                                                GestureDetector(
+                                                                  onTap: (){
+                                                                    Get.back();
+                                                                  },
+                                                                  child: SizedBox(child: Text(AppWord.no,style: TextStyle(fontSize: AppFonts.subTitleFont(context),fontWeight: FontWeight.bold,color: CustomColors.black),),),),
+                                                                GestureDetector(
+                                                                  onTap: (){
+                                                                    Get.back();
+                                                                    controller.addProductToPutAside(productId: controller.model!.id);
+                                                                  },
+                                                                  child: SizedBox(child: Text(AppWord.yes,style: TextStyle(fontSize: AppFonts.subTitleFont(context),fontWeight: FontWeight.bold,color: CustomColors.black),),),)
+                                                              ],
+                                                            ),
+                                                          ],
+                                                         ),
+                                                         ),
+                                                      ),
+                                                    ),
+                                                    );
+                                                    },
+                                                  buttonName: AppWord.addToPutAside,
+                                                  buttonButtonBackground: AppImages.buttonLiteBackground),
+                                            ),
+                                    );
+                                  }));
                                 },
                                 text: Text(
                                   AppWord.requestYourPurchase,

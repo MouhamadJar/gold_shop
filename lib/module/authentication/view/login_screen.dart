@@ -174,8 +174,7 @@ class LoginScreen extends GetView<LoginController> {
                                       .validate())) return;
                                   controller.login(
                                       phone: controller.phoneController.text,
-                                      password:
-                                          controller.passwordController.text);
+                                      password: controller.passwordController.text);
                                 },
                                 buttonBackground:
                                     AppImages.buttonLiteBackground),
@@ -192,11 +191,11 @@ class LoginScreen extends GetView<LoginController> {
                                         width: ScreenDimensions.widthPercentage(
                                             context, 50),
                                         margin: EdgeInsetsDirectional.symmetric(vertical: ScreenDimensions.heightPercentage(context, 30),horizontal: ScreenDimensions.widthPercentage(context, 5)),
-                                        padding: EdgeInsetsDirectional.symmetric(horizontal: ScreenDimensions.widthPercentage(context, 15)),
+                                        padding: EdgeInsetsDirectional.symmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
                                         decoration: BoxDecoration(color: CustomColors.white,borderRadius: BorderRadius.circular(ScreenDimensions.widthPercentage(context, 1))),
                                         child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                           children: [
+                                            Align(alignment: Alignment.centerLeft,child: GestureDetector(onTap: (){Get.back();},child: Container(child: SvgPicture.asset(AppImages.x,width: ScreenDimensions.widthPercentage(context, 3)),))).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
                                             Text(
                                               AppWord.signupMethod,
                                               style: TextStyle(
@@ -204,9 +203,9 @@ class LoginScreen extends GetView<LoginController> {
                                                 fontWeight: FontWeight.bold,
                                                 color: CustomColors.black,
                                               ),
-                                            ),
+                                            ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 7)),
                                             Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                               children: [
                                                 GestureDetector(
                                                   onTap: (){
@@ -234,7 +233,6 @@ class LoginScreen extends GetView<LoginController> {
                                               ),
                                               ],
                                             ),
-                                            GestureDetector(onTap: (){Get.back();},child: Container(child: SvgPicture.asset(AppImages.x),))
                                           ],
                                         ).paddingSymmetric(
                                             horizontal:

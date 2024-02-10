@@ -12,6 +12,37 @@ class EndPoints {
   static String allProducts = '/api/products/all/';
   static String productByCity = '/api/products/city/';
   static String sort = '/api/products/search/sort';
+  static String sorts({int? carat,int?price,int? weight})  {
+    //all not null
+    if (carat!=null&& price!= null && weight != null){
+      return '/api/products/search/sort?carat=$carat&price=$price&wight=$weight';
+    }
+
+    //two not null
+    else if(carat!=null && price!= null && weight == null){
+      return '/api/products/search/sort?carat=$carat&price=$price';
+    }
+    else if(carat!=null && price == null && weight != null){
+      return '/api/products/search/sort?carat=$carat&wight=$weight';
+    }
+    else if (carat==null && price!= null && weight != null){
+      return '/api/products/search/sort?price=$price&wight=$weight';
+    }
+
+    //one not null
+    else if (carat==null && price== null && weight != null){
+      return '/api/products/search/sort?wight=$weight';
+    }
+    else if (carat==null && price!= null && weight == null){
+      return '/api/products/search/sort?price=$price';
+    }
+    else if (carat!=null && price== null && weight == null){
+      return '/api/products/search/sort?carat=$carat';
+    }
+
+    //all null
+    return '';
+  }
   static String filter = '/api/products/search/filter';
   static String getCity = '/api/address/city';
   static String getCaratPrices = '/api/bursa/gold/carat';
@@ -32,6 +63,7 @@ class EndPoints {
   static String discountStore = '/api/app/discounts/13';
   static String discountUpdate = '/api/app/discounts/update/11';
   static String discountDelete = '/api/app/discounts/11';
+  static String appCommission = '/api/app/details/commission';
 
 //stores
   static String storesIndex = '/api/app/stores';
@@ -56,8 +88,15 @@ class EndPoints {
   static String contactUsStore = '/api/app/contact';
 
 //app orders
-  static String onHold = '/api/app/orders/on/hold/14';
+  static String onHold = '/api/app/orders/on/hold/';
   static String sale = '/api/app/orders/sale/14';
+  static String paymentInfo = '/api/app/details/payment';
+  static String bankInfo = '/api/app/details/bank';
+  static String notificationImage = '/api/app/orders/horror/image/';
+
+  //reports
+
+  static String invoice = '/api/app/reports/bill/';
 
 //app profile lists
   static String profileListsSalesOnHold = '/api/app/lists/sales/on/hold';
@@ -90,16 +129,34 @@ class EndPoints {
       '/api/app/lists/search/filter?category_id=$categoryId&subcategory_id=$subcategoryId&from_created_at=$from&to_created_at=$to&list_type=0';
 
 //app sort & filter purchases
-  static String sortPurchases =
-      '/api/app/lists/search/sort/purchases?created_at=0&list_type=1';
-  static String filterPurchases =
-      '/api/app/lists/search/filter/purchases?category_id=1&subcategory_id=2&from_price=2000&to_price=800000&list_type=0';
+  static String sortMyPurchasesByPrice(int val) =>
+      '/api/app/lists/search/sort/purchases?price=$val&list_type=0';
+
+  static String sortMyPurchasesByDate(int val) =>
+      '/api/app/lists/search/sort/purchases?created_at=$val&list_type=0';
+
+  static String filterMyPurchaseByPrice(
+      String subcategoryId, String categoryId, String from, String to) =>
+      '/api/app/lists/search/filter/purchases?category_id=$categoryId&subcategory_id=$subcategoryId&from_price=$from&to_price=$to&list_type=0';
+
+  static String filterMyPurchasesByDate(
+      String subcategoryId, String categoryId, String from, String to) =>
+      '/api/app/lists/search/filter/purchases?category_id=$categoryId&subcategory_id=$subcategoryId&from_created_at=$from&to_created_at=$to&list_type=0';
 
 //app sort & filter sales
-  static String sortSales =
-      '/api/app/lists/search/sort/sales?price=1&list_type=0';
-  static String filterSales =
-      '/api/app/lists/search/filter/sales?category_id=1&subcategory_id=2&from_created_at=2023-12-05&to_created_at=2024-12-12&list_type=0';
+  static String sortMySellsByPrice(int val) =>
+      '/api/app/lists/search/sort/sales?price=$val&list_type=0';
+
+  static String sortMySellsByDate(int val) =>
+      '/api/app/lists/search/sort/sales?created_at=$val&list_type=0';
+
+  static String filterMySellsByPrice(
+      String subcategoryId, String categoryId, String from, String to) =>
+      '/api/app/lists/search/filter/sales?category_id=$categoryId&subcategory_id=$subcategoryId&from_price=$from&to_price=$to&list_type=0';
+
+  static String filterMySellsByDate(
+      String subcategoryId, String categoryId, String from, String to) =>
+      '/api/app/lists/search/filter/sales?category_id=$categoryId&subcategory_id=$subcategoryId&from_created_at=$from&to_created_at=$to&list_type=0';
 
 //app rate
   static String rateByBuyer = '/api/app/rate/buyer/';

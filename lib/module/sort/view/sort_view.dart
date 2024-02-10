@@ -61,12 +61,19 @@ class SortScreen extends GetView<SortController> {
                         children: [
                           Row(
                             children: [
-                              Checkbox(
-                                  value: controller.price,
-                                  onChanged: (value) {
-                                    controller.price = true;
-                                  },
-                                  activeColor: CustomColors.gold),
+                              GetBuilder<SortController>(
+                                builder: (_) {
+                                  return Checkbox(
+                                      value: controller.priceLTH,
+                                      onChanged: (value) {
+                                        controller.priceLTH = value!;
+                                        controller.priceHTL = false;
+                                        controller.update();
+                                        // controller.priceCheckLTH();
+                                      },
+                                      activeColor: CustomColors.gold);
+                                }
+                              ),
                               Text(
                                 AppWord.lth,
                                 style: TextStyle(
@@ -76,12 +83,19 @@ class SortScreen extends GetView<SortController> {
                           ),
                           Row(
                             children: [
-                              Checkbox(
-                                  value: controller.price,
-                                  onChanged: (value) {
-                                    controller.price = false;
-                                  },
-                                  activeColor: CustomColors.gold),
+                              GetBuilder<SortController>(
+                                builder: (_) {
+                                  return Checkbox(
+                                      value: controller.priceHTL,
+                                      onChanged: (value) {
+                                        controller.priceHTL= value!;
+                                        controller.priceLTH= false;
+                                        controller.update();
+                                        // controller.priceCheckHTL();
+                                      },
+                                      activeColor: CustomColors.gold);
+                                }
+                              ),
                               Text(
                                 AppWord.htl,
                                 style: TextStyle(
@@ -107,12 +121,19 @@ class SortScreen extends GetView<SortController> {
                         children: [
                           Row(
                             children: [
-                              Checkbox(
-                                  value: controller.weight,
-                                  onChanged: (value) {
-                                    controller.weight = true;
-                                  },
-                                  activeColor: CustomColors.gold),
+                              GetBuilder<SortController>(
+                                builder: (_) {
+                                  return Checkbox(
+                                      value: controller.weightLTH,
+                                      onChanged: (value) {
+                                        controller.weightLTH=value!;
+                                        controller.weightHTL=false;
+                                        controller.update();
+                                        // controller.weightCheckLTH();
+                                      },
+                                      activeColor: CustomColors.gold);
+                                }
+                              ),
                               Text(
                                 AppWord.lth,
                                 style: TextStyle(
@@ -122,12 +143,19 @@ class SortScreen extends GetView<SortController> {
                           ),
                           Row(
                             children: [
-                              Checkbox(
-                                  value: controller.weight,
-                                  onChanged: (value) {
-                                    controller.weight = false;
-                                  },
-                                  activeColor: CustomColors.gold),
+                              GetBuilder<SortController>(
+                                builder: (_) {
+                                  return Checkbox(
+                                      value: controller.weightHTL,
+                                      onChanged: (value) {
+                                        controller.weightHTL = value!;
+                                        controller.weightLTH = false;
+                                        controller.update();
+                                        // controller.weightCheckHTL();
+                                      },
+                                      activeColor: CustomColors.gold);
+                                }
+                              ),
                               Text(
                                 AppWord.htl,
                                 style: TextStyle(
@@ -153,12 +181,19 @@ class SortScreen extends GetView<SortController> {
                         children: [
                           Row(
                             children: [
-                              Checkbox(
-                                  value: controller.carat,
-                                  onChanged: (value) {
-                                    controller.carat = true;
-                                  },
-                                  activeColor: CustomColors.gold),
+                              GetBuilder<SortController>(
+                                builder: (_) {
+                                  return Checkbox(
+                                      value: controller.caratLTH,
+                                      onChanged: (value) {
+                                        controller.caratLTH= value!;
+                                        controller.caratHTL= false;
+                                        controller.update();
+                                        // controller.caratCheckLTH();
+                                      },
+                                      activeColor: CustomColors.gold);
+                                }
+                              ),
                               Text(
                                 AppWord.lth,
                                 style: TextStyle(
@@ -168,12 +203,19 @@ class SortScreen extends GetView<SortController> {
                           ),
                           Row(
                             children: [
-                              Checkbox(
-                                  value: controller.carat,
-                                  onChanged: (value) {
-                                    controller.carat = false;
-                                    },
-                                  activeColor: CustomColors.gold),
+                              GetBuilder<SortController>(
+                                builder: (_) {
+                                  return Checkbox(
+                                      value: controller.caratHTL,
+                                      onChanged: (value) {
+                                        controller.caratHTL= value!;
+                                        controller.caratLTH= false;
+                                        controller.update();
+                                        // controller.caratCheckHTL();
+                                        },
+                                      activeColor: CustomColors.gold);
+                                }
+                              ),
                               Text(
                                 AppWord.htl,
                                 style: TextStyle(
@@ -194,7 +236,11 @@ class SortScreen extends GetView<SortController> {
                             fontWeight: FontWeight.bold,
                             color: CustomColors.white),
                       ),
-                      onTap: () {controller.sort();},
+                      onTap: () {
+                        controller.lthValuesCheck();
+                        controller.htlValuesCheck();
+                        controller.sort();
+                        },
                       buttonBackground: AppImages.buttonLiteBackground)
                 ],
               ).paddingSymmetric(

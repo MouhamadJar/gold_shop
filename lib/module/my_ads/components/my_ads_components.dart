@@ -40,13 +40,9 @@ class MyAdsCard extends GetView<MyAdsController> {
                     vertical: ScreenDimensions.heightPercentage(context, 2),
                   ),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing:
-                        ScreenDimensions.heightPercentage(context, 4),
-                    mainAxisSpacing:
-                        ScreenDimensions.widthPercentage(context, 2),
-                    mainAxisExtent:
-                        ScreenDimensions.heightPercentage(context, 25),
-                    // childAspectRatio: ScreenDimensions.heightPercentage(context, 0.06),
+                    crossAxisSpacing: ScreenDimensions.heightPercentage(context, 4),
+                    mainAxisSpacing: ScreenDimensions.widthPercentage(context, 2),
+                    mainAxisExtent: ScreenDimensions.heightPercentage(context, 25),
                     crossAxisCount: 2,
                   ),
                   itemCount: controller.products.length,
@@ -66,13 +62,11 @@ class MyAdsCard extends GetView<MyAdsController> {
                         alignment: AlignmentDirectional.center,
                         children: [
                           Positioned(
-                            width:
-                                ScreenDimensions.widthPercentage(context, 40),
-                            top: ScreenDimensions.heightPercentage(context, 3),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 20),
+                            top: ScreenDimensions.heightPercentage(context, 5),
                             child: Directions(
                               child: Container(
+                                width: ScreenDimensions.widthPercentage(context, 40),
+                                height: ScreenDimensions.heightPercentage(context, 20),
                                 padding: EdgeInsetsDirectional.symmetric(
                                   horizontal: ScreenDimensions.widthPercentage(
                                       context, 3),
@@ -143,11 +137,10 @@ class MyAdsCard extends GetView<MyAdsController> {
                           ),
                           Positioned(
                             top: ScreenDimensions.heightPercentage(context, 0),
-                            width:
-                                ScreenDimensions.widthPercentage(context, 20),
                             child: AppNetworkImage(baseUrlImages +
-                                controller.products[index]['images'][0]
-                                    ['image']),
+                                controller.products[index]['images'][0]['image'],
+                              width: ScreenDimensions.widthPercentage(context, 20),
+                              height: ScreenDimensions.heightPercentage(context, 15),),
                           ),
                         ],
                       ),

@@ -191,26 +191,25 @@ class Profile extends GetView<ProfileController> {
                               ),
                               Positioned(
                                 bottom: 1,
-                                child: Directions(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text('${controller.model['country']}, ${controller.model['state']} , ${controller.model['city']} , ${controller.model['neighborhood']} , ${controller.model['street']}',
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      AppFonts.smallTitleFont(
-                                                          context),
-                                                  fontWeight: FontWeight.bold))
-                                          .paddingSymmetric(
-                                              horizontal: ScreenDimensions
-                                                  .widthPercentage(context, 1)),
-                                      SvgPicture.asset(
-                                        AppImages.location,
-                                      ),
-                                    ],
-                                  ),
+                                width: ScreenDimensions.screenWidth(context),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text('${controller.model['country']}, ${controller.model['state']} , ${controller.model['city']} , ${controller.model['neighborhood']} , ${controller.model['street']}',
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize:
+                                                    AppFonts.smallTitleFont(
+                                                        context),
+                                                fontWeight: FontWeight.bold))
+                                        .paddingSymmetric(
+                                            horizontal: ScreenDimensions
+                                                .widthPercentage(context, 1)),
+                                    SvgPicture.asset(
+                                      AppImages.location,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],

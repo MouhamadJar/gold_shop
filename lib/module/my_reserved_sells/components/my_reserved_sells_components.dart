@@ -64,11 +64,11 @@ class MyReservedSellsCard extends GetView<MyReservedSellsController> {
                         alignment: AlignmentDirectional.center,
                         children: [
                           Positioned(
-                            width: ScreenDimensions.widthPercentage(context, 40),
-                            top: ScreenDimensions.heightPercentage(context, 3),
-                            height: ScreenDimensions.heightPercentage(context, 20),
+                            top: ScreenDimensions.heightPercentage(context, 5),
                             child: Directions(
                               child: Container(
+                                width: ScreenDimensions.widthPercentage(context, 40),
+                                height: ScreenDimensions.heightPercentage(context, 20),
                                 padding: EdgeInsetsDirectional.symmetric(
                                   horizontal: ScreenDimensions.widthPercentage(
                                       context, 3),
@@ -138,13 +138,11 @@ class MyReservedSellsCard extends GetView<MyReservedSellsController> {
                             ),
                           ),
                           Positioned(
-                            top: ScreenDimensions.heightPercentage(
-                                context, 0.01),
-                            width:
-                                ScreenDimensions.widthPercentage(context, 30),
+                            top: ScreenDimensions.heightPercentage(context, 0),
                             child: AppNetworkImage(baseUrlImages +
-                                controller.products[index]['images']['image']
-                                    [0]),
+                                controller.products[index]['images']['image'][0],
+                              width: ScreenDimensions.widthPercentage(context, 20),
+                              height: ScreenDimensions.heightPercentage(context, 15),),
                           ),
                         ],
                       ),

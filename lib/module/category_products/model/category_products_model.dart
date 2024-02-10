@@ -36,19 +36,19 @@ class SubCategoryADVSModel {
 class ProductsModel {
   final int id;
   final String description;
-  final int weight;
+  final dynamic weight;
   final String carat;
   final int? views;
   final String productStatus;
-  final int currentGoldPrice;
-  final int profit;
-  final int? addition;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
+  final dynamic? addition;
   final bool toggle;
   final int userId;
   final int subcategoryId;
-  final double price;
-  final double? priceAfterDiscount;
-  final int horror;
+  final dynamic price;
+  final dynamic? priceAfterDiscount;
+  final dynamic horror;
   final List<Map<String, dynamic>> images;
   final Map<String, dynamic>? discount;
 

@@ -40,7 +40,7 @@ class Dictionary extends Translations {
           AppWord.requestYourPurchase: 'Request your purchase',
           AppWord.userName: 'User name',
           AppWord.activatedAccount: 'Activated account',
-          AppWord.activatedAccount: 'not activated account',
+          AppWord.notActivatedAccount: 'not activated account',
           AppWord.blockedAccount: 'Sorry your account is blocked',
           AppWord.activateAccount: 'Activate account',
           AppWord.mediatorShop: 'Mediator shop',
@@ -234,6 +234,7 @@ class Dictionary extends Translations {
           AppWord.insuranceImage: 'Insurance image',
           AppWord.logout: 'Logout',
           AppWord.login: 'Login',
+          AppWord.later: 'Later',
           AppWord.deal: 'Deal',
           AppWord.eSignaturePic: 'E-Signature image',
           AppWord.uploadPicture: 'Upload image',
@@ -253,6 +254,7 @@ class Dictionary extends Translations {
           AppWord.alsoInvoiceWillBeNamed:
               'An invoice will be issued in the seller\'s, buyer\'s and the mediator shop Application name',
           AppWord.areYouSure: 'Are you sure from the order information',
+          AppWord.areYouSureAddingThisProductToPutAsides: 'Are you sure Adding this product to put asides',
           AppWord.shopCommissionForCheckService:
               'shop commission for checking service',
           AppWord.checkingServiceCommission: 'Checking service commission',
@@ -268,6 +270,9 @@ class Dictionary extends Translations {
           AppWord.pleaseEnterDescription: 'Please describe your problem',
           AppWord.doNotPickImage: 'Image does not selected',
           AppWord.editProfileSuccessfully: 'Profile Edited Successfully',
+          AppWord.pleaseConfirmYourPurchase: 'Please confirm your purchase within 2 hours so the paying process don\'t be canceled',
+          AppWord.youMustPayADeposit: 'You must pay deposit of',
+          AppWord.messageSentSuccessfully: 'Your message sent successfully',
         },
         'ar': {
           AppWord.splashText: AppWord.splashText,
@@ -485,6 +490,7 @@ class Dictionary extends Translations {
           AppWord.insuranceImage: AppWord.insuranceImage,
           AppWord.logout: AppWord.logout,
           AppWord.login: AppWord.login,
+          AppWord.later: AppWord.later,
           AppWord.deal: AppWord.deal,
           AppWord.eSignaturePic: AppWord.eSignaturePic,
           AppWord.uploadPicture: AppWord.uploadPicture,
@@ -502,6 +508,7 @@ class Dictionary extends Translations {
           AppWord.invoiceWillBeSent: AppWord.invoiceWillBeSent,
           AppWord.alsoInvoiceWillBeNamed: AppWord.alsoInvoiceWillBeNamed,
           AppWord.areYouSure: AppWord.areYouSure,
+          AppWord.areYouSureAddingThisProductToPutAsides: AppWord.areYouSureAddingThisProductToPutAsides,
           AppWord.shopCommissionForCheckService:
               AppWord.shopCommissionForCheckService,
           AppWord.checkingServiceCommission: AppWord.checkingServiceCommission,
@@ -518,6 +525,9 @@ class Dictionary extends Translations {
           AppWord.pleaseEnterDescription: AppWord.pleaseEnterDescription,
           AppWord.doNotPickImage: AppWord.doNotPickImage,
           AppWord.editProfileSuccessfully: AppWord.editProfileSuccessfully,
+          AppWord.pleaseConfirmYourPurchase: AppWord.pleaseConfirmYourPurchase,
+          AppWord.youMustPayADeposit: AppWord.youMustPayADeposit,
+          AppWord.messageSentSuccessfully: AppWord.messageSentSuccessfully,
         }
       };
 }

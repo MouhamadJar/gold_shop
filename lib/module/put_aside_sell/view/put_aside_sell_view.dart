@@ -405,7 +405,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to(const Invoice(),
+                                Get.to(Invoice(orderId: controller.model!.id,),
                                     transition: Transition.fadeIn,
                                     duration: const Duration(milliseconds: 500));
                               },

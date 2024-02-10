@@ -101,7 +101,7 @@ void showProblemDialog({
                           horizontal: ScreenDimensions.widthPercentage(context, 7)),
                     ).paddingSymmetric(
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    controller.isLoading ? const Center(child: CircularProgressIndicator()):  AppButton(
+                    controller.isLoading ? Center(child: CircularProgressIndicator(color: CustomColors.gold,)):  AppButton(
                             text: Text(
                               AppWord.send,
                               style: TextStyle(

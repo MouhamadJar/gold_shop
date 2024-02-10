@@ -19,7 +19,7 @@ class EditProfile extends GetView<EditProfileController> {
     return SafeArea(
       child: Directions(
         child: Scaffold(
-          resizeToAvoidBottomInset: true,
+          resizeToAvoidBottomInset: false,
           backgroundColor: CustomColors.white,
           appBar: AppBar(
             backgroundColor: CustomColors.white,

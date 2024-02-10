@@ -59,8 +59,7 @@ class EditProfileController extends GetxController {
             state: state,
             city: city,
             neighborhood: neighborhood,
-            street: street)
-        .then((value) {
+            street: street).then((value) {
       if (value['errors'] != null) {
         Get.snackbar(AppWord.warning, value['message']);
         return;

@@ -319,6 +319,36 @@ class MainScreen extends GetView<MainScreenController> {
                                                     AppFonts.smallTitleFont(
                                                         context))),
                                       ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.offAll(const MainScreen(),
+                                            transition: Transition.rightToLeft,
+                                            duration: const Duration(
+                                                milliseconds: 700));
+                                      },
+                                      child: Container(
+                                        height:
+                                            ScreenDimensions.heightPercentage(
+                                                context, 5),
+                                        width:
+                                            ScreenDimensions.heightPercentage(
+                                                context, 20),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: CustomColors.white,
+                                            border: Border.all(),
+                                            borderRadius: BorderRadius.circular(
+                                                ScreenDimensions
+                                                    .heightPercentage(
+                                                        context, 1))),
+                                        child: Text(AppWord.later,
+                                            style: TextStyle(
+                                                color: CustomColors.black,
+                                                fontSize:
+                                                    AppFonts.smallTitleFont(
+                                                        context))),
+                                      ),
                                     )
                                   ],
                                 ),
