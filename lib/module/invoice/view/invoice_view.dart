@@ -175,7 +175,7 @@ class Invoice extends GetView<InvoiceController> {
                         children: [
                           TextSpan(text: AppWord.servicePrice),
                           const TextSpan(text: ' : '),
-                          TextSpan(text: '${controller.invoiceModel!.price} '),
+                          TextSpan(text: '${controller.commission} '),
                           TextSpan(text: AppWord.sad),
                         ],
                         style: TextStyle(
@@ -380,7 +380,8 @@ class Invoice extends GetView<InvoiceController> {
                                   color: Colors.transparent,
                                   child: GetBuilder<InvoiceController>(
                                       builder: (_) {
-                                        return controller.paymentInfoLoading? Center(child: CircularProgressIndicator(color: CustomColors.gold,)):AppDialog(expand: true,
+                                        return controller.paymentInfoLoading? Center(child: CircularProgressIndicator(color: CustomColors.gold,)):AppDialog(
+                                          expand: true,
                                           title: AppWord.payingReservationPolicy,
                                           description: controller.paymentInfoModel!.paymentInfo,
                                           card1: Text(
