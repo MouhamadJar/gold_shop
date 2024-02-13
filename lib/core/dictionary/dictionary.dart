@@ -273,9 +273,11 @@ class Dictionary extends Translations {
           AppWord.pleaseConfirmYourPurchase: 'Please confirm your purchase within 2 hours so the paying process don\'t be canceled',
           AppWord.youMustPayADeposit: 'You must pay deposit of',
           AppWord.messageSentSuccessfully: 'Your message sent successfully',
+          AppWord.checkInternet: 'check your internet connection',
         },
         'ar': {
           AppWord.splashText: AppWord.splashText,
+          AppWord.checkInternet: AppWord.checkInternet,
           AppWord.add: AppWord.add,
           AppWord.chooseCity: AppWord.chooseCity,
           AppWord.gold: AppWord.gold,

@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/module/about_us/view/about_us_view.dart';
+import 'package:gold_shop/module/authentication/view/mediator_shop/login_screen.dart';
 import 'package:gold_shop/module/authentication/view/user/verify_account_screen.dart';
 import 'package:gold_shop/module/privacy/view/privacy_view.dart';
 
@@ -139,10 +140,69 @@ class MainScreen extends GetView<MainScreenController> {
                                           const Duration(milliseconds: 700));
                                 }
                               : () {
-                                  Get.to(const LoginScreen(),
-                                      transition: Transition.rightToLeft,
-                                      duration:
-                                          const Duration(milliseconds: 700));
+                            Get.dialog(
+                              Material(
+                                color: Colors.transparent,
+                                child: BackdropFilter(
+                                  filter: ImageFilter.blur(sigmaY: 10,sigmaX: 10),
+                                  child: Container(
+                                    height: ScreenDimensions.heightPercentage(
+                                        context, 25),
+                                    width: ScreenDimensions.widthPercentage(
+                                        context, 50),
+                                    margin: EdgeInsetsDirectional.symmetric(vertical: ScreenDimensions.heightPercentage(context, 30),horizontal: ScreenDimensions.widthPercentage(context, 5)),
+                                    padding: EdgeInsetsDirectional.symmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
+                                    decoration: BoxDecoration(color: CustomColors.white,borderRadius: BorderRadius.circular(ScreenDimensions.widthPercentage(context, 1))),
+                                    child: Column(
+                                      children: [
+                                        Align(alignment: Alignment.centerLeft,child: GestureDetector(onTap: (){Get.back();},child: Container(child: SvgPicture.asset(AppImages.x,width: ScreenDimensions.widthPercentage(context, 3)),))).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                                        Text(
+                                          AppWord.signupMethod,
+                                          style: TextStyle(
+                                            fontSize: AppFonts.smallTitleFont(context)+2,
+                                            fontWeight: FontWeight.bold,
+                                            color: CustomColors.black,
+                                          ),
+                                        ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 7)),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            GestureDetector(
+                                              onTap: (){
+                                                Get.to(const LoginScreen(),
+                                                  transition: Transition.rightToLeft,
+                                                  duration: const Duration(milliseconds: 700),);},
+                                              child: Column(
+                                                children: [
+                                                  SvgPicture.asset(AppImages.profileIcon,),
+                                                  Text(AppWord.user,style: TextStyle(fontSize: AppFonts.smallTitleFont(context),color: CustomColors.black),)
+                                                ],
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: (){
+                                                Get.to(const LoginMediatorShopScreen(),
+                                                  transition: Transition.rightToLeft,
+                                                  duration: const Duration(milliseconds: 700),);},
+                                              child: Column(
+                                                children: [
+                                                  SvgPicture.asset(AppImages.store,),
+                                                  Text(AppWord.mediatorShop,style: TextStyle(fontSize: AppFonts.smallTitleFont(context),color: CustomColors.black),)
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ).paddingSymmetric(
+                                        horizontal:
+                                        ScreenDimensions.widthPercentage(
+                                            context, 2)),
+                                  ),
+                                ),
+                              ),
+                            );
+
                                 },
                         ),
                         DrawerListTiles(

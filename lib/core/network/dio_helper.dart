@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:get/get.dart' as g;
@@ -148,10 +149,12 @@ class DioHelper {
   }
 
   static Future<Map<String, dynamic>> sort(
-      {int? carat,  int? price,  int? weight}) async {
+      {int? carat, int? price, int? weight}) async {
     late Response response;
     try {
-      response = await _dio.get(EndPoints.sorts(carat: carat,price: price,weight: weight),);
+      response = await _dio.get(
+        EndPoints.sorts(carat: carat, price: price, weight: weight),
+      );
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -234,6 +237,27 @@ class DioHelper {
     }
   }
 
+  static Future<Map<String, dynamic>> loginMediatorShop({
+    required String phoneNumber,
+    required String password,
+  }) async {
+    late Response response;
+    try {
+      response = await _dio.post(
+        EndPoints.loginMediatorShop,
+        data: {
+          'phone_number': phoneNumber,
+          'password': password,
+        },
+      );
+      log('success login shop data :\n${response.data}');
+      return response.data;
+    } on DioException catch (error) {
+      log('error login shop data :\n${error.response!.data}');
+      return error.response!.data;
+    }
+  }
+
   static Future<Map<String, dynamic>> register({
     required String firstName,
     required String lastName,
@@ -297,7 +321,7 @@ class DioHelper {
       log('---REQUESTING SIGNUP---');
       response = await _dio.post(
         EndPoints.registerStore,
-        data:{
+        data: {
           'name': name,
           'email': email,
           'phone_number': phoneNumber,
@@ -504,6 +528,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
+
   static Future<Map<String, dynamic>> appCommission() async {
     late Response response;
     try {
@@ -629,7 +654,8 @@ class DioHelper {
   }
 
 //app orders
-  static Future<Map<String, dynamic>> ordersOnHold({required int productId}) async {
+  static Future<Map<String, dynamic>> ordersOnHold(
+      {required int productId}) async {
     late Response response;
     try {
       response = await _dio.post('${EndPoints.onHold}$productId');
@@ -649,6 +675,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
+
   static Future<Map<String, dynamic>> paymentInfo() async {
     late Response response;
     try {
@@ -658,6 +685,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
+
   static Future<Map<String, dynamic>> bankInfo() async {
     late Response response;
     try {
@@ -667,22 +695,20 @@ class DioHelper {
       return error.response!.data;
     }
   }
-  static Future<Map<String, dynamic>> notificationImage({required int orderId,required String image}) async {
+
+  static Future<Map<String, dynamic>> notificationImage(
+      {required int orderId, required String image}) async {
     late Response response;
     try {
       response = await _dio.post('${EndPoints.notificationImage}$orderId',
-          data: {
-        'image': image
-      });
+          data: {'image': image});
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
     }
   }
 
-
 //reports
-
 
   static Future<Map<String, dynamic>> invoice({required int orderId}) async {
     late Response response;
@@ -1018,15 +1044,15 @@ class DioHelper {
   }
 
 //app rate
-  static Future<Map<String, dynamic>> rateByBuyer(
-      {required int sellerRating,
-      required String sellerMessage,
-      required int productRating,
-      required String productMessage,
-      required int serviceRating,
-      required String serviceMessage,
-      required int productId,
-      }) async {
+  static Future<Map<String, dynamic>> rateByBuyer({
+    required int sellerRating,
+    required String sellerMessage,
+    required int productRating,
+    required String productMessage,
+    required int serviceRating,
+    required String serviceMessage,
+    required int productId,
+  }) async {
     late Response response;
     try {
       response = await _dio.post('${EndPoints.rateByBuyer}$productId', data: {
@@ -1236,6 +1262,22 @@ class DioHelper {
       });
       return response.data;
     } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+
+  // app signature
+  static Future<Map<String, dynamic>> uploadSignature(
+      {required File signatureImage}) async {
+    late Response response;
+    try {
+      response = await _dio.post(EndPoints.uploadSignature,
+          data: FormData.fromMap(
+              {'image': await MultipartFile.fromFile(signatureImage.path)}));
+      log('success uploading signature image : ${response.data}');
+      return response.data;
+    } on DioException catch (error) {
+      log('error uploading signature image : ${error.response!.data}');
       return error.response!.data;
     }
   }

@@ -21,6 +21,7 @@ class LoginController extends GetxController{
     model =LoginModel.fromJson(json: result['data']);
     await StorageHandler().setToken(model!.token);
     await StorageHandler().setUserId(model!.userId.toString());
+    await StorageHandler().setRole('user');
     Get.offAll(const MainScreen(),transition: Transition.rightToLeft,duration: const Duration(milliseconds: 700));
   }
 }

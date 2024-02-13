@@ -54,6 +54,7 @@ class EndPoints {
 
   //app auth
   static String login = '/api/user/login';
+  static String loginMediatorShop = '/api/store/login';
   static String register = '/api/user/register';
   static String registerStore = '/api/store/register';
   static String logout = '/api/user/logout';
@@ -182,4 +183,8 @@ class EndPoints {
 //app store his service
   static String hisServiceShowProduct = '/api/app/store/product/show?code=vm15';
   static String hisServiceCheck = '/api/app/store/order/15';
+
+// app signature
+  static String uploadSignature = '/api/app/store/signature';
+
 }
