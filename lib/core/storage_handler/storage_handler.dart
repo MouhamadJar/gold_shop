@@ -57,4 +57,13 @@ class StorageHandler {
   String get userId => _storage.read('userId') ?? 'no user id';
 
   bool get hasUserId => _storage.hasData('userId');
+
+  // role
+  Future<void> setRole(String role) => _storage.write('role', role);
+
+  Future<void> removeRole() => _storage.remove('role');
+
+  String get role => _storage.read('role') ?? 'not authenticated';
+
+  bool get hasRole => _storage.hasData('role');
 }

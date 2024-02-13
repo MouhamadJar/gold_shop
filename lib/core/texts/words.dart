@@ -79,6 +79,7 @@ class AppWord {
   static String get blockedAccount => 'عذرا الحساب محظور'.tr;
 
   static String get login => 'تسجيل الدخول'.tr;
+
   static String get later => 'لاحقا'.tr;
 
   static String get activateAccount => 'توثيق الحساب'.tr;
@@ -279,9 +280,11 @@ class AppWord {
   static String get resellRequest => 'طلب إعادة البيع'.tr;
 
   static String get rateVendor => 'تقييم البائع'.tr;
+
   static String get note => 'ملاحظة'.tr;
 
-  static String get youCantRateMoreThanOneTime => 'لايمكنك ان تقيم اكثر من مرة'.tr;
+  static String get youCantRateMoreThanOneTime =>
+      'لايمكنك ان تقيم اكثر من مرة'.tr;
 
   static String get rateProduct => 'تقييم المنتج'.tr;
 
@@ -508,7 +511,9 @@ class AppWord {
           .tr;
 
   static String get areYouSure => 'هل أنت متأكد من معلومات التقرير'.tr;
-  static String get areYouSureAddingThisProductToPutAsides => 'هل أنت متأكد من انك تريد وضع المنتج قيد الحجز'.tr;
+
+  static String get areYouSureAddingThisProductToPutAsides =>
+      'هل أنت متأكد من انك تريد وضع المنتج قيد الحجز'.tr;
 
   static String get shopCommissionForCheckService =>
       'عمولة المتجر مقابل خدمة الفحص'.tr;
@@ -535,8 +540,16 @@ class AppWord {
   static String get pleaseEnterDescription => 'الرجاء إرسال شرح عن المشكلة'.tr;
 
   static String get doNotPickImage => 'لم يتم اختيار صورة'.tr;
+
   static String get addToPutAside => 'إضافة إلى قيد الحجز'.tr;
-  static String get pleaseConfirmYourPurchase => 'الرجاء تأكيد عملية الشراء بأقل من ساعتين لكي لا يتم إلغاء عملية الشراء'.tr;
+
+  static String get pleaseConfirmYourPurchase =>
+      'الرجاء تأكيد عملية الشراء بأقل من ساعتين لكي لا يتم إلغاء عملية الشراء'
+          .tr;
+
   static String get youMustPayADeposit => 'يجب عليك دفع رعبون مقداره'.tr;
+
   static String get messageSentSuccessfully => 'تم إرسال رسالتك بنجاح'.tr;
+
+  static String get checkInternet => 'لرجاء فحص الاتصال بالانترنت'.tr;
 }

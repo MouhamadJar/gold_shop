@@ -341,6 +341,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   GestureDetector(
                                     onTap: () {
                                       Get.back();
+                                      Get.back();
                                     },
                                     child: RichText(
                                       text: TextSpan(

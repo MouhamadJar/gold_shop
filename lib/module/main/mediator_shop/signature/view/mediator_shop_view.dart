@@ -7,21 +7,23 @@ import 'package:gold_shop/module/authentication/view/mediator_shop/verify_accoun
 import 'package:gold_shop/module/main/mediator_shop/mediator_shop_profile/view/mediator_shop_profile.dart';
 import 'package:gold_shop/module/main/mediator_shop/product_code/view/product_code_view.dart';
 
-import '../../../../core/colors/colors.dart';
-import '../../../../core/components/components.dart';
-import '../../../../core/images/images.dart';
-import '../../../../core/texts/words.dart';
-import '../../../../core/utils/app_fonts.dart';
-import '../../../../core/utils/dimensions.dart';
-import '../../../authentication/view/login_screen.dart';
-import '../../../map/view/mediator_shops_map_screen.dart';
-import '../../user/components/components.dart';
+import '../../../../../core/colors/colors.dart';
+import '../../../../../core/components/components.dart';
+import '../../../../../core/images/images.dart';
+import '../../../../../core/texts/words.dart';
+import '../../../../../core/utils/app_fonts.dart';
+import '../../../../../core/utils/dimensions.dart';
+import '../../../../authentication/view/login_screen.dart';
+import '../../../../map/view/mediator_shops_map_screen.dart';
+import '../../../user/components/components.dart';
+import '../controller/signature_controller.dart';
 
-class MediatorShopHome extends StatelessWidget {
+class MediatorShopHome extends GetView<SignatureController> {
   const MediatorShopHome({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(SignatureController());
     return SafeArea(
       child: Scaffold(
         drawerEnableOpenDragGesture: true,
@@ -81,8 +83,8 @@ class MediatorShopHome extends StatelessWidget {
                         alignment: AlignmentDirectional.center,
                         children: [
                           Container(
-                              height:
-                                  ScreenDimensions.heightPercentage(context, 20),
+                              height: ScreenDimensions.heightPercentage(
+                                  context, 20),
                               width:
                                   ScreenDimensions.widthPercentage(context, 40),
                               decoration: BoxDecoration(
@@ -98,7 +100,8 @@ class MediatorShopHome extends StatelessWidget {
                           Container(
                             height:
                                 ScreenDimensions.heightPercentage(context, 18),
-                            width: ScreenDimensions.widthPercentage(context, 36),
+                            width:
+                                ScreenDimensions.widthPercentage(context, 36),
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                             ),
@@ -151,8 +154,13 @@ class MediatorShopHome extends StatelessWidget {
                           title: AppWord.activateAccount,
                           imagePath: AppImages.verified),
                       DrawerListTiles(
-                        onTap: (){Get.to(const MediatorShopProfile(),transition: Transition.rightToLeft,duration: const Duration(milliseconds: 700));},
-                          title: AppWord.profile, imagePath: AppImages.user),
+                          onTap: () {
+                            Get.to(const MediatorShopProfile(),
+                                transition: Transition.rightToLeft,
+                                duration: const Duration(milliseconds: 700));
+                          },
+                          title: AppWord.profile,
+                          imagePath: AppImages.user),
                       DrawerListTiles(
                         title: AppWord.language,
                         imagePath: AppImages.language,
@@ -191,7 +199,9 @@ class MediatorShopHome extends StatelessWidget {
               child: Text(
                 AppWord.eSignaturePic,
                 style: TextStyle(
-                    shadows: [Shadow(blurRadius: 3, color: CustomColors.shadow)],
+                    shadows: [
+                      Shadow(blurRadius: 3, color: CustomColors.shadow)
+                    ],
                     color: CustomColors.yellow,
                     fontSize: AppFonts.subTitleFont(context),
                     fontWeight: FontWeight.bold),
@@ -201,54 +211,67 @@ class MediatorShopHome extends StatelessWidget {
                 vertical: ScreenDimensions.heightPercentage(context, 3)),
             Align(
               alignment: AlignmentDirectional.center,
-              child: Container(
-                alignment: AlignmentDirectional.center,
-                height: ScreenDimensions.heightPercentage(context, 7),
-                width: ScreenDimensions.widthPercentage(context, 60),
-                decoration: BoxDecoration(
-                    color: CustomColors.white,
-                    boxShadow: [
-                      BoxShadow(
-                          color: CustomColors.shadow,
-                          blurRadius: 5,
-                          blurStyle: BlurStyle.outer,
-                          offset: const Offset(0, 3),
-                          spreadRadius: 0.1),
-                    ],
-                    borderRadius: BorderRadius.circular(
-                        ScreenDimensions.radius(context, 1))),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    Text(
-                      AppWord.uploadPicture,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: AppFonts.smallTitleFont(context),
-                      ),
-                    ),
-                    SvgPicture.asset(
-                      AppImages.upload,
-                      height: ScreenDimensions.heightPercentage(context, 2.5),
-                    ),
-                  ],
+              child: GestureDetector(
+                onTap: controller.pickSignatureImage,
+                child: Container(
+                  alignment: AlignmentDirectional.center,
+                  height: ScreenDimensions.heightPercentage(context, 7),
+                  width: ScreenDimensions.widthPercentage(context, 60),
+                  decoration: BoxDecoration(
+                      color: CustomColors.white,
+                      boxShadow: [
+                        BoxShadow(
+                            color: CustomColors.shadow,
+                            blurRadius: 5,
+                            blurStyle: BlurStyle.outer,
+                            offset: const Offset(0, 3),
+                            spreadRadius: 0.1),
+                      ],
+                      borderRadius: BorderRadius.circular(
+                          ScreenDimensions.radius(context, 1))),
+                  child: GetBuilder<SignatureController>(builder: (_) {
+                    return controller.signatureImage != null
+                        ? Image.file(controller.signatureImage!)
+                        : Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Text(
+                                AppWord.uploadPicture,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: AppFonts.smallTitleFont(context),
+                                ),
+                              ),
+                              SvgPicture.asset(
+                                AppImages.upload,
+                                height: ScreenDimensions.heightPercentage(
+                                    context, 2.5),
+                              ),
+                            ],
+                          );
+                  }),
                 ),
               ),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 4)),
             const Spacer(),
-            AppButton(
-                text: Text(
-                  AppWord.done,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: AppFonts.smallTitleFont(context),
-                      color: CustomColors.white),
-                ),
-                onTap: () {
-                  Get.to(const ProductCode(),transition: Transition.rightToLeft,duration: const Duration(milliseconds: 700));
-                },
-                buttonBackground: AppImages.buttonLiteBackground).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+            GetBuilder<SignatureController>(builder: (_) {
+              return controller.isLoading
+                  ? const CircularProgressIndicator().marginSymmetric(vertical: 24)
+                  : AppButton(
+                          text: Text(
+                            AppWord.done,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: AppFonts.smallTitleFont(context),
+                                color: CustomColors.white),
+                          ),
+                          onTap: controller.uploadSignatureImage,
+                          buttonBackground: AppImages.buttonLiteBackground)
+                      .paddingSymmetric(
+                          vertical:
+                              ScreenDimensions.heightPercentage(context, 2));
+            }),
           ],
         ),
       ),
