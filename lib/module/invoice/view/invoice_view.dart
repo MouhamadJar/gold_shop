@@ -438,6 +438,7 @@ class Invoice extends GetView<InvoiceController> {
                                                 builder: (_) {
                                                   return Directions(
                                                     child: controller.bankInfoLoading? Center(child: CircularProgressIndicator(color: CustomColors.gold,)):AppDialog(
+                                                      expand: true,
                                                       title: AppWord.bankTransferInfo,
                                                       description: controller.bankInfoModel!.paymentInfo,
                                                       card1: Row(
@@ -500,8 +501,7 @@ class Invoice extends GetView<InvoiceController> {
                                                                 child: AppDialog(
                                                                   card1: GestureDetector(
                                                                     onTap: controller.pickImage,
-                                                                    child:
-                                                                    Container(
+                                                                    child: Container(
                                                                       decoration: BoxDecoration(
                                                                           borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 1)),
                                                                           boxShadow: [
@@ -524,15 +524,10 @@ class Invoice extends GetView<InvoiceController> {
                                                                       ),
                                                                     ),
                                                                   ),
-                                                                  title: AppWord
-                                                                      .transferNotificationPicture,
-                                                                  description:
-                                                                  AppWord
-                                                                      .transferNotificationPictureDetails,
-                                                                  card2:
-                                                                  Container(),
-                                                                  onTap:
-                                                                      () {
+                                                                  title: AppWord.transferNotificationPicture,
+                                                                  description: AppWord.transferNotificationPictureDetails,
+                                                                  card2: const SizedBox.shrink(),
+                                                                  onTap: () {
                                                                     Get.back();
                                                                     Future.any([Future.delayed(const Duration(seconds: 2)).then((value) => Get.off(const BuyOrder()),), Get.defaultDialog(barrierDismissible: false, title: '', content: BackdropFilter(
                                                                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),

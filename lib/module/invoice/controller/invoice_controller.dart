@@ -85,4 +85,8 @@ class InvoiceController extends GetxController{
       }
     });
   }
+
+  // void purchase()async{
+  //  await DioHelper.orderSale(code: code)
+  // }
 }

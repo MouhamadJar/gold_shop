@@ -50,24 +50,16 @@ class SortController extends GetxController{
 //   update();
 // }
 
-  void lthValuesCheck(){
-    caratLTH == true ? carat = 0 : carat = null;
-    priceLTH == true ? price = 0 : price = null;
-    weightLTH == true ? weight = 0: weight= null;
-    update();
-  }
+
   void htlValuesCheck(){
-    caratHTL == true ? carat = 1: carat = null;
-    priceHTL == true ? price = 1 : price = null;
-    weightHTL == true ? weight = 1: weight= null;
-    update();
+    caratHTL == true ? carat = 1: caratLTH == true? carat= 0: carat = null ;
+    priceHTL == true ? price = 1 : priceLTH == true ? price = 0 : price=null;
+    weightHTL == true ? weight = 1: weightLTH == true ? weight = 0 : weight=null;
   }
 
   void sort ()async {
-    print(priceLTH);
-    print(carat);
-    print(price);
-    print(weight);
+    htlValuesCheck();
+    update();
     Map<String,dynamic> data = await DioHelper.sort(carat: carat, price: price, weight: weight);
     data['data']['data'].forEach((element){products.add(ProductsModel.fromJson(json: element));});
     subcategoryProductsController.product = products;

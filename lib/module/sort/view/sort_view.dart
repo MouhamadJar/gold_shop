@@ -211,7 +211,6 @@ class SortScreen extends GetView<SortController> {
                                         controller.caratHTL= value!;
                                         controller.caratLTH= false;
                                         controller.update();
-                                        // controller.caratCheckHTL();
                                         },
                                       activeColor: CustomColors.gold);
                                 }
@@ -237,7 +236,6 @@ class SortScreen extends GetView<SortController> {
                             color: CustomColors.white),
                       ),
                       onTap: () {
-                        controller.lthValuesCheck();
                         controller.htlValuesCheck();
                         controller.sort();
                         },

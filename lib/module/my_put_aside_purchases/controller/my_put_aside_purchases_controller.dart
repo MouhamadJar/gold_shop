@@ -13,10 +13,7 @@ class MyPutAsidePurchasesController extends GetxController {
     Map<String, dynamic> data = await DioHelper.profileListsPurchasesOnHold();
     products.clear();
     if (data['data']['data'].isNotEmpty) {
-      data['data']['data'].forEach((element) {
-        products.add(element['product']);
-      });
-    }
+      data['data']['data'].forEach((element) {products.add(element['product']);});}
     Get.log('before');
     isLoading = false;
     update();
