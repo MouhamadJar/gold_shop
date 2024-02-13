@@ -2,8 +2,8 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/components/maps.dart';
-import 'package:gold_shop/core/validtor/app_validator.dart';
+import '../../../../core/components/maps.dart';
+import '../../../../core/validtor/app_validator.dart';
 import '../../controller/mediator_shop/register_ccontroller.dart';
 import '../../../../core/components/components.dart';
 import '../../../../core/texts/words.dart';
@@ -12,7 +12,6 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/images/images.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../edit_profile/components/edit_profile_components.dart';
-import 'verify_account_screen.dart';
 
 class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
   const MediatorSignupScreen({super.key});
@@ -345,6 +344,7 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                               AppImages.buttonLiteBackground).marginSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
                                   GestureDetector(
                                     onTap: () {
+                                      Get.back();
                                       Get.back();
                                     },
                                     child: RichText(

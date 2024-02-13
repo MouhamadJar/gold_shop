@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/location_service/location_entity.dart';
 import '../../../../core/location_service/location_model.dart';
 import '../../../../core/location_service/marker_entity.dart';
+import '../../../main/mediator_shop/signature/view/mediator_shop_view.dart';
 import '../../model/user/user_signup_model.dart';
 
 class RegisterMediatorShopController extends GetxController {
@@ -61,6 +62,9 @@ class RegisterMediatorShopController extends GetxController {
         isLoading = false;
         update();
         await StorageHandler().setToken(value['data']['token']);
+        await StorageHandler().setRole('shop');
+        Get.snackbar(AppWord.done, '');
+        Get.offAll(MediatorShopHome());
       } else {
         isLoading = false;
         update();
