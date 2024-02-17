@@ -408,7 +408,7 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Get.to( Invoice(orderId: controller.model!.id,),
+                                Get.to( Invoice(orderId: controller.model!.orderId,),
                                     transition: Transition.fadeIn,
                                     duration: const Duration(milliseconds: 500));
                               },
@@ -475,7 +475,7 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                         Future.any([
                                           Future.delayed(const Duration(seconds: 2))
                                               .then(
-                                            (value) => Get.off(const BuyOrder()),
+                                            (value) => Get.off( BuyOrder(orderId: controller.model!.orderId,),transition: Transition.fade,duration: const Duration(milliseconds: 700)),
                                           ),
                                           Get.defaultDialog(
                                             barrierDismissible: false,

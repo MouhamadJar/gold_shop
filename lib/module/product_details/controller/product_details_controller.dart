@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/module/product_details/model/product_details_model.dart';
@@ -17,6 +18,9 @@ class ProductDetailsController extends GetxController {
   bool isBannersEmpty = true;
   bool putAsideLoading = true;
   PutAsideModel? putAsideModel;
+  late AllCaratPrices allCaratPrices;
+
+
 
   bool contactUsLoading = false;
 
@@ -38,6 +42,9 @@ class ProductDetailsController extends GetxController {
   void getProductDetails({required int productId}) async {
     Map<String, dynamic> data = await DioHelper.show(productId: productId);
     model = ProductDetailsModel.fromJson(json: data['data']);
+    Get.lazyPut(() => AllCaratPrices());
+    allCaratPrices = Get.find();
+    allCaratPrices.carat = model!.carat;
     subcategoryADVS(subcategoryId: model!.subcategoryId);
     isLoading = false;
     update();

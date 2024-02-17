@@ -7,13 +7,12 @@ import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/components/problem_dialog.dart';
 import 'package:gold_shop/core/images/images.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
-import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
-import 'package:gold_shop/module/buy_order/view/buy_order_view.dart';
 import 'package:gold_shop/module/invoice/controller/invoice_controller.dart';
+import 'package:gold_shop/module/main/user/view/main_screen_view.dart';
 
 import '../../../core/colors/colors.dart';
 
@@ -23,28 +22,29 @@ class Invoice extends GetView<InvoiceController> {
   @override
   Widget build(BuildContext context) {
     Get.put(InvoiceController());
-    return GetBuilder<InvoiceController>(
-      initState: (state){
-        controller.getInvoiceData(orderId: orderId);
-      },
-      builder: (_) {
-        return SafeArea(
-          child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            backgroundColor: CustomColors.white,
-            appBar: AppBar(
-              backgroundColor: CustomColors.white,
-              elevation: 1,
-              centerTitle: true,
-              leading: const BackArrow(),
-              title: Text(
-                AppWord.invoice,
-                style: TextStyle(
-                    fontSize: AppFonts.subTitleFont(context),
-                    fontWeight: FontWeight.bold),
-              ),
-            ),
-            body: controller.isLoading?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):SizedBox(
+    return SafeArea(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        backgroundColor: CustomColors.white,
+        appBar: AppBar(
+          backgroundColor: CustomColors.white,
+          elevation: 1,
+          centerTitle: true,
+          leading: const BackArrow(),
+          title: Text(
+            AppWord.invoice,
+            style: TextStyle(
+                fontSize: AppFonts.subTitleFont(context),
+                fontWeight: FontWeight.bold),
+          ),
+        ),
+        body: GetBuilder<InvoiceController>(
+          initState: (state){
+            controller.getInvoiceData(orderId: orderId);
+            controller.getAppCommission();
+          },
+          builder: (_) {
+            return controller.isLoading?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):SizedBox(
               width: ScreenDimensions.screenWidth(context),
               height: ScreenDimensions.screenHeight(context),
               child: Directions(
@@ -271,7 +271,7 @@ class Invoice extends GetView<InvoiceController> {
                           );},),
                         FloatingContainer(
                             title: AppWord.reportProblem,
-                            picPath: AppImages.report, 
+                            picPath: AppImages.report,
                           onTap: () {
                               showProblemDialog(context: context, productId: controller.invoiceModel!.productId);
                           // Get.dialog(
@@ -529,7 +529,7 @@ class Invoice extends GetView<InvoiceController> {
                                                                   card2: const SizedBox.shrink(),
                                                                   onTap: () {
                                                                     Get.back();
-                                                                    Future.any([Future.delayed(const Duration(seconds: 2)).then((value) => Get.off(const BuyOrder()),), Get.defaultDialog(barrierDismissible: false, title: '', content: BackdropFilter(
+                                                                    Future.any([Future.delayed(const Duration(seconds: 2)).then((value) => Get.offAll(const MainScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700)),), Get.defaultDialog(barrierDismissible: false, title: '', content: BackdropFilter(
                                                                           filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
                                                                           child: Container(
                                                                             decoration: BoxDecoration(color: CustomColors.gold, borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 1))),
@@ -554,12 +554,8 @@ class Invoice extends GetView<InvoiceController> {
                                                                           ),
                                                                         ),),]);
                                                                   },
-                                                                  buttonName:
-                                                                  AppWord
-                                                                      .sendTransferNotification,
-                                                                  buttonButtonBackground:
-                                                                  AppImages
-                                                                      .buttonLiteBackground,
+                                                                  buttonName: AppWord.sendTransferNotification,
+                                                                  buttonButtonBackground: AppImages.buttonLiteBackground,
                                                                 ),
                                                               ),
                                                             ));
@@ -592,10 +588,10 @@ class Invoice extends GetView<InvoiceController> {
                     horizontal: ScreenDimensions.widthPercentage(context, 5),
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
               ),
-            ),
-          ),
-        );
-      }
+            );
+          }
+        ),
+      ),
     );
   }
 }

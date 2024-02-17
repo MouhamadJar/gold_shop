@@ -425,16 +425,39 @@ class DioHelper {
   }
 
   static Future<Map<String, dynamic>> store(
-      {required String details,
+      {
+      required String image,
+      required String description,
+      required String age,
+      required dynamic weight,
+      required dynamic carat,
+      required int subcategoryId,
+      required dynamic currentGoldPrice,
+      required dynamic profit,
+      required dynamic addition,
+      required String details,
       required String manufacturer,
       required String manufacturerType,
       required bool toggle,
-      required String deliveryType,
+      required int deliveryType,
       required String phoneNumber,
-      required List<String> stores}) async {
+      required List<String> stores,
+      required int discountToggle,
+       String? offerDescription,
+       dynamic discountValue,
+      }) async {
     late Response response;
     try {
       response = await _dio.post(EndPoints.store, data: {
+        'images' : image,
+        'description' : description,
+        'age' : age,
+        'wight' : weight,
+        'carat' : carat,
+        'subcategory_id' : subcategoryId,
+        'current_gold_price' : currentGoldPrice,
+        'profit' : profit,
+        'addition' : addition,
         'detail': details,
         'manufacture': manufacturer,
         'manufacture_type': manufacturerType,
@@ -442,6 +465,9 @@ class DioHelper {
         'delivery_type': deliveryType,
         'phone_number': phoneNumber,
         'stores': stores,
+        'discount_toggle': discountToggle,
+        'offer_description': offerDescription,
+        'discount_value': discountValue,
       });
       return response.data;
     } on DioException catch (error) {
@@ -714,6 +740,15 @@ class DioHelper {
     late Response response;
     try {
       response = await _dio.get('${EndPoints.invoice}$orderId');
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> buyOrder({required int orderId}) async {
+    late Response response;
+    try {
+      response = await _dio.get('${EndPoints.buyOrder}$orderId');
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;

@@ -12,7 +12,10 @@ class AppNetworkImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ExtendedImage.network(fit: fit,filterQuality: FilterQuality.high,height: height,
+    return ExtendedImage.network(
+      fit: fit,
+      filterQuality: FilterQuality.high,
+      height: height,
       width: width,
       url,
       enableLoadState: true,

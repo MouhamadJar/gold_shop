@@ -454,6 +454,7 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
     this.title,
+    this.hintText,
     required this.keyboardType,
     this.label,
     this.controller,
@@ -467,6 +468,7 @@ class AppTextField extends StatelessWidget {
   });
 
   final String? title;
+  final String? hintText;
   final TextInputType keyboardType;
   final Widget? label;
   final TextEditingController? controller;
@@ -507,6 +509,7 @@ class AppTextField extends StatelessWidget {
             ),
             keyboardType: keyboardType,
             decoration: InputDecoration(
+              hintText:hintText ,
               label: label,
               suffixIcon: suffix,
               suffixIconColor: suffixIconColor ?? CustomColors.black,
@@ -704,6 +707,27 @@ class PricesBarController extends GetxController {
   }
 }
 
+class AllCaratPrices extends GetxController {
+  bool isLoading = true;
+  late String carat;
+  late double caratPrice;
+  // AllCaratPricesModel? allCaratPricesModel;
+
+  void getCaratPrices() async {
+    Map<String, dynamic> data = await DioHelper.getAllCaratPrices();
+    caratPrice = data['data']['data'][carat];
+    // allCaratPricesModel = AllCaratPricesModel.fromJson(json: data['data']['data']);
+    print(data.toString());
+    isLoading = false;
+    update();
+  }
+  @override
+  void onInit() {
+    getCaratPrices();
+    super.onInit();
+  }
+}
+
 class CaratPricesModel {
   final double carat18;
   final double carat21;
@@ -721,6 +745,56 @@ class CaratPricesModel {
       carat18: json['18k'],
       carat21: json['21k'],
       carat22: json['22k'],
+      carat24: json['24k'],
+    );
+  }
+}
+class AllCaratPricesModel {
+  final double carat6;
+  final double carat8;
+  final double carat9;
+  final double carat10;
+  final double carat12;
+  final double carat14;
+  final double carat16;
+  final double carat18;
+  final double carat21;
+  final double carat21k;
+  final double carat22;
+  final double carat23;
+  final double carat24;
+
+  AllCaratPricesModel(
+      {
+      required this.carat6,
+      required this.carat8,
+      required this.carat9,
+      required this.carat10,
+      required this.carat12,
+      required this.carat14,
+      required this.carat16,
+      required this.carat18,
+      required this.carat21,
+      required this.carat21k,
+      required this.carat22,
+      required this.carat23,
+      required this.carat24,
+      });
+
+  factory AllCaratPricesModel.fromJson({required Map<String, dynamic> json}) {
+    return AllCaratPricesModel(
+      carat6: json['6k'],
+      carat8: json['8k'],
+      carat9: json['9k'],
+      carat10: json['10k'],
+      carat12: json['12k'],
+      carat14: json['14k'],
+      carat16: json['16k'],
+      carat18: json['18k'],
+      carat21: json['21k'],
+      carat21k: json['21.6k'],
+      carat22: json['22k'],
+      carat23: json['23k'],
       carat24: json['24k'],
     );
   }
@@ -750,6 +824,7 @@ class ProfileProductPurchasesModel {
   final String firstName;
   final String lastName;
   final String phoneNumber;
+  final int orderId;
 
   ProfileProductPurchasesModel({
     required this.id,
@@ -775,12 +850,13 @@ class ProfileProductPurchasesModel {
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
+    required this.orderId,
   });
 
   factory ProfileProductPurchasesModel.fromJson({required Map<String, dynamic> json}) {
     return ProfileProductPurchasesModel(
       id: json['product']['id'],
-      code: json['product']['code'],
+      code: json['order']['code'],
       userId: json['product']['user_id'],
       description: json['product']['description'],
       age: json['product']['age'],
@@ -801,6 +877,7 @@ class ProfileProductPurchasesModel {
       firstName: json['seller']['first_name'],
       lastName: json['seller']['last_name'],
       phoneNumber: json['seller']['phone_number'],
+      orderId: json['order']['id']
     );
   }
 }

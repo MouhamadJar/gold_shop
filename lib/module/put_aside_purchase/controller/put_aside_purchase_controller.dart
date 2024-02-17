@@ -22,6 +22,7 @@ class PutAsidePurchaseController extends GetxController {
     isLoading= true;
     update();
     Map<String,dynamic> data = await DioHelper.profileListsShowProduct(productId: productId);
+    print(data['data']['order']);
     model = ProfileProductPurchasesModel.fromJson(json: data['data']);
     isLoading = false;
     subcategoryADVS(subcategoryId: model!.subcategoryId);

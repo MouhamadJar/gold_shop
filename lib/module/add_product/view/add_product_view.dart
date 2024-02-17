@@ -17,52 +17,62 @@ class AddProduct extends GetView<AddProductController> {
   @override
   Widget build(BuildContext context) {
     Get.put(AddProductController());
-    return GetBuilder<AddProductController>(builder: (_) {
-      return Directions(
+    return GetBuilder<AddProductController>(
+        builder: (_) {
+      return controller.isLoading
+          ?Center(child: CircularProgressIndicator(color: CustomColors.gold,),)
+          :Directions(
           child: SingleChildScrollView(
         child: Column(
           children: [
-            Container(
-              alignment: AlignmentDirectional.center,
-              height: ScreenDimensions.heightPercentage(context, 8),
-              width: ScreenDimensions.widthPercentage(context, 80),
-              decoration: BoxDecoration(
-                  color: CustomColors.white,
-                  boxShadow: [
-                    BoxShadow(
-                        color: CustomColors.gold,
-                        blurRadius: 5,
-                        blurStyle: BlurStyle.outer,
-                        offset: const Offset(0, 3),
-                        spreadRadius: 0.1),
-                  ],
-                  borderRadius: BorderRadius.circular(
-                      ScreenDimensions.radius(context, 1))),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    AppWord.uploadProductPictures,
-                    style: TextStyle(
-                      fontSize: AppFonts.smallTitleFont(context),
+            GestureDetector(
+              onTap: controller.pickImage,
+              child: Container(
+                alignment: AlignmentDirectional.center,
+                height: ScreenDimensions.heightPercentage(context, 8),
+                width: ScreenDimensions.widthPercentage(context, 80),
+                decoration: BoxDecoration(
+                    color: CustomColors.white,
+                    boxShadow: [
+                      BoxShadow(
+                          color: CustomColors.gold,
+                          blurRadius: 5,
+                          blurStyle: BlurStyle.outer,
+                          offset: const Offset(0, 3),
+                          spreadRadius: 0.1),
+                    ],
+                    borderRadius: BorderRadius.circular(
+                        ScreenDimensions.radius(context, 1))),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      AppWord.uploadProductPictures,
+                      style: TextStyle(
+                        fontSize: AppFonts.smallTitleFont(context),
+                      ),
                     ),
-                  ),
-                  SvgPicture.asset(AppImages.upload),
-                ],
-              ),
-            ).paddingSymmetric(
-                vertical: ScreenDimensions.heightPercentage(context, 3)),
+                    SvgPicture.asset(AppImages.upload),
+                  ],
+                ),
+              ).paddingSymmetric(
+                  vertical: ScreenDimensions.heightPercentage(context, 3)),
+            ),
             AppTextField(
+                    maxLines: 4,
+                    controller: controller.descriptionController,
                     title: AppWord.productDescription,
-                    keyboardType: TextInputType.number)
+                    keyboardType: TextInputType.text)
                 .paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
-            AppTextField(
+            AppTextField(hintText: '18k',
+                    controller: controller.ageController,
                     title: AppWord.productAge,
-                    keyboardType: TextInputType.number)
+                    keyboardType: TextInputType.text)
                 .paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              controller: controller.weightController,
                     title: AppWord.productWeight,
                     keyboardType: TextInputType.number)
                 .paddingSymmetric(
@@ -71,36 +81,50 @@ class AddProduct extends GetView<AddProductController> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 AppPopUpMenu(
-                  title: '',
-                  items: [],
-                  onSelected: (value) {},
-                ),
-                Container(
-                  alignment: AlignmentDirectional.center,
-                  width: ScreenDimensions.widthPercentage(context, 30),
-                  child: Text(
-                    AppWord.productType,
-                    style: TextStyle(
-                        fontSize: AppFonts.smallTitleFont(context),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ).paddingSymmetric(
-                vertical: ScreenDimensions.heightPercentage(context, 2)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                AppPopUpMenu(
-                  title: '',
-                  items: [],
-                  onSelected: (value) {},
+                  title: controller.categoriesTitle,
+                  items: controller.categoriesModel.map((e) => PopupMenuItem(value: e,
+                    child: Text(
+                      e.name,
+                      style: TextStyle(
+                          fontSize: AppFonts.smallTitleFont(context)),),)).toList(),
+                  onSelected: (value) {
+                    controller.categoriesTitle = value.name;
+                    controller.getSubcategories(categoryId: value.id);
+                    controller.update();
+                  },
                 ),
                 Container(
                   alignment: AlignmentDirectional.center,
                   width: ScreenDimensions.widthPercentage(context, 30),
                   child: Text(
                     AppWord.productCategory,
+                    style: TextStyle(
+                        fontSize: AppFonts.smallTitleFont(context),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                AppPopUpMenu(
+                  title: controller.subcategoriesTitle,
+                  items: controller.subcategoriesModel.map((e) => PopupMenuItem(value: e.name,
+                    child: Text(
+                      e.name,
+                      style: TextStyle(
+                          fontSize: AppFonts.smallTitleFont(context)),),)).toList(),
+                  onSelected: (value) {
+                    controller.subcategoriesTitle = value;
+                    controller.update();
+                  },
+                ),
+                Container(
+                  alignment: AlignmentDirectional.center,
+                  width: ScreenDimensions.widthPercentage(context, 30),
+                  child: Text(
+                    AppWord.productClassification,
                     style: TextStyle(
                         fontSize: AppFonts.smallTitleFont(context),
                         fontWeight: FontWeight.bold),

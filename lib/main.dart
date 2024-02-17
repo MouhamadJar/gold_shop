@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
       ),
       onInit: onAppInit,
       debugShowCheckedModeBanner: false,
-      home: const MediatorShopHome(),
+      home: const SplashScreen(),
     );
   }
 }

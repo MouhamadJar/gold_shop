@@ -99,15 +99,15 @@ class EndPoints {
   //reports
 
   static String invoice = '/api/app/reports/bill/';
+  static String buyOrder = '/api/app/reports/receipt/voucher/';
 
 //app profile lists
+
   static String profileListsSalesOnHold = '/api/app/lists/sales/on/hold';
-  static String profileListsPurchasesOnHold =
-      '/api/app/lists/purchases/on/hold';
+  static String profileListsPurchasesOnHold = '/api/app/lists/purchases/on/hold';
   static String profileListsMyProducts = '/api/app/lists/my/products';
   static String profileListsSalesReservations = '/api/app/lists/sales/reserved';
-  static String profileListsReservedPurchases =
-      '/api/app/lists/purchases/reserved';
+  static String profileListsReservedPurchases = '/api/app/lists/purchases/reserved';
   static String profileListsSales = '/api/app/lists/sales';
   static String profileListsPurchases = '/api/app/lists/my/purchases';
   static String profileListsShowProduct = '/api/app/products/list/';

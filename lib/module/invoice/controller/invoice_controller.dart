@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
+import 'package:gold_shop/module/category_products/controller/category_products_controller.dart';
 import 'package:gold_shop/module/invoice/model/invoice_model.dart';
 
 import '../../../core/images/images.dart';
@@ -14,6 +15,7 @@ class InvoiceController extends GetxController{
   bool isChecked = false;
   bool isLoading = true;
   bool paymentInfoLoading = true;
+  bool appCommissionLoading = true;
   bool bankInfoLoading = true;
   String buttonBackground = AppImages.buttonDarkBackground;
   PaymentInfoModel? paymentInfoModel;
@@ -85,8 +87,4 @@ class InvoiceController extends GetxController{
       }
     });
   }
-
-  // void purchase()async{
-  //  await DioHelper.orderSale(code: code)
-  // }
 }

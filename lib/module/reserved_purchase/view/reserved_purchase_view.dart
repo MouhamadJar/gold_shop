@@ -402,7 +402,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                       ScreenDimensions.widthPercentage(context, 2)),
                             ),
                             GestureDetector(onTap: (){
-                              Get.to(const BuyOrder(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));
+                              Get.to( BuyOrder( orderId: controller.model!.orderId),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));
                             },
                               child: Container(
                                 alignment: AlignmentDirectional.center,

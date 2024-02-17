@@ -472,7 +472,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                         Future.any([
                                           Future.delayed(const Duration(seconds: 2))
                                               .then(
-                                                (value) => Get.off(const BuyOrder()),
+                                                (value) => Get.off( BuyOrder(orderId: controller.model!.orderId),transition: Transition.fade,duration: Duration(milliseconds: 700)),
                                           ),
                                           Get.defaultDialog(
                                             barrierDismissible: false,

@@ -545,7 +545,7 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Get.to(const BuyOrder(),
+                                        Get.to( BuyOrder(orderId: controller.model!.orderId),
                                             transition: Transition.fadeIn,
                                             duration: const Duration(
                                                 milliseconds: 500));

@@ -177,20 +177,19 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                         picPath: AppImages.age),
                                     Details(
                                         withIcon: true,
-                                        details:
-                                            '${controller.model!.weight.toString()} ${AppWord.grams}',
+                                        details: '${controller.model!.weight.toString()} ${AppWord.grams}',
                                         title: AppWord.weight,
                                         picPath: AppImages.weightScale),
                                     Details(
                                         withIcon: true,
-                                        details:
-                                            '${controller.model!.currentGoldPrice.toString()} ${AppWord.sad}',
+                                        details: controller.model!.toggle==false
+                                            ?'${controller.model!.currentGoldPrice.toString()} ${AppWord.sad}'
+                                            : controller.allCaratPrices.isLoading?AppWord.sad:'${controller.allCaratPrices.caratPrice.toString()} ${AppWord.sad}',
                                         title: AppWord.gramPrice,
                                         picPath: AppImages.priceTag),
                                     Details(
                                         withIcon: true,
-                                        details:
-                                            '${controller.model!.price.toString()} ${AppWord.sad}',
+                                        details: '${controller.model!.price.toString()} ${AppWord.sad}',
                                         title: AppWord.productPrice,
                                         picPath: AppImages.priceTag),
                                     Details(
