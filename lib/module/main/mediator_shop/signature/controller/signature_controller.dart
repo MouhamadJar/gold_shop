@@ -2,8 +2,11 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
+import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/image_handler.dart';
+
+import '../../product_code/view/product_code_view.dart';
 
 class SignatureController extends GetxController {
   File? signatureImage;
@@ -27,11 +30,19 @@ class SignatureController extends GetxController {
         .then((value) {
       isLoading = false;
       update();
-      if (value['errors'] == null) {
-        Get.snackbar(AppWord.warning, AppWord.checkInternet);
-      } else {
+      if (value['success']) {
         Get.snackbar(AppWord.done, '');
+        StorageHandler().setSignature(true);
+        Get.off(() => const ProductCode());
+      } else if (value['errors'] == null) {
+        Get.snackbar(AppWord.warning, AppWord.checkInternet);
       }
     });
+  }
+
+  @override
+  void onInit() {
+
+    super.onInit();
   }
 }

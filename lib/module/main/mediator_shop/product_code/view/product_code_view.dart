@@ -1,19 +1,20 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/components/components.dart';
-import 'package:gold_shop/core/texts/words.dart';
-import 'package:gold_shop/core/utils/app_fonts.dart';
-import 'package:gold_shop/core/utils/dimensions.dart';
-import 'package:gold_shop/module/main/mediator_shop/edit_product/view/edit_product_view.dart';
-
+import 'package:flutter/material.dart';
+import '../../../../../core/components/components.dart';
+import '../../../../../core/texts/words.dart';
+import '../../../../../core/utils/app_fonts.dart';
+import '../../../../../core/utils/dimensions.dart';
+import '../../edit_product/view/edit_product_view.dart';
 import '../../../../../core/colors/colors.dart';
 import '../../../../../core/images/images.dart';
+import '../controller/product_code_controller.dart';
 
-class ProductCode extends StatelessWidget {
+class ProductCode extends GetView<ProductCodeController> {
   const ProductCode({super.key});
 
   @override
   Widget build(BuildContext context) {
+    Get.put(ProductCodeController());
     return SafeArea(
         child: Scaffold(
       backgroundColor: CustomColors.white,
@@ -42,22 +43,29 @@ class ProductCode extends StatelessWidget {
                 vertical: ScreenDimensions.heightPercentage(context, 3),
                 horizontal: ScreenDimensions.widthPercentage(context, 3)),
           ),
-          const AppTextField(keyboardType: TextInputType.text).paddingSymmetric(
-              vertical: ScreenDimensions.heightPercentage(context, 5),
-              horizontal: ScreenDimensions.widthPercentage(context, 10)),
+          AppTextField(
+                  controller: controller.codeController,
+                  keyboardType: TextInputType.text)
+              .paddingSymmetric(
+                  vertical: ScreenDimensions.heightPercentage(context, 5),
+                  horizontal: ScreenDimensions.widthPercentage(context, 10)),
           const Spacer(),
-          AppButton(
-              text: Text(
-                AppWord.done,
-                style: TextStyle(
-                    color: CustomColors.white,
-                    fontSize: AppFonts.smallTitleFont(context),
-                    fontWeight: FontWeight.bold),
-              ),
-              onTap: (){
-                Get.to(const EditProduct(),transition: Transition.rightToLeft,duration: const Duration(milliseconds: 700));
-              },
-              buttonBackground: AppImages.buttonLiteBackground).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+          GetBuilder<ProductCodeController>(
+            builder: (_) {
+              return controller.isLoading ? const Center(child: CircularProgressIndicator()).marginSymmetric(  vertical: ScreenDimensions.heightPercentage(context, 2)): AppButton(
+                      text: Text(
+                        AppWord.done,
+                        style: TextStyle(
+                            color: CustomColors.white,
+                            fontSize: AppFonts.smallTitleFont(context),
+                            fontWeight: FontWeight.bold),
+                      ),
+                      onTap: controller.sendCode,
+                      buttonBackground: AppImages.buttonLiteBackground)
+                  .paddingSymmetric(
+                      vertical: ScreenDimensions.heightPercentage(context, 2));
+            }
+          ),
         ],
       ),
     ));
