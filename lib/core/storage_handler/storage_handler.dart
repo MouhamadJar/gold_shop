@@ -66,4 +66,14 @@ class StorageHandler {
   String get role => _storage.read('role') ?? 'not authenticated';
 
   bool get hasRole => _storage.hasData('role');
+
+  // signature
+  Future<void> setSignature(bool signature) =>
+      _storage.write('signature', signature);
+
+  Future<void> removeSignature() => _storage.remove('signature');
+
+  bool get signature => _storage.read('signature') ?? false;
+
+  bool get hasSignature => _storage.hasData('signature');
 }

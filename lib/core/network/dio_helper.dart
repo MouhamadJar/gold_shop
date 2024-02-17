@@ -424,40 +424,39 @@ class DioHelper {
     }
   }
 
-  static Future<Map<String, dynamic>> store(
-      {
-      required List<MultipartFile> images,
-      required String description,
-      required String age,
-      required dynamic weight,
-      required dynamic carat,
-      required int subcategoryId,
-      required dynamic currentGoldPrice,
-      required dynamic profit,
-      required dynamic addition,
-      required String details,
-      required String manufacturer,
-      required String manufacturerType,
-      required bool toggle,
-      required int deliveryType,
-      required String phoneNumber,
-      required List<String> stores,
-      required int discountToggle,
-       String? offerDescription,
-       dynamic discountValue,
-      }) async {
+  static Future<Map<String, dynamic>> store({
+    required List<MultipartFile> images,
+    required String description,
+    required String age,
+    required dynamic weight,
+    required dynamic carat,
+    required int subcategoryId,
+    required dynamic currentGoldPrice,
+    required dynamic profit,
+    required dynamic addition,
+    required String details,
+    required String manufacturer,
+    required String manufacturerType,
+    required bool toggle,
+    required int deliveryType,
+    required String phoneNumber,
+    required List<String> stores,
+    required int discountToggle,
+    String? offerDescription,
+    dynamic discountValue,
+  }) async {
     late Response response;
     try {
       response = await _dio.post(EndPoints.store, data: {
-        'images' : images,
-        'description' : description,
-        'age' : age,
-        'wight' : weight,
-        'carat' : carat,
-        'subcategory_id' : subcategoryId,
-        'current_gold_price' : currentGoldPrice,
-        'profit' : profit,
-        'addition' : addition,
+        'images': images,
+        'description': description,
+        'age': age,
+        'wight': weight,
+        'carat': carat,
+        'subcategory_id': subcategoryId,
+        'current_gold_price': currentGoldPrice,
+        'profit': profit,
+        'addition': addition,
         'detail': details,
         'manufacture': manufacturer,
         'manufacture_type': manufacturerType,
@@ -745,6 +744,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
+
   static Future<Map<String, dynamic>> buyOrder({required int orderId}) async {
     late Response response;
     try {
@@ -1314,6 +1314,23 @@ class DioHelper {
     } on DioException catch (error) {
       log('error uploading signature image : ${error.response!.data}');
       return error.response!.data;
+    }
+  }
+
+  // product code
+  static Future<Map<String, dynamic>> sendCode({required String code}) async {
+    late Response response;
+    try {
+      response = await _dio.get(
+        EndPoints.sendCode(code),
+      );
+      log('success sending code image : ${response.data}');
+      return response.data;
+    } on DioException catch (error) {
+      // log('error sending code image : ${error.response!.data}');
+      return {
+        'status' : false
+      };
     }
   }
 }

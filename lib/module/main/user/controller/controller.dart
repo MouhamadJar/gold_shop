@@ -17,6 +17,9 @@ class MainScreenController extends GetxController{
    Map<String,dynamic> data = await DioHelper.logout();
    loggingOut = data ;
    StorageHandler().removeToken();
+   StorageHandler().removeUserId();
+   StorageHandler().removeSignature();
+   StorageHandler().removeRole();
    Get.snackbar('',AppWord.loggedOut);
    update();
  }

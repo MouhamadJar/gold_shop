@@ -187,4 +187,8 @@ class EndPoints {
 // app signature
   static String uploadSignature = '/api/app/store/signature';
 
+  // product code
+
+  static String sendCode(String code) => '/api/app/store/product/show?code=$code';
+
 }
