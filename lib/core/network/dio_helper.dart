@@ -426,7 +426,7 @@ class DioHelper {
 
   static Future<Map<String, dynamic>> store(
       {
-      required String image,
+      required List<MultipartFile> images,
       required String description,
       required String age,
       required dynamic weight,
@@ -449,7 +449,7 @@ class DioHelper {
     late Response response;
     try {
       response = await _dio.post(EndPoints.store, data: {
-        'images' : image,
+        'images' : images,
         'description' : description,
         'age' : age,
         'wight' : weight,

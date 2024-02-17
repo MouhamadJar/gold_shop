@@ -26,7 +26,7 @@ class AddProduct extends GetView<AddProductController> {
         child: Column(
           children: [
             GestureDetector(
-              onTap: controller.pickImage,
+              onTap: controller.selectMultipleImage,
               child: Container(
                 alignment: AlignmentDirectional.center,
                 height: ScreenDimensions.heightPercentage(context, 8),
@@ -62,20 +62,17 @@ class AddProduct extends GetView<AddProductController> {
                     maxLines: 4,
                     controller: controller.descriptionController,
                     title: AppWord.productDescription,
-                    keyboardType: TextInputType.text)
-                .paddingSymmetric(
+                    keyboardType: TextInputType.text).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
-            AppTextField(hintText: '18k',
+            AppTextField(hintText: '__ years',
                     controller: controller.ageController,
                     title: AppWord.productAge,
-                    keyboardType: TextInputType.text)
-                .paddingSymmetric(
+                    keyboardType: TextInputType.text).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
               controller: controller.weightController,
                     title: AppWord.productWeight,
-                    keyboardType: TextInputType.number)
-                .paddingSymmetric(
+                    keyboardType: TextInputType.number).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -104,7 +101,8 @@ class AddProduct extends GetView<AddProductController> {
                   ),
                 ),
               ],
-            ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+            ).paddingSymmetric(
+                vertical: ScreenDimensions.heightPercentage(context, 2)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -137,9 +135,26 @@ class AddProduct extends GetView<AddProductController> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 AppPopUpMenu(
-                  title: '',
-                  items: [],
-                  onSelected: (value) {},
+                  title: controller.calibers,
+                  items: [
+                    PopupMenuItem(value: '6k',child: Text('6k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '8k',child: Text('8k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '9k',child: Text('9k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '10k',child: Text('10k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '12k',child: Text('12k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '14k',child: Text('14k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '16k',child: Text('16k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '18k',child: Text('18k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '21k',child: Text('21k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '21.6k',child: Text('21.6k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '22k',child: Text('22k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                    PopupMenuItem(value: '24k',child: Text('24k',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),)),
+                  ],
+                  onSelected: (value) {
+                    controller.calibers = value;
+                    controller.getAllCaratPrices();
+                    controller.update();
+                  },
                 ),
                 Container(
                   alignment: AlignmentDirectional.center,
@@ -155,18 +170,27 @@ class AddProduct extends GetView<AddProductController> {
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              enabled: false,
+              controller: controller.caliberPriceValueController,
               title: AppWord.theNetPrice,
               keyboardType: TextInputType.number,
-              label: Text(AppWord.sad),
+              label: Row(
+                children: [
+                  Text(' ${AppWord.sad} ',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),
+                  Text(controller.caliberPrice.toString(),style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),
+                ],
+              ),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              controller: controller.profitController,
               title: AppWord.theAddedCommission,
               keyboardType: TextInputType.number,
               label: Text(AppWord.sad),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              enabled: false,
               title: AppWord.platformCommission,
               keyboardType: TextInputType.number,
               label: Text(AppWord.sad),
@@ -174,8 +198,7 @@ class AddProduct extends GetView<AddProductController> {
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
                     title: AppWord.anotherAddsPrice,
-                    keyboardType: TextInputType.number)
-                .paddingSymmetric(
+                    keyboardType: TextInputType.number).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
               title: AppWord.anotherAddsDescription,
@@ -196,8 +219,7 @@ class AddProduct extends GetView<AddProductController> {
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
                     title: AppWord.manufacturer,
-                    keyboardType: TextInputType.name)
-                .paddingSymmetric(
+                    keyboardType: TextInputType.name).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -366,7 +388,8 @@ class AddProduct extends GetView<AddProductController> {
                       color: CustomColors.white),
                 ),
                 onTap: () {Get.to(const ProductPaymentMethod(),transition: Transition.fade,duration: const Duration(milliseconds: 500));},
-                buttonBackground: AppImages.buttonLiteBackground).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 3)),
+                buttonBackground: AppImages.buttonLiteBackground).paddingSymmetric(
+                vertical: ScreenDimensions.heightPercentage(context, 3)),
           ],
         ).paddingSymmetric(
           horizontal: ScreenDimensions.widthPercentage(context, 5),

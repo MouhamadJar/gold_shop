@@ -47,6 +47,11 @@ class EditProfileController extends GetxController {
     });
   }
 
+  void pickImages(){
+    ImageHandler.pickImage();
+    update();
+  }
+
   void editProfile() async {
     DioHelper.updateProfile(
             firstName: firstNameController.text,

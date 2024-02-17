@@ -1,11 +1,12 @@
 import 'dart:io';
-
+import 'package:dio/dio.dart' as DIO;
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/categories/model/categories_model.dart';
 import 'package:gold_shop/module/classification/model/classification_model.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../core/texts/words.dart';
 import '../../../core/utils/image_handler.dart';
@@ -20,11 +21,13 @@ class AddProductController extends GetxController {
   bool isLoading = true;
   String categoriesTitle = AppWord.productCategory;
   String subcategoriesTitle = AppWord.productClassification;
+  String calibers = AppWord.caliber;
+  String caliberPrice = '0';
+  String? appCommission;
 
-  List<CategoriesModel> categoriesModel= [];
-  List<ClassificationCategoriesModel> subcategoriesModel= [];
+  List<CategoriesModel> categoriesModel = [];
+  List<ClassificationCategoriesModel> subcategoriesModel = [];
 
-  File? images;
   TextEditingController descriptionController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController weightController = TextEditingController();
@@ -32,6 +35,12 @@ class AddProductController extends GetxController {
   TextEditingController profitController = TextEditingController();
   TextEditingController currentGoldPriceController = TextEditingController();
   TextEditingController manufacturerController = TextEditingController();
+  TextEditingController caliberPriceValueController = TextEditingController();
+
+  List<File>? listImagePath;
+  List<XFile>? images = [];
+  ImagePicker photo = ImagePicker();
+
 
   void changeColor() {
     fontColor = CustomColors.white;
@@ -59,37 +68,54 @@ class AddProductController extends GetxController {
     update();
   }
 
-  void getCategories()async{
-    Map<String,dynamic> categories = await DioHelper.getAllCategories();
+  void getCategories() async {
+    isLoading = true;
+    update();
+    Map<String, dynamic> categories = await DioHelper.getAllCategories();
     categoriesModel.clear();
-    categories['data']['data'].forEach((element){
-    categoriesModel.add(CategoriesModel.frmJson(json: element));});
-    isLoading= false;
+    categories['data']['data'].forEach((element) {
+      categoriesModel.add(CategoriesModel.frmJson(json: element));
+    });
+    isLoading = false;
     update();
   }
-  void getSubcategories({required int categoryId})async{
-    Map<String,dynamic> subcategories = await DioHelper.getAllSubCategories(categoryId: categoryId);
-    subcategoriesModel.clear();
-    subcategories['data']['data'].forEach((element){
-      subcategoriesModel.add(ClassificationCategoriesModel.fromJson(json: element));});
-  }
 
-  void pickImage() async {
-    ImageHandler.pickImage().then((value) {
-      if (value != null) {
-        images = File(value);
-        update();
-        Get.snackbar(AppWord.done, '');
-        return;
-      }
-      Get.snackbar(AppWord.warning, AppWord.doNotPickImage);
-      return;
+  void getSubcategories({required int categoryId}) async {
+    Map<String, dynamic> subcategories =
+        await DioHelper.getAllSubCategories(categoryId: categoryId);
+    subcategoriesModel.clear();
+    subcategories['data']['data'].forEach((element) {
+      subcategoriesModel
+          .add(ClassificationCategoriesModel.fromJson(json: element));
     });
   }
 
+
+  void selectMultipleImage() async {
+    images!.clear();
+    await photo.pickMultiImage().then((value) {
+      if (value.isEmpty) {
+        Get.snackbar('fail', 'no image selected',
+            snackPosition: SnackPosition.TOP);
+        update();
+      } else {
+        images = value;
+        for (XFile file in images!) {
+          listImagePath!.add(File(file.path));
+        }
+        update();
+      }
+    });
+
+  }
+
   void addProduct() async {
+    List<DIO.MultipartFile> tmp = [];
+    listImagePath!.forEach((element) async {
+      tmp.add(await DIO.MultipartFile.fromFile(element.path));
+    });
     await DioHelper.store(
-      image: images!.path,
+      images: tmp,
       description: descriptionController.text,
       age: ageController.text,
       weight: weightController.text,
@@ -105,10 +131,24 @@ class AddProductController extends GetxController {
       deliveryType: 1,
       phoneNumber: '',
       stores: ['stores'],
-      discountToggle: isChecked==false?0:1,
+      discountToggle: isChecked == false ? 0 : 1,
     );
   }
 
+  void getAllCaratPrices()async{
+    Map<String,dynamic> data = await DioHelper.getAllCaratPrices();
+    update();
+    caliberPrice = data['data']['data'][calibers].toString();
+    update();
+  }
+
+  void getAppCommission()async {
+    isLoading = true;
+    update();
+    Map<String,dynamic> data = await DioHelper.appCommission();
+    isLoading = false;
+    update();
+  }
   @override
   void onInit() {
     getCategories();
