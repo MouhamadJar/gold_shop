@@ -274,10 +274,13 @@ class Dictionary extends Translations {
           AppWord.youMustPayADeposit: 'You must pay deposit of',
           AppWord.messageSentSuccessfully: 'Your message sent successfully',
           AppWord.checkInternet: 'check your internet connection',
+          AppWord.codeNotCorrect: 'check the code please',
+
         },
         'ar': {
           AppWord.splashText: AppWord.splashText,
           AppWord.checkInternet: AppWord.checkInternet,
+          AppWord.codeNotCorrect: AppWord.codeNotCorrect,
           AppWord.add: AppWord.add,
           AppWord.chooseCity: AppWord.chooseCity,
           AppWord.gold: AppWord.gold,

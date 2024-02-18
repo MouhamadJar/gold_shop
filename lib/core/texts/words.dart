@@ -552,4 +552,6 @@ class AppWord {
   static String get messageSentSuccessfully => 'تم إرسال رسالتك بنجاح'.tr;
 
   static String get checkInternet => 'لرجاء فحص الاتصال بالانترنت'.tr;
+
+  static String get codeNotCorrect => 'الرجاء التأكد من صحة الرمز'.tr;
 }
