@@ -22,20 +22,29 @@ class AddProductController extends GetxController {
   String categoriesTitle = AppWord.productCategory;
   String subcategoriesTitle = AppWord.productClassification;
   String calibers = AppWord.caliber;
-  String caliberPrice = '0';
-  String? appCommission;
+  dynamic caliberPrice = 0;
+  int appCommission = 0;
 
   List<CategoriesModel> categoriesModel = [];
   List<ClassificationCategoriesModel> subcategoriesModel = [];
 
   TextEditingController descriptionController = TextEditingController();
   TextEditingController ageController = TextEditingController();
-  TextEditingController weightController = TextEditingController();
-  TextEditingController additionController = TextEditingController();
-  TextEditingController profitController = TextEditingController();
+  TextEditingController weightController = TextEditingController(text: '0');
+  TextEditingController additionController = TextEditingController(text: '0');
+  TextEditingController additionDescriptionController = TextEditingController();
+  TextEditingController appCommissionController = TextEditingController();
+  TextEditingController totalGramPriceController = TextEditingController();
+  TextEditingController totalProductPriceController = TextEditingController();
+  TextEditingController profitController = TextEditingController(text: '0');
   TextEditingController currentGoldPriceController = TextEditingController();
   TextEditingController manufacturerController = TextEditingController();
   TextEditingController caliberPriceValueController = TextEditingController();
+  TextEditingController offerDescriptionController = TextEditingController();
+  TextEditingController discountValueController = TextEditingController();
+  int? discountToggle;
+  int? toggle;
+  String manufacturerType = 'local';
 
   List<File>? listImagePath;
   List<XFile>? images = [];
@@ -72,6 +81,7 @@ class AddProductController extends GetxController {
     isLoading = true;
     update();
     Map<String, dynamic> categories = await DioHelper.getAllCategories();
+    getAppCommission();
     categoriesModel.clear();
     categories['data']['data'].forEach((element) {
       categoriesModel.add(CategoriesModel.frmJson(json: element));
@@ -85,11 +95,9 @@ class AddProductController extends GetxController {
         await DioHelper.getAllSubCategories(categoryId: categoryId);
     subcategoriesModel.clear();
     subcategories['data']['data'].forEach((element) {
-      subcategoriesModel
-          .add(ClassificationCategoriesModel.fromJson(json: element));
+      subcategoriesModel.add(ClassificationCategoriesModel.fromJson(json: element));
     });
   }
-
 
   void selectMultipleImage() async {
     images!.clear();
@@ -138,7 +146,7 @@ class AddProductController extends GetxController {
   void getAllCaratPrices()async{
     Map<String,dynamic> data = await DioHelper.getAllCaratPrices();
     update();
-    caliberPrice = data['data']['data'][calibers].toString();
+    caliberPrice = data['data']['data'][calibers];
     update();
   }
 
@@ -146,9 +154,10 @@ class AddProductController extends GetxController {
     isLoading = true;
     update();
     Map<String,dynamic> data = await DioHelper.appCommission();
-    isLoading = false;
+    appCommission = data['data']['commission'];
     update();
   }
+
   @override
   void onInit() {
     getCategories();

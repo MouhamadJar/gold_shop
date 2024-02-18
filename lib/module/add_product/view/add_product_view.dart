@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:gold_shop/module/product_payment_method/view/product_payment_method_view.dart';
 
 import '../../../core/colors/colors.dart';
@@ -59,17 +60,33 @@ class AddProduct extends GetView<AddProductController> {
                   vertical: ScreenDimensions.heightPercentage(context, 3)),
             ),
             AppTextField(
+                onChanged: (value){
+                  controller.descriptionController.text = value;
+                  controller.update();
+                },
                     maxLines: 4,
                     controller: controller.descriptionController,
                     title: AppWord.productDescription,
                     keyboardType: TextInputType.text).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
-            AppTextField(hintText: '__ years',
+            AppTextField(
+                onChanged: (value){
+                  controller.ageController.text = value;
+                  controller.update();
+                },
+                hintText: '__ years',
                     controller: controller.ageController,
                     title: AppWord.productAge,
                     keyboardType: TextInputType.text).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              onChanged: (value){
+                if (value.isEmpty){
+                  value = '0';
+                }
+                controller.weightController.text = value;
+                controller.update();
+              },
               controller: controller.weightController,
                     title: AppWord.productWeight,
                     keyboardType: TextInputType.number).paddingSymmetric(
@@ -171,53 +188,74 @@ class AddProduct extends GetView<AddProductController> {
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
               enabled: false,
-              controller: controller.caliberPriceValueController,
+              controller: controller.caliberPriceValueController=TextEditingController(text: controller.caliberPrice.toString()),
               title: AppWord.theNetPrice,
               keyboardType: TextInputType.number,
-              label: Row(
-                children: [
-                  Text(' ${AppWord.sad} ',style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),
-                  Text(controller.caliberPrice.toString(),style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),
-                ],
-              ),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              onChanged: (value){
+                if (value.isEmpty){
+                  value = '0';
+                }
+                controller.profitController.text = value;
+                controller.update();
+              },
               controller: controller.profitController,
               title: AppWord.theAddedCommission,
               keyboardType: TextInputType.number,
-              label: Text(AppWord.sad),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
               enabled: false,
+              controller: controller.appCommissionController = TextEditingController(text: controller.appCommission!.toString()),
               title: AppWord.platformCommission,
               keyboardType: TextInputType.number,
-              label: Text(AppWord.sad),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              onChanged: (value){
+                if (value.isEmpty){
+                  value = '0';
+                }
+                controller.additionController.text = value;
+                controller.update();
+              },
+              controller: controller.additionController,
                     title: AppWord.anotherAddsPrice,
                     keyboardType: TextInputType.number).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              onChanged: (value){
+                controller.additionDescriptionController.text = value;
+                controller.update();
+              },
+              maxLines: 3,
+              controller: controller.additionDescriptionController,
               title: AppWord.anotherAddsDescription,
               keyboardType: TextInputType.text,
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              controller: controller.totalGramPriceController = TextEditingController(text:(controller.caliberPrice + controller.appCommission! + double.parse(controller.profitController.text) + double.parse(controller.additionController.text)).toString() ),
+              enabled: false,
               title: AppWord.totalGramPrice,
               keyboardType: TextInputType.number,
-              label: Text(AppWord.sad),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              controller: controller.totalProductPriceController = TextEditingController(text:(controller.totalProductPriceController.text=(double.parse(controller.weightController.text)*double.parse(controller.totalGramPriceController.text)).toString()) ),
+              enabled: false,
               title: AppWord.totalProductPrice,
               keyboardType: TextInputType.number,
-              label: Text(AppWord.sad),
             ).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 2)),
             AppTextField(
+              controller: controller.manufacturerController,
+                    onChanged: (value){
+                controller.manufacturerController.text = value;
+                controller.update();
+                    },
                     title: AppWord.manufacturer,
                     keyboardType: TextInputType.name).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2)),
@@ -229,6 +267,8 @@ class AddProduct extends GetView<AddProductController> {
                     GestureDetector(
                       onTap: () {
                         controller.changeColor();
+                        controller.manufacturerType = 'international';
+                        controller.update();
                       },
                       child: Container(
                         width: ScreenDimensions.widthPercentage(context, 30),
@@ -258,6 +298,8 @@ class AddProduct extends GetView<AddProductController> {
                     GestureDetector(
                       onTap: () {
                         controller.changeColor2();
+                        controller.manufacturerType = 'local';
+                        controller.update();
                       },
                       child: Container(
                         width: ScreenDimensions.widthPercentage(context, 30),
@@ -315,6 +357,9 @@ class AddProduct extends GetView<AddProductController> {
                       return Checkbox(
                           value: controller.isChecked,
                           onChanged: (value) {
+                            if (value == false){
+                              controller.discountToggle = 0;
+                            }else{controller.discountToggle = 1;}
                             controller.checked();
                             controller.isChecked = value!;
                           },
@@ -323,6 +368,11 @@ class AddProduct extends GetView<AddProductController> {
                   ],
                 ),
                 AppTextField(
+                  onChanged: (value){
+                    controller.offerDescriptionController.text = value;
+                    controller.update();
+                  },
+                  controller: controller.offerDescriptionController,
                   enabled: controller.isChecked,
                   title: AppWord.offerDescription,
                   keyboardType: TextInputType.text,
@@ -336,6 +386,12 @@ class AddProduct extends GetView<AddProductController> {
                 SizedBox(
                   width: ScreenDimensions.widthPercentage(context, 50),
                   child: TextFormField(
+                    enabled: controller.isChecked,
+                    controller : controller.discountValueController,
+                    onChanged: (value){
+                      controller.discountValueController.text = value;
+                      controller.update();
+                    },
                     textAlign: TextAlign.right,
                     cursorColor: CustomColors.gold,
                     decoration: InputDecoration(
@@ -371,6 +427,13 @@ class AddProduct extends GetView<AddProductController> {
                     value: controller.isPinned,
                     onChanged: (value) {
                       controller.pinned();
+                      if (value == false){
+                        controller.toggle = 0;
+                        controller.update();
+                      }else{
+                        controller.toggle = 1;
+                      controller.update();
+                      }
                       controller.isPinned = value!;
                     },
                     activeColor: CustomColors.gold,
