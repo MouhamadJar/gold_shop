@@ -50,22 +50,25 @@ class ProductCode extends GetView<ProductCodeController> {
                   vertical: ScreenDimensions.heightPercentage(context, 5),
                   horizontal: ScreenDimensions.widthPercentage(context, 10)),
           const Spacer(),
-          GetBuilder<ProductCodeController>(
-            builder: (_) {
-              return controller.isLoading ? const Center(child: CircularProgressIndicator()).marginSymmetric(  vertical: ScreenDimensions.heightPercentage(context, 2)): AppButton(
-                      text: Text(
-                        AppWord.done,
-                        style: TextStyle(
-                            color: CustomColors.white,
-                            fontSize: AppFonts.smallTitleFont(context),
-                            fontWeight: FontWeight.bold),
-                      ),
-                      onTap: controller.sendCode,
-                      buttonBackground: AppImages.buttonLiteBackground)
-                  .paddingSymmetric(
-                      vertical: ScreenDimensions.heightPercentage(context, 2));
-            }
-          ),
+          GetBuilder<ProductCodeController>(builder: (_) {
+            return controller.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                    .marginSymmetric(
+                        vertical: ScreenDimensions.heightPercentage(context, 2))
+                : AppButton(
+                        text: Text(
+                          AppWord.done,
+                          style: TextStyle(
+                              color: CustomColors.white,
+                              fontSize: AppFonts.smallTitleFont(context),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onTap: controller.sendCode,
+                        buttonBackground: AppImages.buttonLiteBackground)
+                    .paddingSymmetric(
+                        vertical:
+                            ScreenDimensions.heightPercentage(context, 2));
+          }),
         ],
       ),
     ));
