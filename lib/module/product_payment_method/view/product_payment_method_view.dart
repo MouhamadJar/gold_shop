@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/colors/colors.dart';
@@ -5,12 +8,46 @@ import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/images/images.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
+import 'package:dio/dio.dart' as DIO;
 import 'package:gold_shop/core/utils/dimensions.dart';
 import 'package:gold_shop/module/product_payment_method/controller/product_payment_method_controller.dart';
 
 class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
-  const ProductPaymentMethod({super.key});
-
+   const ProductPaymentMethod({
+    super.key,
+    required this.images,
+    required this.descriptionController,
+    required this.ageController,
+    required this.weightController,
+    required this.subcategoryId,
+    required this.caliber,
+    required this.profitController,
+    required this.currentGoldPrice,
+     this.additionController,
+     this.additionDescriptionController,
+    required this.manufacturerController,
+    required this.manufacturerType,
+     this.toggle,
+     this.discountToggle,
+     this.discountDescriptionController,
+     this.discountValueController,
+  });
+  final List<File> images;
+  final TextEditingController descriptionController;
+  final TextEditingController ageController;
+  final TextEditingController weightController;
+  final int subcategoryId;
+  final String caliber;
+  final TextEditingController profitController;
+  final TextEditingController currentGoldPrice;
+  final TextEditingController? additionController;
+  final TextEditingController? additionDescriptionController;
+  final TextEditingController manufacturerController;
+  final String manufacturerType;
+  final int? toggle;
+  final bool? discountToggle;
+  final TextEditingController? discountDescriptionController;
+  final double? discountValueController;
   @override
   Widget build(BuildContext context) {
     Get.put(ProductPaymentMethodController());
@@ -56,8 +93,12 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                         return Checkbox(
                           value: controller.inPerson,
                           onChanged: (value) {
-                            controller.isChecked();
                             controller.inPerson = value!;
+                            controller.withMediatorShop = false;
+                            controller.mediatorShopBetween = false;
+                            controller.mediatorShopFromPlatform = false;
+                            controller.privacyCheck = true;
+                            controller.update();
                           },
                           activeColor: CustomColors.gold,
                         );
@@ -78,8 +119,10 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                         return Checkbox(
                           value: controller.withMediatorShop,
                           onChanged: (value) {
-                            controller.isChecked();
                             controller.withMediatorShop = value!;
+                            controller.inPerson = false;
+                            controller.privacyCheck = false;
+                            controller.update();
                           },
                           activeColor: CustomColors.gold,
                         );
@@ -116,8 +159,9 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                                   return Checkbox(
                                     value: controller.mediatorShopBetween,
                                     onChanged: (value) {
-                                      controller.withMediatorChecked();
                                       controller.mediatorShopBetween = value!;
+                                      controller.mediatorShopFromPlatform = false;
+                                      controller.update();
                                     },
                                     activeColor: CustomColors.gold,
                                   );
@@ -141,9 +185,9 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                                   return Checkbox(
                                     value: controller.mediatorShopFromPlatform,
                                     onChanged: (value) {
-                                      controller.withMediatorChecked();
-                                      controller.mediatorShopFromPlatform =
-                                          value!;
+                                      controller.mediatorShopFromPlatform = value!;
+                                      controller.mediatorShopBetween = false;
+                                      controller.update();
                                     },
                                     activeColor: CustomColors.gold,
                                   );
@@ -152,7 +196,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                             ).paddingSymmetric(
                                 vertical: ScreenDimensions.heightPercentage(
                                     context, 2)),
-                            Container(
+                            controller.mediatorShopFromPlatform ==true?Container(
                               padding: EdgeInsetsDirectional.all(
                                   ScreenDimensions.heightPercentage(
                                       context, 1)),
@@ -348,7 +392,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                               ),
                             ).paddingSymmetric(
                                 vertical: ScreenDimensions.heightPercentage(
-                                    context, 2)),
+                                    context, 2)):const SizedBox.shrink(),
                           ],
                         ).paddingSymmetric(
                           vertical:
@@ -362,34 +406,92 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                         fontWeight: FontWeight.bold),
                   ).paddingSymmetric(
                       vertical: ScreenDimensions.heightPercentage(context, 2)),
-                  const AppTextField(
-                          title: '', keyboardType: TextInputType.phone)
-                      .paddingSymmetric(
-                          vertical:
-                              ScreenDimensions.heightPercentage(context, 2)),
+                   AppTextField(
+                          title: '',
+                     keyboardType: TextInputType.phone,
+                     controller: controller.firstPhoneNumberController,
+                     onChanged: (value){
+                            controller.firstPhoneNumberController.text = value;
+                            controller.update();
+                            },).paddingSymmetric(
+                          vertical: ScreenDimensions.heightPercentage(context, 2)),
+                  controller.phoneNumberCount==2||controller.phoneNumberCount==3
+                      ?DelayedDisplay(
+                        child: AppTextField(
+                                            title: '',
+                                            keyboardType: TextInputType.phone,
+                                            controller: controller.secondPhoneNumberController,
+                                            onChanged: (value){
+                        controller.secondPhoneNumberController!.text = value;
+                        controller.update();
+                                            },).paddingSymmetric(
+                          vertical: ScreenDimensions.heightPercentage(context, 2)),
+                      )
+                      :const SizedBox.shrink(),
+                  controller.phoneNumberCount == 3
+                      ?DelayedDisplay(
+                        child: AppTextField(
+                                            title: '',
+                                            keyboardType: TextInputType.phone,
+                                            controller: controller.thirdPhoneNumberController,
+                                            onChanged: (value){
+                        controller.thirdPhoneNumberController!.text = value;
+                        controller.update();
+                                            },).paddingSymmetric(
+                        vertical: ScreenDimensions.heightPercentage(context, 2)),
+                      )
+                      :const SizedBox.shrink(),
                   Align(
                     alignment: AlignmentDirectional.topStart,
-                    child: GestureDetector(
-                      onTap: () {},
-                      child: Container(
-                        width: ScreenDimensions.widthPercentage(context, 10),
-                        height: ScreenDimensions.heightPercentage(context, 5),
-                        decoration: BoxDecoration(
-                          boxShadow: [
-                            BoxShadow(
-                                color: CustomColors.shadow,
-                                spreadRadius: 0.1,
-                                blurStyle: BlurStyle.outer,
-                                blurRadius: 3)
-                          ],
-                          color: CustomColors.gold,
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            controller.removePhoneNumber();
+                          },
+                          child: Container(
+                            width: ScreenDimensions.widthPercentage(context, 10),
+                            height: ScreenDimensions.heightPercentage(context, 5),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: CustomColors.shadow,
+                                    spreadRadius: 0.1,
+                                    blurStyle: BlurStyle.outer,
+                                    blurRadius: 3)
+                              ],
+                              color: CustomColors.gold,
+                            ),
+                            child: Icon(
+                              Icons.remove,
+                              size: ScreenDimensions.widthPercentage(context, 7),
+                              color: CustomColors.white,
+                            ),
+                          ),
+                        ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
+                        GestureDetector(
+                          onTap: () {controller.addPhoneNumber();},
+                          child: Container(
+                            width: ScreenDimensions.widthPercentage(context, 10),
+                            height: ScreenDimensions.heightPercentage(context, 5),
+                            decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                    color: CustomColors.shadow,
+                                    spreadRadius: 0.1,
+                                    blurStyle: BlurStyle.outer,
+                                    blurRadius: 3)
+                              ],
+                              color: CustomColors.gold,
+                            ),
+                            child: Icon(
+                              Icons.add,
+                              size: ScreenDimensions.widthPercentage(context, 7),
+                              color: CustomColors.white,
+                            ),
+                          ),
                         ),
-                        child: Icon(
-                          Icons.add,
-                          size: ScreenDimensions.widthPercentage(context, 7),
-                          color: CustomColors.white,
-                        ),
-                      ),
+                      ],
                     ),
                   ).paddingSymmetric(
                     vertical: ScreenDimensions.heightPercentage(context, 2),
@@ -422,13 +524,43 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                       GetBuilder<ProductPaymentMethodController>(
                         builder: (_) {
                           return Checkbox(value: controller.privacyCheck, onChanged: (value){
-                            controller.privacyIsChecked();
                             controller.privacyCheck= value!;
+                            controller.update();
                           },activeColor: CustomColors.gold);
                         }
                       ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
-                  ],):SizedBox.shrink(),
-                  Center(
+                  ],):const SizedBox.shrink(),
+                  controller.privacyCheck==true?Center(
+                    child: AppButton(
+                        text: Text(
+                          AppWord.addThisProduct,
+                          style: TextStyle(
+                              color: CustomColors.white,
+                              fontSize: AppFonts.smallTitleFont(context),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        onTap: () {
+                          controller.addProduct(
+                              images: images,
+                              descriptionController: descriptionController.text,
+                              ageController: ageController.text,
+                              weightController: double.parse(weightController.text),
+                              carat: caliber,
+                              subcategoryId: subcategoryId,
+                              currentGoldPriceController: double.parse(currentGoldPrice.text),
+                              profitController: double.parse(profitController.text),
+                              additionController: double.parse(profitController.text),
+                              additionDescriptionController: additionDescriptionController!.text,
+                              manufacturerController: manufacturerController.text,
+                              manufacturerType: manufacturerType,
+                              discountToggle: discountToggle==false?0:1,
+                              toggle: toggle!,
+                              discountValueController: discountValueController!,
+                              offerDescriptionController: discountDescriptionController!.text,
+                          );
+                        },
+                        buttonBackground: AppImages.buttonLiteBackground),
+                  ):Center(
                     child: AppButton(
                         text: Text(
                           AppWord.addThisProduct,
@@ -438,7 +570,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                               fontWeight: FontWeight.bold),
                         ),
                         onTap: () {},
-                        buttonBackground: AppImages.buttonLiteBackground),
+                        buttonBackground: AppImages.buttonDarkBackground),
                   ),
                 ],
               ).paddingSymmetric(

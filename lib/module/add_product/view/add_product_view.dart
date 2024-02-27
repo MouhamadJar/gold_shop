@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:gold_shop/module/product_payment_method/view/product_payment_method_view.dart';
 
 import '../../../core/colors/colors.dart';
@@ -126,6 +125,9 @@ class AddProduct extends GetView<AddProductController> {
                 AppPopUpMenu(
                   title: controller.subcategoriesTitle,
                   items: controller.subcategoriesModel.map((e) => PopupMenuItem(value: e.name,
+                    onTap: (){
+                    controller.subcategoryId = e.id;
+                    },
                     child: Text(
                       e.name,
                       style: TextStyle(
@@ -359,6 +361,8 @@ class AddProduct extends GetView<AddProductController> {
                           onChanged: (value) {
                             if (value == false){
                               controller.discountToggle = 0;
+                              controller.offerDescriptionController =TextEditingController(text: 'No offer');
+                              controller.discountValueController = TextEditingController(text: '0');
                             }else{controller.discountToggle = 1;}
                             controller.checked();
                             controller.isChecked = value!;
@@ -450,7 +454,35 @@ class AddProduct extends GetView<AddProductController> {
                       fontWeight: FontWeight.bold,
                       color: CustomColors.white),
                 ),
-                onTap: () {Get.to(const ProductPaymentMethod(),transition: Transition.fade,duration: const Duration(milliseconds: 500));},
+                onTap: () {
+                  if(
+                  controller.listImagePath!.isEmpty || controller.descriptionController.text.isEmpty
+                  || controller.ageController.text.isEmpty || controller.weightController.text == '0'
+                  || controller.subcategoryId == null || controller.currentGoldPriceController.text == '0'
+                  || controller.profitController.text == '0' || controller.manufacturerController.text.isEmpty
+                  ){
+                    Get.snackbar(AppWord.warning, AppWord.checkAllRequiredFields);
+                  }else{
+                    controller.currentGoldPriceController.text = controller.appCommission.toString();
+                    Get.to(ProductPaymentMethod(
+                      images: controller.listImagePath!,
+                      descriptionController: controller.descriptionController,
+                      ageController: controller.ageController,
+                      weightController: controller.weightController,
+                      subcategoryId: controller.subcategoryId!,
+                      caliber: controller.calibers,
+                      profitController: controller.profitController,
+                      currentGoldPrice: controller.currentGoldPriceController,
+                      additionController: controller.additionController,
+                      additionDescriptionController: controller.additionDescriptionController.text.isEmpty?controller.additionDescriptionController=TextEditingController(text: ''):controller.additionDescriptionController,
+                      manufacturerController: controller.manufacturerController,
+                      manufacturerType: controller.manufacturerType,
+                      discountToggle: controller.isChecked,
+                      discountDescriptionController: controller.offerDescriptionController.text.isEmpty?controller.offerDescriptionController = TextEditingController(text: ''):controller.offerDescriptionController,
+                      discountValueController: controller.discountValueController.text.isEmpty?double.parse(controller.discountValueController.text):double.parse(controller.discountValueController.text),
+                      toggle: controller.toggle,
+                    ),transition: Transition.fade,duration: const Duration(milliseconds: 500));}
+                  },
                 buttonBackground: AppImages.buttonLiteBackground).paddingSymmetric(
                 vertical: ScreenDimensions.heightPercentage(context, 3)),
           ],

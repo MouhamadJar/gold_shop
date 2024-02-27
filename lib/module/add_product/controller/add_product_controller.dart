@@ -28,6 +28,7 @@ class AddProductController extends GetxController {
   List<CategoriesModel> categoriesModel = [];
   List<ClassificationCategoriesModel> subcategoriesModel = [];
 
+  List<DIO.MultipartFile> tmp = [];
   TextEditingController descriptionController = TextEditingController();
   TextEditingController ageController = TextEditingController();
   TextEditingController weightController = TextEditingController(text: '0');
@@ -43,10 +44,11 @@ class AddProductController extends GetxController {
   TextEditingController offerDescriptionController = TextEditingController();
   TextEditingController discountValueController = TextEditingController();
   int? discountToggle;
+  int? subcategoryId;
   int? toggle;
   String manufacturerType = 'local';
 
-  List<File>? listImagePath;
+  List<File>? listImagePath =[];
   List<XFile>? images = [];
   ImagePicker photo = ImagePicker();
 
@@ -79,10 +81,10 @@ class AddProductController extends GetxController {
 
   void getCategories() async {
     isLoading = true;
+    categoriesModel.clear();
     update();
     Map<String, dynamic> categories = await DioHelper.getAllCategories();
     getAppCommission();
-    categoriesModel.clear();
     categories['data']['data'].forEach((element) {
       categoriesModel.add(CategoriesModel.frmJson(json: element));
     });
@@ -108,39 +110,18 @@ class AddProductController extends GetxController {
         update();
       } else {
         images = value;
+        listImagePath!.clear();
         for (XFile file in images!) {
           listImagePath!.add(File(file.path));
         }
+        listImagePath!.forEach((element) async {
+              tmp.add(await DIO.MultipartFile.fromFile(element.path));
+            });
+        Get.snackbar(AppWord.done, '');
         update();
       }
     });
 
-  }
-
-  void addProduct() async {
-    List<DIO.MultipartFile> tmp = [];
-    listImagePath!.forEach((element) async {
-      tmp.add(await DIO.MultipartFile.fromFile(element.path));
-    });
-    await DioHelper.store(
-      images: tmp,
-      description: descriptionController.text,
-      age: ageController.text,
-      weight: weightController.text,
-      carat: 18,
-      subcategoryId: 1,
-      currentGoldPrice: currentGoldPriceController.text,
-      profit: profitController.text,
-      addition: additionController.text,
-      details: 'details',
-      manufacturer: manufacturerController.text,
-      manufacturerType: 'manufacturerType',
-      toggle: isPinned,
-      deliveryType: 1,
-      phoneNumber: '',
-      stores: ['stores'],
-      discountToggle: isChecked == false ? 0 : 1,
-    );
   }
 
   void getAllCaratPrices()async{
