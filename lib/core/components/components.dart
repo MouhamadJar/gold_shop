@@ -465,6 +465,7 @@ class AppTextField extends StatelessWidget {
     this.prefixIconColor,
     this.maxLines,
     this.validator,
+    this.onChanged,
   });
 
   final String? title;
@@ -479,6 +480,7 @@ class AppTextField extends StatelessWidget {
   final Widget? prefix;
   final int? maxLines;
   final FormFieldValidator? validator;
+  final void Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -498,11 +500,12 @@ class AppTextField extends StatelessWidget {
             height: ScreenDimensions.heightPercentage(context, 2),
           ),
           TextFormField(
+            onChanged:onChanged ,
             validator: validator,
             maxLines: maxLines,
             enabled: enabled,
             controller: controller,
-            textAlign: TextAlign.end,
+            textAlign: TextAlign.center,
             cursorColor: CustomColors.gold,
             style: TextStyle(
               fontSize: AppFonts.smallTitleFont(context),

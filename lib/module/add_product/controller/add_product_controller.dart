@@ -22,22 +22,33 @@ class AddProductController extends GetxController {
   String categoriesTitle = AppWord.productCategory;
   String subcategoriesTitle = AppWord.productClassification;
   String calibers = AppWord.caliber;
-  String caliberPrice = '0';
-  String? appCommission;
+  dynamic caliberPrice = 0;
+  int appCommission = 0;
 
   List<CategoriesModel> categoriesModel = [];
   List<ClassificationCategoriesModel> subcategoriesModel = [];
 
+  List<DIO.MultipartFile> tmp = [];
   TextEditingController descriptionController = TextEditingController();
   TextEditingController ageController = TextEditingController();
-  TextEditingController weightController = TextEditingController();
-  TextEditingController additionController = TextEditingController();
-  TextEditingController profitController = TextEditingController();
+  TextEditingController weightController = TextEditingController(text: '0');
+  TextEditingController additionController = TextEditingController(text: '0');
+  TextEditingController additionDescriptionController = TextEditingController();
+  TextEditingController appCommissionController = TextEditingController();
+  TextEditingController totalGramPriceController = TextEditingController();
+  TextEditingController totalProductPriceController = TextEditingController();
+  TextEditingController profitController = TextEditingController(text: '0');
   TextEditingController currentGoldPriceController = TextEditingController();
   TextEditingController manufacturerController = TextEditingController();
   TextEditingController caliberPriceValueController = TextEditingController();
+  TextEditingController offerDescriptionController = TextEditingController();
+  TextEditingController discountValueController = TextEditingController();
+  int? discountToggle;
+  int? subcategoryId;
+  int? toggle;
+  String manufacturerType = 'local';
 
-  List<File>? listImagePath;
+  List<File>? listImagePath =[];
   List<XFile>? images = [];
   ImagePicker photo = ImagePicker();
 
@@ -70,9 +81,10 @@ class AddProductController extends GetxController {
 
   void getCategories() async {
     isLoading = true;
+    categoriesModel.clear();
     update();
     Map<String, dynamic> categories = await DioHelper.getAllCategories();
-    categoriesModel.clear();
+    getAppCommission();
     categories['data']['data'].forEach((element) {
       categoriesModel.add(CategoriesModel.frmJson(json: element));
     });
@@ -85,11 +97,9 @@ class AddProductController extends GetxController {
         await DioHelper.getAllSubCategories(categoryId: categoryId);
     subcategoriesModel.clear();
     subcategories['data']['data'].forEach((element) {
-      subcategoriesModel
-          .add(ClassificationCategoriesModel.fromJson(json: element));
+      subcategoriesModel.add(ClassificationCategoriesModel.fromJson(json: element));
     });
   }
-
 
   void selectMultipleImage() async {
     images!.clear();
@@ -100,45 +110,24 @@ class AddProductController extends GetxController {
         update();
       } else {
         images = value;
+        listImagePath!.clear();
         for (XFile file in images!) {
           listImagePath!.add(File(file.path));
         }
+        listImagePath!.forEach((element) async {
+              tmp.add(await DIO.MultipartFile.fromFile(element.path));
+            });
+        Get.snackbar(AppWord.done, '');
         update();
       }
     });
 
   }
 
-  void addProduct() async {
-    List<DIO.MultipartFile> tmp = [];
-    listImagePath!.forEach((element) async {
-      tmp.add(await DIO.MultipartFile.fromFile(element.path));
-    });
-    await DioHelper.store(
-      images: tmp,
-      description: descriptionController.text,
-      age: ageController.text,
-      weight: weightController.text,
-      carat: 18,
-      subcategoryId: 1,
-      currentGoldPrice: currentGoldPriceController.text,
-      profit: profitController.text,
-      addition: additionController.text,
-      details: 'details',
-      manufacturer: manufacturerController.text,
-      manufacturerType: 'manufacturerType',
-      toggle: isPinned,
-      deliveryType: 1,
-      phoneNumber: '',
-      stores: ['stores'],
-      discountToggle: isChecked == false ? 0 : 1,
-    );
-  }
-
   void getAllCaratPrices()async{
     Map<String,dynamic> data = await DioHelper.getAllCaratPrices();
     update();
-    caliberPrice = data['data']['data'][calibers].toString();
+    caliberPrice = data['data']['data'][calibers];
     update();
   }
 
@@ -146,9 +135,10 @@ class AddProductController extends GetxController {
     isLoading = true;
     update();
     Map<String,dynamic> data = await DioHelper.appCommission();
-    isLoading = false;
+    appCommission = data['data']['commission'];
     update();
   }
+
   @override
   void onInit() {
     getCategories();

@@ -31,7 +31,7 @@ class ClassificationOfCategory extends GetView<ClassificationController> {
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisSpacing: ScreenDimensions.widthPercentage(context, 7),
           mainAxisSpacing: ScreenDimensions.widthPercentage(context, 7),
-          crossAxisCount: 4,
+          crossAxisCount: 3,
         ),
         itemCount: controller.subcategories.length,
         itemBuilder: (context, index) => DelayedDisplay(
@@ -64,14 +64,18 @@ class ClassificationOfCategory extends GetView<ClassificationController> {
                   AppNetworkImage(
                     baseUrlImages + controller.subcategories[index].image,
                     width: ScreenDimensions.widthPercentage(context, 10),
+                    height: ScreenDimensions.heightPercentage(context, 5),
                   ),
                   Text(
                     controller.subcategories[index].name,
+                    textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
                     style: TextStyle(
                         fontSize: AppFonts.smallTitleFont(context),
                         fontWeight: FontWeight.bold),
-                  ),
+                  ).paddingSymmetric(
+                      horizontal: ScreenDimensions.widthPercentage(context, 1)),
                 ],
               ),
             ),

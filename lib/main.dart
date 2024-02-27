@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       onInit: onAppInit,
       debugShowCheckedModeBanner: false,
-      home: const ProductCode(),
+      home: const SplashScreen(),
     );
   }
 }

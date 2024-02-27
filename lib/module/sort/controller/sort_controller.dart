@@ -19,37 +19,6 @@ class SortController extends GetxController{
   int? price ;
   int? weight;
 
-// void caratCheckHTL(){
-//   caratHTL == true?caratHTL = false: caratHTL = true;
-//   caratLTH =false;
-//   update();
-// }
-// void priceCheckHTL(){
-//   priceHTL == true?priceHTL = false: priceHTL =true;
-//   priceLTH = false;
-//   update();
-// }
-// void weightCheckHTL(){
-//   weightHTL == true?weightHTL = false: weightHTL =true;
-//   weightLTH = false;
-//   update();
-// }
-// void caratCheckLTH(){
-//   caratLTH == true?caratLTH = false:caratLTH =true;
-//   caratHTL =false;
-//   update();
-// }
-// void priceCheckLTH(){
-//   priceLTH == true?priceLTH = false:priceLTH =true;
-//    priceHTL = false;
-//   update();
-// }
-// void weightCheckLTH(){
-//   weightLTH == true?weightLTH = false:weightLTH =true;
-//   weightHTL = false;
-//   update();
-// }
-
 
   void htlValuesCheck(){
     caratHTL == true ? carat = 1: caratLTH == true? carat= 0: carat = null ;
