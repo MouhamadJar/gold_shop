@@ -12,7 +12,8 @@ String baseUrlImages = 'https://mayadeen-md.com/goldStore/public/storage/';
 
 class DioHelper {
   static final Dio _dio = Dio(
-    BaseOptions(connectTimeout: Duration(milliseconds: 20000),
+    BaseOptions(
+      connectTimeout: Duration(milliseconds: 20000),
       baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
       headers: AppHeaders.header,
@@ -447,27 +448,29 @@ class DioHelper {
   }) async {
     late Response response;
     try {
-      print('images : ${images}');
-      print('description : ${description}');
-      print('age : ${age}');
-      print('weight : ${weight}');
-      print('carat : ${carat}');
-      print('subcategory id : ${subcategoryId}');
-      print('current gold price : ${currentGoldPrice}');
-      print('profit : ${profit}');
-      print('addition : ${addition}');
-      print('details : ${details}');
-      print('manufacturer : ${manufacturer}');
-      print('manufaturer type : ${manufacturerType}');
-      print('toggle : ${toggle}');
-      print('delivery type : ${deliveryType}');
-      print('phone numbers : ${phoneNumber}');
-      print('stores : ${stores}');
-      print('discount toggle : ${discountToggle}');
-      print('offer description : ${offerDescription}');
-      print('discount value : ${discountValue}');
-      response = await _dio.post(EndPoints.store , data: {
-        'images': images,
+      // print('images : ${images}');
+      // print('description : ${description}');
+      // print('age : ${age}');
+      // print('weight : ${weight}');
+      // print('carat : ${carat}');
+      // print('subcategory id : ${subcategoryId}');
+      // print('current gold price : ${currentGoldPrice}');
+      // print('profit : ${profit}');
+      // print('addition : ${addition}');
+      // print('details : ${details}');
+      // print('manufacturer : ${manufacturer}');
+      // print('manufaturer type : ${manufacturerType}');
+      // print('toggle : ${toggle}');
+      // print('delivery type : ${deliveryType}');
+      // print('phone numbers : ${phoneNumber}');
+      // print('stores : ${stores}');
+      // print('discount toggle : ${discountToggle}');
+      // print('offer description : ${offerDescription}');
+      // print('discount value : ${discountValue}');
+      List tmp = [];
+      List sto = [];
+      Map<String, dynamic> data = {
+        'images[]':  tmp,
         'description': description,
         'age': age,
         'wight': weight,
@@ -481,24 +484,31 @@ class DioHelper {
         'manufacture_type': manufacturerType,
         'toggle': toggle,
         'delivery_type': deliveryType,
-        'phone_number': phoneNumber,
-        'stores': stores,
+        'phone_number[]': phoneNumber,
+        'stores[]': stores ,
         'discount_toggle': discountToggle,
         'offer_description': offerDescription,
         'discount_value': discountValue,
-      });
+      };
+      for (int i = 0; i < images.length; i++) {
+      tmp.add(await MultipartFile.fromFile(images[i].path));
+      }
+      for (int i = 0; i < stores.length; i++) {
+        sto.add(phoneNumber);
+      }
+      response = await _dio.post(EndPoints.store, data: FormData.fromMap(data));
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
     }
   }
 
-  static Future<Map<String, dynamic>> restoreOrResell() async {
+  static Future<Map<String, dynamic>> restoreOrResale({
+    required int orderId,
+  }) async {
     late Response response;
     try {
-      response = await _dio.post(
-        EndPoints.restoreOrResell,
-      );
+      response = await _dio.post('${EndPoints.restoreOrResell}$orderId',);
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -518,32 +528,37 @@ class DioHelper {
   }
 
   static Future<Map<String, dynamic>> update({
-    required List<String> image,
+    required int productId,
+    required List<File> images,
     required String description,
-    required int age,
-    required int weight,
-    required int carat,
-    required int subCategoryId,
-    required int currentGoldPrice,
-    required int profit,
-    required int addition,
+    required String age,
+    required double weight,
+    required String carat,
+    required int subcategoryId,
+    required double currentGoldPrice,
+    required double profit,
+    required double addition,
     required String details,
     required String manufacturer,
     required String manufacturerType,
-    required bool toggle,
+    required int toggle,
     required int deliveryType,
-    required String phoneNumber,
-    required List<String> stores,
+    required List<String> phoneNumber,
+    required List<dynamic> stores,
+    required int discountToggle,
+    String? offerDescription,
+    double? discountValue,
   }) async {
     late Response response;
     try {
-      response = await _dio.post(EndPoints.show, data: {
-        'images': image,
+      List tmp = [];
+      Map<String, dynamic> data = {
+        'images[]':  tmp,
         'description': description,
         'age': age,
         'wight': weight,
         'carat': carat,
-        'subcategory_id': subCategoryId,
+        'subcategory_id': subcategoryId,
         'current_gold_price': currentGoldPrice,
         'profit': profit,
         'addition': addition,
@@ -552,9 +567,16 @@ class DioHelper {
         'manufacture_type': manufacturerType,
         'toggle': toggle,
         'delivery_type': deliveryType,
-        'phone_number': phoneNumber,
-        'stores': stores,
-      });
+        'phone_number': [phoneNumber],
+        'stores': [stores],
+        'discount_toggle': discountToggle,
+        'offer_description': offerDescription,
+        'discount_value': discountValue,
+      };
+      for (int i = 0; i < images.length; i++) {
+        tmp.add(await MultipartFile.fromFile(images[i].path));
+      }
+      response = await _dio.post('${EndPoints.update}$productId', data: FormData.fromMap(data));
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -703,17 +725,19 @@ class DioHelper {
     late Response response;
     try {
       response = await _dio.post('${EndPoints.onHold}$productId');
-      print(response.data.toString());
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
     }
   }
 
-  static Future<Map<String, dynamic>> orderSale({required String code}) async {
+  static Future<Map<String, dynamic>> orderSale({required String code, required int productId}) async {
     late Response response;
     try {
-      response = await _dio.post(EndPoints.sale, data: {'code': code});
+      FormData body = FormData.fromMap({
+        'code': code
+      });
+      response = await _dio.post('${EndPoints.sale}$productId', data: body);
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -744,8 +768,11 @@ class DioHelper {
       {required int orderId, required String image}) async {
     late Response response;
     try {
+      FormData body = FormData.fromMap({
+        'image': await MultipartFile.fromFile(image),
+      });
       response = await _dio.post('${EndPoints.notificationImage}$orderId',
-          data: {'image': image});
+          data: body);
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -1347,9 +1374,7 @@ class DioHelper {
       return response.data;
     } on DioException catch (error) {
       // log('error sending code image : ${error.response!.data}');
-      return {
-        'status' : false
-      };
+      return {'status': false};
     }
   }
 }

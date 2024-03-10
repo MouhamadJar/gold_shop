@@ -5,6 +5,7 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/location_service/location_entity.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 
@@ -89,7 +90,7 @@ class AppPopUpMenu extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Icon(Icons.keyboard_arrow_down_rounded,
-                size: ScreenDimensions.widthPercentage(context, 5)),
+                size: ScreenDimensions.heightPercentage(context, 3)),
             Text(
               title,
               maxLines: 1,
@@ -752,6 +753,7 @@ class CaratPricesModel {
     );
   }
 }
+
 class AllCaratPricesModel {
   final double carat6;
   final double carat8;
@@ -828,6 +830,14 @@ class ProfileProductPurchasesModel {
   final String lastName;
   final String phoneNumber;
   final int orderId;
+  final dynamic longitude;
+  final dynamic latitude;
+  final String country;
+  final String state;
+  final String city;
+  final String neighborhood;
+  final String street;
+  final LocationEntity? location;
 
   ProfileProductPurchasesModel({
     required this.id,
@@ -854,12 +864,20 @@ class ProfileProductPurchasesModel {
     required this.lastName,
     required this.phoneNumber,
     required this.orderId,
+    required this.longitude,
+    required this.latitude,
+    required this.country,
+    required this.state,
+    required this.city,
+    required this.neighborhood,
+    required this.street,
+    required this.location,
   });
 
   factory ProfileProductPurchasesModel.fromJson({required Map<String, dynamic> json}) {
     return ProfileProductPurchasesModel(
       id: json['product']['id'],
-      code: json['order']['code'],
+      code: json['product']['code'],
       userId: json['product']['user_id'],
       description: json['product']['description'],
       age: json['product']['age'],
@@ -880,7 +898,361 @@ class ProfileProductPurchasesModel {
       firstName: json['seller']['first_name'],
       lastName: json['seller']['last_name'],
       phoneNumber: json['seller']['phone_number'],
-      orderId: json['order']['id']
+      orderId: json['order_id'],
+      longitude: json['receiving_location']['longitude'],
+      latitude: json['receiving_location']['latitude'] ,
+      country: json['receiving_location']['country'] ,
+      state: json['receiving_location']['state'] ,
+      city: json['receiving_location']['city'] ,
+      neighborhood: json['receiving_location']['neighborhood'] ,
+      street: json['receiving_location']['street'] ,
+      location: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude']),
+    );
+  }
+}
+class ProfileProductPutAsidePurchasesModel {
+  final int id;
+  final String? code;
+  final int userId;
+  final String description;
+  final String age;
+  final dynamic weight;
+  final dynamic carat;
+  final int subcategoryId;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
+  final dynamic addition;
+  final String? details;
+  final String? manufacturer;
+  final String deliveryType;
+  final String? offerDescription;
+  final dynamic discountValue;
+  final String productStatus;
+  final dynamic price;
+  final dynamic priceAfterDiscount;
+  final List<dynamic> images;
+  final int orderId;
+  ProfileProductPutAsidePurchasesModel({
+    required this.id,
+    this.code,
+    required this.userId,
+    required this.description,
+    required this.age,
+    required this.weight,
+    required this.carat,
+    required this.subcategoryId,
+    required this.currentGoldPrice,
+    required this.profit,
+    required this.addition,
+    this.details,
+    this.manufacturer,
+    required this.deliveryType,
+    this.offerDescription,
+    this.discountValue,
+    required this.productStatus,
+    required this.price,
+    required this.priceAfterDiscount,
+    required this.images,
+    required this.orderId,
+  });
+
+  factory ProfileProductPutAsidePurchasesModel.fromJson({required Map<String, dynamic> json}) {
+    return ProfileProductPutAsidePurchasesModel(
+      id: json['product']['id'],
+      code: json['product']['code'],
+      userId: json['product']['user_id'],
+      description: json['product']['description'],
+      age: json['product']['age'],
+      weight: json['product']['wight'],
+      carat: json['product']['carat'],
+      subcategoryId: json['product']['subcategory_id'],
+      currentGoldPrice: json['product']['current_gold_price'],
+      profit: json['product']['profit'],
+      addition: json['product']['addition'],
+      details: json['product']['details'],
+      manufacturer: json['product']['manufacture'],
+      deliveryType: json['product']['delivery_type'],
+      offerDescription: json['product']['offer_description'],
+      productStatus: json['product']['product_status'],
+      price: json['product']['price'],
+      priceAfterDiscount: json['product']['price_after_discount'],
+      images: json['product']['images'],
+      orderId: json['order_id'],
+    );
+  }
+}
+class ProfileProductSellsModel {
+  final LocationEntity location;
+  final int id;
+  final String? code;
+  final int userId;
+  final String description;
+  final String age;
+  final dynamic weight;
+  final dynamic carat;
+  final int subcategoryId;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
+  final dynamic addition;
+  final String? details;
+  final String? manufacturer;
+  final String deliveryType;
+  final String? offerDescription;
+  final dynamic discountValue;
+  final String productStatus;
+  final dynamic price;
+  final dynamic priceAfterDiscount;
+  final List<dynamic> images;
+  final String firstName;
+  final String lastName;
+  final String phoneNumber;
+  final int orderId;
+  final double longitude;
+  final double latitude;
+  final String country;
+  final String state;
+  final String city;
+  final String neighborhood;
+  final String street;
+
+  ProfileProductSellsModel({
+    required this.id,
+    this.code,
+    required this.userId,
+    required this.description,
+    required this.age,
+    required this.weight,
+    required this.carat,
+    required this.subcategoryId,
+    required this.currentGoldPrice,
+    required this.profit,
+    required this.addition,
+    this.details,
+    this.manufacturer,
+    required this.deliveryType,
+    this.offerDescription,
+    this.discountValue,
+    required this.productStatus,
+    required this.price,
+    required this.priceAfterDiscount,
+    required this.images,
+    required this.firstName,
+    required this.lastName,
+    required this.phoneNumber,
+    required this.orderId,
+    required this.longitude,
+    required this.latitude,
+    required this.country,
+    required this.state,
+    required this.city,
+    required this.neighborhood,
+    required this.street,
+    required this.location,
+  });
+
+  factory ProfileProductSellsModel.fromJson({required Map<String, dynamic> json}) {
+    return ProfileProductSellsModel(
+      id: json['product']['id'],
+      code: json['product']['code'],
+      userId: json['product']['user_id'],
+      description: json['product']['description'],
+      age: json['product']['age'],
+      weight: json['product']['wight'],
+      carat: json['product']['carat'],
+      subcategoryId: json['product']['subcategory_id'],
+      currentGoldPrice: json['product']['current_gold_price'],
+      profit: json['product']['profit'],
+      addition: json['product']['addition'],
+      details: json['product']['details'],
+      manufacturer: json['product']['manufacture'],
+      deliveryType: json['product']['delivery_type'],
+      offerDescription: json['product']['offer_description'],
+      productStatus: json['product']['product_status'],
+      price: json['product']['price'],
+      priceAfterDiscount: json['product']['price_after_discount'],
+      images: json['product']['images'],
+      firstName: json['buyer']['user']['first_name'].toString(),
+      lastName: json['buyer']['user']['last_name'].toString(),
+      phoneNumber: json['buyer']['user']['phone_number'].toString(),
+      orderId: json['order_id'],
+      longitude: json['receiving_location']['longitude'],
+      latitude: json['receiving_location']['latitude'] ,
+      country: json['receiving_location']['country'] ,
+      state: json['receiving_location']['state'] ,
+      city: json['receiving_location']['city'] ,
+      neighborhood: json['receiving_location']['neighborhood'] ,
+      street: json['receiving_location']['street'] ,
+      location: LocationEntity(lon: json['receiving_location']['longitude'], lat: json['receiving_location']['latitude'])
+    );
+  }
+}
+class ProfilePutAsideSellsModel {
+  final LocationEntity location;
+  final int id;
+  final String? code;
+  final int userId;
+  final String description;
+  final String age;
+  final dynamic weight;
+  final dynamic carat;
+  final int subcategoryId;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
+  final dynamic addition;
+  final String? details;
+  final String? manufacturer;
+  final String deliveryType;
+  final String? offerDescription;
+  final dynamic discountValue;
+  final String productStatus;
+  final dynamic price;
+  final dynamic priceAfterDiscount;
+  final List<dynamic> images;
+  final int orderId;
+  final double longitude;
+  final double latitude;
+  final String country;
+  final String state;
+  final String city;
+  final String neighborhood;
+  final String street;
+
+  ProfilePutAsideSellsModel({
+    required this.id,
+    this.code,
+    required this.userId,
+    required this.description,
+    required this.age,
+    required this.weight,
+    required this.carat,
+    required this.subcategoryId,
+    required this.currentGoldPrice,
+    required this.profit,
+    required this.addition,
+    this.details,
+    this.manufacturer,
+    required this.deliveryType,
+    this.offerDescription,
+    this.discountValue,
+    required this.productStatus,
+    required this.price,
+    required this.priceAfterDiscount,
+    required this.images,
+    required this.orderId,
+    required this.longitude,
+    required this.latitude,
+    required this.country,
+    required this.state,
+    required this.city,
+    required this.neighborhood,
+    required this.street,
+    required this.location,
+  });
+
+  factory ProfilePutAsideSellsModel.fromJson({required Map<String, dynamic> json}) {
+    return ProfilePutAsideSellsModel(
+      id: json['product']['id'],
+      code: json['product']['code'],
+      userId: json['product']['user_id'],
+      description: json['product']['description'],
+      age: json['product']['age'],
+      weight: json['product']['wight'],
+      carat: json['product']['carat'],
+      subcategoryId: json['product']['subcategory_id'],
+      currentGoldPrice: json['product']['current_gold_price'],
+      profit: json['product']['profit'],
+      addition: json['product']['addition'],
+      details: json['product']['details'],
+      manufacturer: json['product']['manufacture'],
+      deliveryType: json['product']['delivery_type'],
+      offerDescription: json['product']['offer_description'],
+      productStatus: json['product']['product_status'],
+      price: json['product']['price'],
+      priceAfterDiscount: json['product']['price_after_discount'],
+      images: json['product']['images'],
+      orderId: json['order_id'],
+      longitude: json['receiving_location']['longitude'],
+      latitude: json['receiving_location']['latitude'] ,
+      country: json['receiving_location']['country'] ,
+      state: json['receiving_location']['state'] ,
+      city: json['receiving_location']['city'] ,
+      neighborhood: json['receiving_location']['neighborhood'] ,
+      street: json['receiving_location']['street'] ,
+      location: LocationEntity(lon: json['receiving_location']['longitude'], lat: json['receiving_location']['latitude'])
+    );
+  }
+}
+class ProfileMyProductsModel {
+  final int id;
+  final String? code;
+  final int userId;
+  final String description;
+  final String age;
+  final dynamic weight;
+  final dynamic carat;
+  final int subcategoryId;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
+  final dynamic addition;
+  final String? details;
+  final String? manufacturer;
+  final String deliveryType;
+  final String? offerDescription;
+  final dynamic discountValue;
+  final String productStatus;
+  final dynamic price;
+  final dynamic priceAfterDiscount;
+  final List<dynamic> images;
+  final List<String> phoneNumbers;
+
+  ProfileMyProductsModel({
+    required this.id,
+    this.code,
+    required this.userId,
+    required this.description,
+    required this.age,
+    required this.weight,
+    required this.carat,
+    required this.subcategoryId,
+    required this.currentGoldPrice,
+    required this.profit,
+    required this.addition,
+    this.details,
+    this.manufacturer,
+    required this.deliveryType,
+    this.offerDescription,
+    this.discountValue,
+    required this.productStatus,
+    required this.price,
+    required this.priceAfterDiscount,
+    required this.images,
+    required this.phoneNumbers,
+  });
+
+  factory ProfileMyProductsModel.fromJson({required Map<String, dynamic> json}) {
+    List<String> myPhoneNumbers = [];
+    json['product']['phone_numbers'].map((e) => myPhoneNumbers.add(e['phone_number'])).toList();
+    return ProfileMyProductsModel(
+      id: json['product']['id'],
+      code: json['product']['code'],
+      userId: json['product']['user_id'],
+      description: json['product']['description'],
+      age: json['product']['age'],
+      weight: json['product']['wight'],
+      carat: json['product']['carat'],
+      subcategoryId: json['product']['subcategory_id'],
+      currentGoldPrice: json['product']['current_gold_price'],
+      profit: json['product']['profit'],
+      addition: json['product']['addition'],
+      details: json['product']['details'],
+      manufacturer: json['product']['manufacture'],
+      deliveryType: json['product']['delivery_type'],
+      offerDescription: json['product']['offer_description'],
+      productStatus: json['product']['product_status'],
+      price: json['product']['price'],
+      priceAfterDiscount: json['product']['price_after_discount'],
+      images: json['product']['images'],
+      phoneNumbers: myPhoneNumbers,
     );
   }
 }

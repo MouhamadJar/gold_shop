@@ -1,14 +1,17 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart'as dio;
+import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/texts/words.dart';
+import 'package:gold_shop/module/main/user/view/main_screen_view.dart';
 import 'package:gold_shop/module/product_payment_method/model/product_payment_method_model.dart';
 
 import '../../../core/network/dio_helper.dart';
 
-class ProductPaymentMethodController extends GetxController {
+class UpdateProductPaymentMethodController extends GetxController {
   bool inPerson = true;
   bool withMediatorShop = false;
   bool mediatorShopBetween = false;
@@ -20,6 +23,7 @@ class ProductPaymentMethodController extends GetxController {
   int phoneNumberCount = 1;
   List<StoresModel> storesModel=[];
   int? selectedStoreId;
+  bool updateLoader = true;
 
   void addPhoneNumber(){
     phoneNumberCount<3?phoneNumberCount ++:phoneNumberCount = 3;
@@ -76,11 +80,9 @@ class ProductPaymentMethodController extends GetxController {
   }
 
 
-  // listImagePath.forEach((element) async {
-  //   tmp.add(await dio.MultipartFile.fromFile(element.path));
-  // });
 
-void addProduct({
+void updateProduct({
+  required int productId,
   required List<File> images,
   required String descriptionController,
   required String ageController,
@@ -98,7 +100,8 @@ void addProduct({
   required double discountValueController,
   required String offerDescriptionController,
 }) async {
- Map<String,dynamic> data =  await DioHelper.store(
+ Map<String,dynamic> data =  await DioHelper.update(
+    productId: productId,
     images: images,
     description: descriptionController,
     age: ageController,
@@ -118,7 +121,19 @@ void addProduct({
     discountToggle:  discountToggle,
     discountValue: discountValueController,
     offerDescription: offerDescriptionController,
-  );
+  ).then((value) {
+    update();
+    if(value.isEmpty || value == null){
+      Get.snackbar(AppWord.warning, AppWord.checkInternet);
+      update();
+      return {};
+    }else{
+      updateLoader = false;
+      Get.snackbar(AppWord.done, '');
+      update();
+      return {};
+    }
+ });
   update();
 }
 

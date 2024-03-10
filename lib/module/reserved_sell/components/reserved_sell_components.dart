@@ -27,6 +27,7 @@ class ReservedSellProcessDetails extends StatelessWidget {
             width: ScreenDimensions.widthPercentage(context, 20),
             child: Text(
               subtitle,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFonts.smallTitleFont(context),
               ),

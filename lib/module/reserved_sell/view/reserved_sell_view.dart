@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import 'package:gold_shop/core/components/problem_dialog.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/buy_order/view/buy_order_view.dart';
 import 'package:gold_shop/module/reserved_sell/components/reserved_sell_components.dart';
 import 'package:gold_shop/module/reserved_sell/controller/reserved_sell_controller.dart';
@@ -42,7 +44,7 @@ final int productId;
               controller.getProductDetails(productId: productId);
             },
             builder: (_) {
-              return SizedBox(
+              return controller.isLoading?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):SizedBox(
                 width: ScreenDimensions.screenWidth(context),
                 height: ScreenDimensions.screenHeight(context),
                 child: Column(
@@ -51,19 +53,23 @@ final int productId;
                     SizedBox(
                       height: ScreenDimensions.heightPercentage(context, 3),
                     ),
-                    AdvertisementBanner(
+                    controller.isSubcategoryLoading
+                        ? CircularProgressIndicator(color: CustomColors.gold,)
+                        :controller.isBannersEmpty
+                        ?const SizedBox.shrink()
+                        :AdvertisementBanner(
                       itemBuilder: (context, index, realIndex) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Expanded(
                             child: AppNetworkImage(
-                              '',
+                              baseUrlImages + controller.subcategoriesADVS[index].image,
                               fit: BoxFit.fitHeight,
                             ),
                           ),
                           Expanded(
                             child: Text(
-                              '',
+                              controller.subcategoriesADVS[index].paragraph,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                   color: Colors.white,
@@ -72,7 +78,7 @@ final int productId;
                           ),
                         ],
                       ),
-                      itemCount: 0,
+                      itemCount: controller.subcategoriesADVS.length,
                     ),
                     Expanded(
                       child: SingleChildScrollView(
@@ -104,8 +110,7 @@ final int productId;
                             GestureDetector(
                               onTap: () {
                                 Get.dialog(InteractiveViewer(
-                                    child:
-                                    SvgPicture.asset(AppImages.bannerImage1)));
+                                    child: AppNetworkImage(baseUrlImages + controller.model!.images.first['image'])));
                               },
                               child: Container(
                                 padding: EdgeInsetsDirectional.symmetric(
@@ -113,28 +118,15 @@ final int productId;
                                   ScreenDimensions.heightPercentage(context, 2),
                                 ),
                                 width: ScreenDimensions.screenWidth(context),
-                                height:
-                                ScreenDimensions.heightPercentage(context, 25),
-                                child: SvgPicture.asset(AppImages.bannerImage1),
+                                height: ScreenDimensions.heightPercentage(context, 25),
+                                child: AppNetworkImage(baseUrlImages + controller.model!.images.first['image']),
                               ),
                             ),
                             SizedBox(
                               height:
                               ScreenDimensions.heightPercentage(context, 10),
-                              child: const ProductImages(
-                                itemCount: 5,
-                              ),
-                            ),
-                            SizedBox(
-                              height: ScreenDimensions.heightPercentage(context, 4),
-                              width: ScreenDimensions.screenWidth(context),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  ScrollingContainer(color: CustomColors.white),
-                                  ScrollingContainer(color: CustomColors.yellow),
-                                  ScrollingContainer(color: CustomColors.white),
-                                ],
+                              child:  ProductImages(image: controller.model!.images,
+                                itemCount: controller.model!.images.length,
                               ),
                             ),
                             Directions(
@@ -146,7 +138,7 @@ final int productId;
                                     MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        'GN12345',
+                                        controller.model!.code!,
                                         style: TextStyle(
                                           fontSize: AppFonts.subTitleFont(context),
                                           color: CustomColors.black,
@@ -159,10 +151,7 @@ final int productId;
                                                   text: '${AppWord.productName} ',
                                                 ),
                                                 TextSpan(
-                                                  text: '${AppWord.caliber} ',
-                                                ),
-                                                const TextSpan(
-                                                  text: '18',
+                                                  text: '${controller.model!.carat} ',
                                                 ),
                                               ],
                                               style: TextStyle(
@@ -171,17 +160,12 @@ final int productId;
                                                       context)))),
                                     ],
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: ScreenDimensions.heightPercentage(
-                                            context, 1)),
-                                    child: Text(
-                                      AppWord.description,
-                                      style: TextStyle(
-                                          fontSize:
-                                          AppFonts.smallTitleFont(context)),
-                                    ),
-                                  ),
+                                  Text(
+                                    controller.model!.description,
+                                    style: TextStyle(
+                                        fontSize:
+                                        AppFonts.smallTitleFont(context)),
+                                  ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
                                   Text(
                                     AppWord.productDetails,
                                     style: TextStyle(
@@ -193,28 +177,28 @@ final int productId;
                                               color: CustomColors.shadow),
                                         ]),
                                   ),
-                                  Details(details: AppWord.details,
+                                  Details(
+                                      details: controller.model!.manufacturer!,
                                       title: AppWord.manufacturer,
                                       picPath: AppImages.building),
-                                  Details(details: AppWord.details,
+                                  Details(details: controller.model!.age.toString(),
                                       title: AppWord.age, picPath: AppImages.age),
-                                  Details(details: AppWord.details,
+                                  Details(details: controller.model!.weight.toString(),
                                       title: AppWord.weight,
                                       picPath: AppImages.weightScale),
-                                  Details(details: AppWord.details,
+                                  Details(details: controller.model!.currentGoldPrice.toString(),
                                       title: AppWord.gramPrice,
                                       picPath: AppImages.priceTag),
-                                  Details(details: AppWord.details,
+                                  Details(details: controller.model!.price.toString(),
                                       title: AppWord.productPrice,
                                       picPath: AppImages.priceTag),
-                                  Details(details: AppWord.details,
+                                  Details(details: controller.model!.carat,
                                       title: AppWord.productCalibre,
                                       picPath: AppImages.scale),
                                 ],
                               ),
                             ).paddingSymmetric(
-                                horizontal:
-                                ScreenDimensions.widthPercentage(context, 5)),
+                                horizontal: ScreenDimensions.widthPercentage(context, 5)),
                             Directions(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -233,60 +217,58 @@ final int productId;
                                   ReservedSellProcessDetails(
                                       title: AppWord.amountPaid,
                                       subtitle: AppWord.sad,
-                                      amount: '2310'),
+                                      amount:(controller.model!.price+controller.appCommission).toString()),
                                   ReservedSellProcessDetails(
                                       title: AppWord.productPrice,
                                       subtitle: AppWord.sad,
-                                      amount: '2000'),
+                                      amount: controller.model!.price.toString()),
                                   ReservedSellProcessDetails(
                                       title: AppWord.gramPrice,
                                       subtitle: AppWord.sad,
-                                      amount: '300'),
+                                      amount: controller.model!.currentGoldPrice.toString()),
                                   ReservedSellProcessDetails(
                                       title: AppWord.appServiceCost,
                                       subtitle: AppWord.sad,
-                                      amount: '10'),
+                                      amount: controller.appCommission.toString()),
                                   ReservedSellProcessDetails(
                                     title: AppWord.buyerName,
-                                    subtitle: AppWord.buyerName,
+                                    subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
                                   ),
                                   ReservedSellProcessDetails(
                                     title: AppWord.buyerNumber,
-                                    subtitle: '904358345',
+                                    subtitle: controller.model!.phoneNumber,
                                   ),
                                 ],
                               ).paddingSymmetric(
-                                  vertical:
-                                  ScreenDimensions.heightPercentage(context, 2),
-                                  horizontal:
-                                  ScreenDimensions.widthPercentage(context, 5)),
+                                  vertical: ScreenDimensions.heightPercentage(context, 2),
+                                  horizontal: ScreenDimensions.widthPercentage(context, 5)),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(
-                                  'السعودية, المدينة المنورة , حي النبلاء',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppFonts.smallTitleFont(context)),
-                                ),
                                 SizedBox(
-                                  width:
-                                  ScreenDimensions.widthPercentage(context, 1),
+                                  width: ScreenDimensions.widthPercentage(context, 90),
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(text: ' ${controller.model!.country} '),
+                                        TextSpan(text: ' ${controller.model!.state} '),
+                                        TextSpan(text: ' ${controller.model!.city} '),
+                                        TextSpan(text: ' ${controller.model!.neighborhood} '),
+                                        TextSpan(text: ' ${controller.model!.street} '),
+                                      ],),
+                                    maxLines: 2,textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppFonts.smallTitleFont(context)),
+                                  ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                 ),
                                 SvgPicture.asset(
                                   AppImages.location,
                                 ),
                               ],
                             ),
-                            Container(
-                              width: ScreenDimensions.screenWidth(context),
-                              height:
-                              ScreenDimensions.heightPercentage(context, 15),
-                              decoration: BoxDecoration(border: Border.all()),
-                            ).paddingSymmetric(
-                                vertical:
-                                ScreenDimensions.heightPercentage(context, 2)),
+                            AppGoogleMap(markers: {controller.marker!},cameraPosition: controller.position),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -422,33 +404,59 @@ final int productId;
                                   ScreenDimensions.widthPercentage(context, 8)),
                               decoration: BoxDecoration(border: Border.all()),
                               child: TextFormField(
+                                textAlign: TextAlign.center,
+                                cursorColor: CustomColors.gold,
+                                controller: controller.sellingConfirmationController,
                                 maxLines: 5,
-                                decoration: const InputDecoration(
+                                decoration:  InputDecoration(border: InputBorder.none,hintText: AppWord.youCanFindTheCodeInBuyOrder,hintStyle: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                                   enabledBorder: InputBorder.none,
                                 ),
                               ).paddingSymmetric(
                                   horizontal:
                                   ScreenDimensions.widthPercentage(context, 7)),
                             ).paddingSymmetric(
-                                vertical:
-                                ScreenDimensions.heightPercentage(context, 2)),
-                            GestureDetector(onTap: (){
-                              Get.to( BuyOrder(orderId: controller.model!.orderId),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));
-                            },
-                              child: Container(
-                                alignment: AlignmentDirectional.center,
-                                width: ScreenDimensions.widthPercentage(context, 30),
-                                height: ScreenDimensions.heightPercentage(context, 5),
-                                decoration: BoxDecoration(border: Border.all(color: CustomColors.gold)),
-                                child: Text(
-                                  AppWord.buyOrder,
-                                  style: TextStyle(
-                                      color: CustomColors.gold,
-                                      fontSize: AppFonts.smallTitleFont(context),
-                                      fontWeight: FontWeight.bold),
+                                vertical: ScreenDimensions.heightPercentage(context, 2)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                              GestureDetector(onTap: (){
+                                Get.to( BuyOrder(orderId: controller.model!.orderId),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));
+                              },
+                                child: Container(
+                                  alignment: AlignmentDirectional.center,
+                                  width: ScreenDimensions.widthPercentage(context, 30),
+                                  height: ScreenDimensions.heightPercentage(context, 5),
+                                  decoration: BoxDecoration(border: Border.all(color: CustomColors.gold)),
+                                  child: Text(
+                                    AppWord.buyOrder,
+                                    style: TextStyle(
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.smallTitleFont(context),
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                              ),
-                            ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                              ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                              GestureDetector(
+                                onTap: (){
+                                  controller.confirmSellingProcess(productId: controller.model!.id);
+                                },
+                                child: Container(
+                                  alignment: AlignmentDirectional.center,
+                                  width: ScreenDimensions.widthPercentage(context, 30),
+                                  height: ScreenDimensions.heightPercentage(context, 5),
+                                  decoration: BoxDecoration(border: Border.all(color: CustomColors.gold),color: CustomColors.gold),
+                                  child: Text(
+                                    AppWord.confirmPayingProcess,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 2,
+                                    style: TextStyle(
+                                        color: CustomColors.white,
+                                        fontSize: AppFonts.smallTitleFont(context),
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ),
+                              ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                            ],),
                             AppButton(
                               onTap: () {},
                               text: Text(
@@ -461,8 +469,7 @@ final int productId;
                               ),
                               buttonBackground: AppImages.buttonDarkBackground,
                             ).paddingSymmetric(
-                                vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                                vertical: ScreenDimensions.heightPercentage(context, 1)),
                           ],
                         ),
                       ),

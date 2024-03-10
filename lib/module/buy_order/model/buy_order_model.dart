@@ -1,4 +1,7 @@
+import 'package:gold_shop/core/location_service/location_entity.dart';
+
 class BuyOrderModel {
+  final LocationEntity location;
   final int buyerId;
   final String buyerFirstName;
 
@@ -62,6 +65,7 @@ class BuyOrderModel {
     this.productPrice,
     required this.images,
     required this.orderCode,
+    required this.location,
   });
 
   factory BuyOrderModel.fromJson({required Map<String, dynamic> json}) {
@@ -87,6 +91,7 @@ class BuyOrderModel {
       carat: json['product']['carat'],
       productPrice: json['product_price'],
       orderCode: json['order_code'],
+      location: LocationEntity(lon: json['seller']['longitude'], lat: json['seller']['latitude']),
     );
   }
 }

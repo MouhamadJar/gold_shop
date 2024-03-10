@@ -6,6 +6,7 @@ import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/components/problem_dialog.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/ads_product/controller/ads_product_controller.dart';
+import 'package:gold_shop/module/update_product/view/update_product_view.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/images/images.dart';
 import '../../../../core/texts/words.dart';
@@ -58,7 +59,7 @@ class AdsProduct extends GetView<AdsProductController> {
                         SizedBox(
                           height: ScreenDimensions.heightPercentage(context, 3),
                         ),
-                        controller .isBannersEmpty ?const SizedBox.shrink():AdvertisementBanner(
+                        controller.isSubcategoryLoading?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):controller.isBannersEmpty ?const SizedBox.shrink():AdvertisementBanner(
                           itemBuilder: (context, index, realIndex) => Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -243,7 +244,7 @@ class AdsProduct extends GetView<AdsProductController> {
                                       AdsProcessDetails(
                                           title: AppWord.amountPaid,
                                           subtitle: AppWord.sad,
-                                          amount: (controller.model!.price+controller.model!.currentGoldPrice+controller.model!.profit).toString()),
+                                          amount: (controller.model!.price+controller.appCommission).toString()),
                                       AdsProcessDetails(
                                           title: AppWord.productPrice,
                                           subtitle: AppWord.sad,
@@ -255,50 +256,47 @@ class AdsProduct extends GetView<AdsProductController> {
                                       AdsProcessDetails(
                                           title: AppWord.appServiceCost,
                                           subtitle: AppWord.sad,
-                                          amount: controller.model!.profit.toString()),
-                                      AdsProcessDetails(
-                                        title: AppWord.vendorName,
-                                        subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
-                                      ),
-                                      AdsProcessDetails(
-                                        title: AppWord.vendorNumber,
-                                        subtitle: controller.model!.phoneNumber,
-                                      ),
+                                          amount: controller.appCommission.toString()),
+                                      const PhoneNumbersFields()
                                     ],
                                   ).paddingSymmetric(
                                       vertical:
-                                          ScreenDimensions.heightPercentage(
-                                              context, 2),
+                                          ScreenDimensions.heightPercentage(context, 2),
                                       horizontal:
-                                          ScreenDimensions.widthPercentage(
-                                              context, 5)),
+                                          ScreenDimensions.widthPercentage(context, 5)),
                                 ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      'السعودية, المدينة المنورة , حي النبلاء',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize:
-                                              AppFonts.smallTitleFont(context)),
-                                    ),
-                                    SizedBox(
-                                      width: ScreenDimensions.widthPercentage(
-                                          context, 1),
-                                    ),
-                                    SvgPicture.asset(
-                                      AppImages.location,
-                                    ),
-                                  ],
-                                ),
-                                Container(
-                                  width: ScreenDimensions.screenWidth(context),
-                                  height: ScreenDimensions.heightPercentage(
-                                      context, 15),
-                                  decoration:
-                                      BoxDecoration(border: Border.all()),
-                                ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                                // Row(
+                                //   mainAxisAlignment: MainAxisAlignment.end,
+                                //   children: [
+                                //     SizedBox(
+                                //       width: ScreenDimensions.widthPercentage(context, 90),
+                                //       child: Text.rich(
+                                //         TextSpan(
+                                //           children: [
+                                //             TextSpan(text: ' ${controller.model!.country} '),
+                                //             TextSpan(text: ' ${controller.model!.state} '),
+                                //             TextSpan(text: ' ${controller.model!.city} '),
+                                //             TextSpan(text: ' ${controller.model!.neighborhood} '),
+                                //             TextSpan(text: ' ${controller.model!.street} '),
+                                //           ],),
+                                //         maxLines: 2,textAlign: TextAlign.center,
+                                //         style: TextStyle(
+                                //             fontWeight: FontWeight.bold,
+                                //             fontSize: AppFonts.smallTitleFont(context)),
+                                //       ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                                //     ),
+                                //     SvgPicture.asset(
+                                //       AppImages.location,
+                                //     ),
+                                //   ],
+                                // ),
+                                // Container(
+                                //   width: ScreenDimensions.screenWidth(context),
+                                //   height: ScreenDimensions.heightPercentage(
+                                //       context, 15),
+                                //   decoration:
+                                //       BoxDecoration(border: Border.all()),
+                                // ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
                                 Directions(
                                   child: Row(
                                     mainAxisAlignment:
@@ -437,7 +435,10 @@ class AdsProduct extends GetView<AdsProductController> {
                                 ).paddingSymmetric(
                                     vertical: ScreenDimensions.heightPercentage(context, 1)),
                                 AppButton(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Get.to(UpdateProduct(productId: controller.model!.id),transition: Transition.fade,duration: const Duration(milliseconds: 700));
+                                    Get.snackbar(AppWord.warning, AppWord.updateAllInformation);
+                                  },
                                   text: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -521,7 +522,8 @@ class AdsProduct extends GetView<AdsProductController> {
                                                       if(controller.model!.productStatus =='0'){
                                                         controller.deleteProduct(productId: controller.model!.id);
                                                         return;
-                                                      }else if(controller.model!.productStatus == '3'){
+                                                      }
+                                                      else if(controller.model!.productStatus == '3'){
                                                         Future.any([
                                                           Get.dialog(Material(
                                                             color: Colors.transparent,
@@ -635,9 +637,7 @@ class AdsProduct extends GetView<AdsProductController> {
                                                       child: Text(
                                                         AppWord.yes,
                                                         style: TextStyle(
-                                                            fontSize: AppFonts
-                                                                .smallTitleFont(
-                                                                    context)),
+                                                            fontSize: AppFonts.smallTitleFont(context)),
                                                       ),
                                                     ),
                                                   ),
@@ -646,21 +646,13 @@ class AdsProduct extends GetView<AdsProductController> {
                                                       Get.back();
                                                     },
                                                     child: Container(
-                                                      alignment:
-                                                          AlignmentDirectional
-                                                              .center,
-                                                      width: ScreenDimensions
-                                                          .widthPercentage(
-                                                              context, 10),
-                                                      height: ScreenDimensions
-                                                          .heightPercentage(
-                                                              context, 5),
+                                                      alignment: AlignmentDirectional.center,
+                                                      width: ScreenDimensions.widthPercentage(context, 10),
+                                                      height: ScreenDimensions.heightPercentage(context, 5),
                                                       child: Text(
                                                         AppWord.no,
                                                         style: TextStyle(
-                                                            fontSize: AppFonts
-                                                                .smallTitleFont(
-                                                                    context)),
+                                                            fontSize: AppFonts.smallTitleFont(context)),
                                                       ),
                                                     ),
                                                   ),

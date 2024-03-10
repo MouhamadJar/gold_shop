@@ -234,7 +234,7 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   PutAsidePurchaseProcessDetails(
                                       title: AppWord.amountPaid,
                                       subtitle: AppWord.sad,
-                                      amount: (controller.model!.price+controller.model!.currentGoldPrice+controller.model!.profit).toString()),
+                                      amount: (controller.model!.price+controller.appCommission).toString()),
                                   PutAsidePurchaseProcessDetails(
                                       title: AppWord.productPrice,
                                       subtitle: AppWord.sad,
@@ -246,15 +246,15 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   PutAsidePurchaseProcessDetails(
                                       title: AppWord.appServiceCost,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.profit.toString()),
-                                  PutAsidePurchaseProcessDetails(
-                                    title: AppWord.vendorName,
-                                    subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
-                                  ),
-                                  PutAsidePurchaseProcessDetails(
-                                    title: AppWord.vendorNumber,
-                                    subtitle: controller.model!.phoneNumber,
-                                  ),
+                                      amount: controller.appCommission.toString()),
+                                  // PutAsidePurchaseProcessDetails(
+                                  //   title: AppWord.vendorName,
+                                  //   subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
+                                  // ),
+                                  // PutAsidePurchaseProcessDetails(
+                                  //   title: AppWord.vendorNumber,
+                                  //   subtitle: controller.model!.phoneNumber,
+                                  // ),
                                 ],
                               ).paddingSymmetric(
                                   vertical:
@@ -262,32 +262,39 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   horizontal:
                                       ScreenDimensions.widthPercentage(context, 5)),
                             ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(
-                                  'السعودية, المدينة المنورة , حي النبلاء',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppFonts.smallTitleFont(context)),
-                                ),
-                                SizedBox(
-                                  width:
-                                      ScreenDimensions.widthPercentage(context, 1),
-                                ),
-                                SvgPicture.asset(
-                                  AppImages.location,
-                                ),
-                              ],
-                            ),
-                            Container(
-                              width: ScreenDimensions.screenWidth(context),
-                              height:
-                                  ScreenDimensions.heightPercentage(context, 15),
-                              decoration: BoxDecoration(border: Border.all()),
-                            ).paddingSymmetric(
-                                vertical:
-                                    ScreenDimensions.heightPercentage(context, 2)),
+                            // Row(
+                            //   mainAxisAlignment: MainAxisAlignment.end,
+                            //   children: [
+                            //     // SizedBox(
+                            //     //   width: ScreenDimensions.widthPercentage(context, 90),
+                            //     //   child: Text.rich(
+                            //     //     TextSpan(
+                            //     //       children: [
+                            //     //         TextSpan(text: ' ${controller.model!.country} '),
+                            //     //         TextSpan(text: ' ${controller.model!.state} '),
+                            //     //         TextSpan(text: ' ${controller.model!.city} '),
+                            //     //         TextSpan(text: ' ${controller.model!.neighborhood} '),
+                            //     //         TextSpan(text: ' ${controller.model!.street} '),
+                            //     //       ],),
+                            //     //     maxLines: 2,textAlign: TextAlign.center,
+                            //     //     style: TextStyle(
+                            //     //         fontWeight: FontWeight.bold,
+                            //     //         fontSize: AppFonts.smallTitleFont(context)),
+                            //     //   ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                            //     // ),
+                            //     SvgPicture.asset(
+                            //       AppImages.location,
+                            //     ),
+                            //   ],
+                            // ),
+                            // Container(
+                            //   width: ScreenDimensions.screenWidth(context),
+                            //   height:
+                            //       ScreenDimensions.heightPercentage(context, 15),
+                            //   decoration: BoxDecoration(border: Border.all()),
+                            // ).paddingSymmetric(
+                            //     vertical:
+                            //         ScreenDimensions.heightPercentage(context, 2)),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -438,7 +445,7 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   child: Directions(
                                     child: AppDialog(
                                       card1: GestureDetector(
-                                        onTap: () {},
+                                        onTap: controller.pickImage,
                                         child: Container(
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.circular(
@@ -472,6 +479,7 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                       card2: Container(),
                                       onTap: () {
                                         Get.back();
+                                        controller.uploadNotificationImage();
                                         Future.any([
                                           Future.delayed(const Duration(seconds: 2))
                                               .then(

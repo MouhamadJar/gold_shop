@@ -1,25 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/location_service/extention.dart';
+import 'package:gold_shop/core/location_service/marker_entity.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../../core/components/components.dart';
 import '../../../core/network/dio_helper.dart';
 import '../../../core/texts/words.dart';
 import '../../category_products/model/category_products_model.dart';
 
-class PutAsideSellController extends GetxController{
+class PutAsideSellController extends GetxController {
 
-  bool isLoading  = true;
+  bool isLoading = true;
   bool isBannersEmpty = true;
-  ProfileProductPurchasesModel? model;
-  List<SubCategoryADVSModel> subcategoriesADVS=[];
-
+  bool isSubcategoriesLoading = true;
+  ProfilePutAsideSellsModel? model;
+  List<SubCategoryADVSModel> subcategoriesADVS = [];
+  dynamic appCommission = 0;
+CameraPosition? position ;
+MarkerEntity? marker;
+GoogleMapController? mapController;
 
 
 
   void subcategoryADVS({required int subcategoryId}) async {
+    isSubcategoriesLoading  = true;
+    update();
     Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
     data['data'].forEach((element) {subcategoriesADVS.add(SubCategoryADVSModel.fromJson(json: element));});
     subcategoriesADVS.isEmpty ? isBannersEmpty : isBannersEmpty = false;
+    isSubcategoriesLoading = false;
     update();
   }
 
@@ -27,11 +37,19 @@ class PutAsideSellController extends GetxController{
     isLoading= true;
     update();
     Map<String,dynamic> data = await DioHelper.profileListsShowProduct(productId: productId);
-    model = ProfileProductPurchasesModel.fromJson(json: data['data']);
-    isLoading = false;
+    model = ProfilePutAsideSellsModel.fromJson(json: data['data']);
     subcategoryADVS(subcategoryId: model!.subcategoryId);
+    getAppCommission();
+    position = CameraPosition(target:  model!.location.toLatLng,zoom: 10);
+    marker = MarkerEntity.fromMarkerInfo(info: MarkerInfo(markerId: model!.id.toString(),location: model!.location,subTitle: '',title: ''));
+    isLoading = false;
     update();
   }
 
 
+  void getAppCommission()async{
+    Map<String,dynamic> data = await DioHelper.appCommission();
+    appCommission = data['data']['commission'];
+    update();
+  }
 }
