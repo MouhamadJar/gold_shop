@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import 'package:gold_shop/core/components/problem_dialog.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/buy_order/view/buy_order_view.dart';
@@ -248,7 +249,7 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                       PurchaseProcessDetails(
                                           title: AppWord.amountPaid,
                                           subtitle: AppWord.sad,
-                                          amount: (controller.model!.profit+controller.model!.price+controller.model!.currentGoldPrice).toString()),
+                                          amount: (controller.model!.price+controller.appCommission).toString()),
                                       PurchaseProcessDetails(
                                           title: AppWord.productPrice,
                                           subtitle: AppWord.sad,
@@ -260,7 +261,7 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                       PurchaseProcessDetails(
                                           title: AppWord.appServiceCost,
                                           subtitle: AppWord.sad,
-                                          amount: controller.model!.profit.toString()),
+                                          amount: controller.appCommission.toString()),
                                       PurchaseProcessDetails(
                                         title: AppWord.vendorName,
                                         subtitle: '${controller.model!.firstName}  ${controller.model!.lastName}',
@@ -281,31 +282,38 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      'السعودية, المدينة المنورة , حي النبلاء',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize:
-                                              AppFonts.smallTitleFont(context)),
-                                    ),
                                     SizedBox(
-                                      width: ScreenDimensions.widthPercentage(
-                                          context, 1),
+                                      width: ScreenDimensions.widthPercentage(context, 90),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(text: ' ${controller.model!.country} '),
+                                            TextSpan(text: ' ${controller.model!.state} '),
+                                            TextSpan(text: ' ${controller.model!.city} '),
+                                            TextSpan(text: ' ${controller.model!.neighborhood} '),
+                                            TextSpan(text: ' ${controller.model!.street} '),
+                                          ],),
+                                        maxLines: 2,textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: AppFonts.smallTitleFont(context)),
+                                      ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                     ),
                                     SvgPicture.asset(
                                       AppImages.location,
                                     ),
                                   ],
                                 ),
-                                Container(
-                                  width: ScreenDimensions.screenWidth(context),
-                                  height: ScreenDimensions.heightPercentage(
-                                      context, 15),
-                                  decoration:
-                                      BoxDecoration(border: Border.all()),
-                                ).paddingSymmetric(
-                                    vertical: ScreenDimensions.heightPercentage(
-                                        context, 2)),
+                                AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}),
+                                // Container(
+                                //   width: ScreenDimensions.screenWidth(context),
+                                //   height: ScreenDimensions.heightPercentage(
+                                //       context, 15),
+                                //   decoration:
+                                //       BoxDecoration(border: Border.all()),
+                                // ).paddingSymmetric(
+                                //     vertical: ScreenDimensions.heightPercentage(
+                                //         context, 2)),
                                 Directions(
                                   child: Row(
                                     mainAxisAlignment:
@@ -591,7 +599,77 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                     vertical: ScreenDimensions.heightPercentage(
                                         context, 1)),
                                 AppButton(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Get.dialog(Material(
+                                      color: Colors.transparent,
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaY: 10, sigmaX: 10),
+                                        child: Container(
+                                          color: CustomColors.white,
+                                          margin: EdgeInsetsDirectional.only(
+                                            top: ScreenDimensions
+                                                .heightPercentage(context, 5),
+                                            start: ScreenDimensions
+                                                .widthPercentage(context, 5),
+                                            end: ScreenDimensions
+                                                .widthPercentage(context, 5),
+                                            bottom: ScreenDimensions
+                                                .heightPercentage(context, 70),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                            children: [
+                                              Text(
+                                                AppWord.areYouSureYouWantToResell,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                    AppFonts.smallTitleFont(
+                                                        context)),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Get.back();
+                                                      controller.resellRequest(orderId: controller.model!.orderId);
+                                                    },
+                                                    child: Container(
+                                                      alignment: AlignmentDirectional.center,
+                                                      width: ScreenDimensions.widthPercentage(context, 10),
+                                                      height: ScreenDimensions.heightPercentage(context, 5),
+                                                      child: Text(
+                                                        AppWord.yes,
+                                                        style: TextStyle(
+                                                            fontSize: AppFonts.smallTitleFont(context)),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Get.back();
+                                                    },
+                                                    child: Container(
+                                                      alignment: AlignmentDirectional.center,
+                                                      width: ScreenDimensions.widthPercentage(context, 10),
+                                                      height: ScreenDimensions.heightPercentage(context, 5),
+                                                      child: Text(
+                                                        AppWord.no,
+                                                        style: TextStyle(
+                                                            fontSize: AppFonts.smallTitleFont(context)),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ));
+                                  },
                                   text: Text(
                                     AppWord.resellRequest,
                                     style: TextStyle(

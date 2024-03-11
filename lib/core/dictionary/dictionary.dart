@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:gold_shop/core/texts/words.dart';
-
 class Dictionary extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
@@ -150,7 +149,7 @@ class Dictionary extends Translations {
               'You cant delete the product, the product is sold',
           AppWord.youCantDeleteProductReserved:
               'You cant delete the product, the product is reserved',
-          AppWord.deleteRequestHasBeenSent: 'Delete request has been sent',
+          AppWord.deleted: 'Delete request has been sent',
           AppWord.uploadProfilePicture: 'Upload profile picture',
           AppWord.firstName: 'First name',
           AppWord.lastName: 'Last name',
@@ -276,7 +275,19 @@ class Dictionary extends Translations {
           AppWord.checkInternet: 'check your internet connection',
           AppWord.codeNotCorrect: 'check the code please',
           AppWord.checkProduct: 'check product',
-
+          AppWord.checkInternet: 'Check your internet connection',
+          AppWord.codeNotCorrect: 'Check the code please',
+          AppWord.checkAllRequiredFields: 'Please make sure that you filled all the required information',
+          AppWord.notificationUploadedSuccessfully: 'Notification image have been uploaded successfully',
+          AppWord.theFieldShouldNotBeEmpty: 'Make sure that you filled paying process confirmation code',
+          AppWord.productSoldSuccessfully: 'Product have been sold successfully',
+          AppWord.youCanFindTheCodeInBuyOrder: 'You can find confirmation code in buy order',
+          AppWord.chooseTheMediatorCarefully: 'Please choose the mediator shop carefully',
+          AppWord.choose: 'Choose',
+          AppWord.cancel: 'Cancel',
+          AppWord.editProduct: 'Edit product',
+          AppWord.updateAllInformation: 'Please enter the entire information again',
+          AppWord.areYouSureYouWantToResell: 'Are you sure that you want to resell this product',
         },
         'ar': {
           AppWord.checkProduct : AppWord.checkProduct,
@@ -420,7 +431,7 @@ class Dictionary extends Translations {
           AppWord.youCantDeleteProductSold: AppWord.youCantDeleteProductSold,
           AppWord.youCantDeleteProductReserved:
               AppWord.youCantDeleteProductReserved,
-          AppWord.deleteRequestHasBeenSent: AppWord.deleteRequestHasBeenSent,
+          AppWord.deleted: AppWord.deleted,
           AppWord.uploadProfilePicture: AppWord.uploadProfilePicture,
           AppWord.firstName: AppWord.firstName,
           AppWord.lastName: AppWord.lastName,
@@ -535,6 +546,19 @@ class Dictionary extends Translations {
           AppWord.pleaseConfirmYourPurchase: AppWord.pleaseConfirmYourPurchase,
           AppWord.youMustPayADeposit: AppWord.youMustPayADeposit,
           AppWord.messageSentSuccessfully: AppWord.messageSentSuccessfully,
+          AppWord.checkInternet: AppWord.checkInternet,
+          AppWord.codeNotCorrect: AppWord.codeNotCorrect,
+          AppWord.checkAllRequiredFields: AppWord.checkAllRequiredFields,
+          AppWord.notificationUploadedSuccessfully: AppWord.notificationUploadedSuccessfully,
+          AppWord.theFieldShouldNotBeEmpty: AppWord.theFieldShouldNotBeEmpty,
+          AppWord.productSoldSuccessfully: AppWord.productSoldSuccessfully,
+          AppWord.youCanFindTheCodeInBuyOrder: AppWord.youCanFindTheCodeInBuyOrder,
+          AppWord.chooseTheMediatorCarefully: AppWord.chooseTheMediatorCarefully,
+          AppWord.choose: AppWord.choose,
+          AppWord.cancel: AppWord.cancel,
+          AppWord.editProduct: AppWord.editProduct,
+          AppWord.updateAllInformation: AppWord.updateAllInformation,
+          AppWord.areYouSureYouWantToResell: AppWord.areYouSureYouWantToResell,
         }
       };
 }

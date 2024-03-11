@@ -51,7 +51,7 @@ class MyPutAsideSellsCard extends GetView<MyPutAsideSellsController> {
         itemCount: controller.products.length,
         itemBuilder: (context, index) => GestureDetector(
           onTap: () {
-            Get.to(const PutAsideSell(),
+            Get.to( PutAsideSell(productId: controller.products[index]['id']),
                 transition: Transition.fadeIn,
                 duration: const Duration(milliseconds: 500));
           },

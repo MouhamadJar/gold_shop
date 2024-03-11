@@ -72,9 +72,9 @@ class EndPoints {
   static String storeIndexCity = '/api/app/stores?city=mazeh';
 
   static String store = '/api/app/products';
-  static String restoreOrResell = '/api/app/products/restore/14';
+  static String restoreOrResell = '/api/app/products/restore/';
   static String show = '/api/app/products/';
-  static String update = '/api/app/products/14';
+  static String update = '/api/app/products/';
   static String delete = '/api/app/products/';
 
 //app problems
@@ -91,7 +91,7 @@ class EndPoints {
 
 //app orders
   static String onHold = '/api/app/orders/on/hold/';
-  static String sale = '/api/app/orders/sale/14';
+  static String sale = '/api/app/orders/sale/';
   static String paymentInfo = '/api/app/details/payment';
   static String bankInfo = '/api/app/details/bank';
   static String notificationImage = '/api/app/orders/horror/image/';

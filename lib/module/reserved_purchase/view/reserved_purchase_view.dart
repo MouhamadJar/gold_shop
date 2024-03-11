@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import 'package:gold_shop/core/components/problem_dialog.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/buy_order/view/buy_order_view.dart';
@@ -229,7 +230,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                   ReservedPurchaseProcessDetails(
                                       title: AppWord.amountPaid,
                                       subtitle: AppWord.sad,
-                                      amount: (controller.model!.price+controller.model!.currentGoldPrice+controller.model!.profit).toString()),
+                                      amount: (controller.model!.price+controller.appCommission).toString()),
                                   ReservedPurchaseProcessDetails(
                                       title: AppWord.productPrice,
                                       subtitle: AppWord.sad,
@@ -241,7 +242,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                   ReservedPurchaseProcessDetails(
                                       title: AppWord.appServiceCost,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.profit.toString()),
+                                      amount: controller.appCommission.toString()),
                                   ReservedPurchaseProcessDetails(
                                     title: AppWord.vendorName,
                                     subtitle: '${controller.model!.firstName}  ${controller.model!.lastName}',
@@ -260,29 +261,29 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(
-                                  'السعودية, المدينة المنورة , حي النبلاء',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppFonts.smallTitleFont(context)),
-                                ),
                                 SizedBox(
-                                  width:
-                                      ScreenDimensions.widthPercentage(context, 1),
+                                  width: ScreenDimensions.widthPercentage(context, 90),
+                                  child: Text.rich(
+                                    TextSpan(
+                                    children: [
+                                      TextSpan(text: ' ${controller.model!.country} '),
+                                      TextSpan(text: ' ${controller.model!.state} '),
+                                      TextSpan(text: ' ${controller.model!.city} '),
+                                      TextSpan(text: ' ${controller.model!.neighborhood} '),
+                                      TextSpan(text: ' ${controller.model!.street} '),
+                                    ],),
+                                    maxLines: 2,textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppFonts.smallTitleFont(context)),
+                                  ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                 ),
                                 SvgPicture.asset(
                                   AppImages.location,
                                 ),
                               ],
                             ),
-                            Container(
-                              width: ScreenDimensions.screenWidth(context),
-                              height:
-                                  ScreenDimensions.heightPercentage(context, 15),
-                              decoration: BoxDecoration(border: Border.all()),
-                            ).paddingSymmetric(
-                                vertical:
-                                    ScreenDimensions.heightPercentage(context, 2)),
+                            AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -430,8 +431,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                               ),
                               buttonBackground: AppImages.buttonDarkBackground,
                             ).paddingSymmetric(
-                                vertical:
-                                    ScreenDimensions.heightPercentage(context, 1)),
+                                vertical: ScreenDimensions.heightPercentage(context, 1)),
                           ],
                         ),
                       ),

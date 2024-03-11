@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import 'package:gold_shop/core/components/problem_dialog.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/buy_order/view/buy_order_view.dart';
@@ -252,7 +253,7 @@ class SoldProduct extends GetView<SoldProductController> {
                                       SoldProcessDetails(
                                           title: AppWord.amountPaid,
                                           subtitle: AppWord.sad,
-                                          amount: (controller.model!.price + controller.model!.profit+controller.model!.currentGoldPrice).toString()),
+                                          amount: (controller.model!.price + controller.appCommission).toString()),
                                       SoldProcessDetails(
                                           title: AppWord.productPrice,
                                           subtitle: AppWord.sad,
@@ -264,7 +265,7 @@ class SoldProduct extends GetView<SoldProductController> {
                                       SoldProcessDetails(
                                           title: AppWord.appServiceCost,
                                           subtitle: AppWord.sad,
-                                          amount: controller.model!.profit.toString()),
+                                          amount: controller.appCommission.toString()),
                                       SoldProcessDetails(
                                         title: AppWord.buyerName,
                                         subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
@@ -281,30 +282,31 @@ class SoldProduct extends GetView<SoldProductController> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      'السعودية, المدينة المنورة , حي النبلاء',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize:
-                                              AppFonts.smallTitleFont(context)),
-                                    ),
                                     SizedBox(
-                                      width: ScreenDimensions.widthPercentage(
-                                          context, 1),
+                                      width: ScreenDimensions.widthPercentage(context, 90),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(text: ' ${controller.model!.country} '),
+                                            TextSpan(text: ' ${controller.model!.state} '),
+                                            TextSpan(text: ' ${controller.model!.city} '),
+                                            TextSpan(text: ' ${controller.model!.neighborhood} '),
+                                            TextSpan(text: ' ${controller.model!.street} '),
+                                          ],),
+                                        maxLines: 2,textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: AppFonts.smallTitleFont(context)),
+                                      ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                     ),
                                     SvgPicture.asset(
                                       AppImages.location,
                                     ),
                                   ],
                                 ),
-                                Container(
-                                  width: ScreenDimensions.screenWidth(context),
-                                  height: ScreenDimensions.heightPercentage(
-                                      context, 15),
-                                  decoration:
-                                      BoxDecoration(border: Border.all()),
-                                ).paddingSymmetric(
-                                    vertical: ScreenDimensions.heightPercentage(context, 2)),
+                                AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}).paddingSymmetric(
+                                    vertical: ScreenDimensions.heightPercentage(
+                                        context, 2)),
                                 Directions(
                                   child: Row(
                                     mainAxisAlignment:
@@ -567,32 +569,6 @@ class SoldProduct extends GetView<SoldProductController> {
                                   ),
                                   buttonBackground:
                                       AppImages.buttonDarkBackground,
-                                ).paddingSymmetric(
-                                    vertical: ScreenDimensions.heightPercentage(
-                                        context, 1)),
-                                AppButton(
-                                  onTap: () {},
-                                  text: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        AppWord.editProductInfo,
-                                        style: TextStyle(
-                                          color: CustomColors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize:
-                                              AppFonts.smallTitleFont(context),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width: ScreenDimensions.widthPercentage(
-                                            context, 2),
-                                      ),
-                                      SvgPicture.asset(AppImages.edit),
-                                    ],
-                                  ),
-                                  buttonBackground:
-                                      AppImages.buttonLiteBackground,
                                 ).paddingSymmetric(
                                     vertical: ScreenDimensions.heightPercentage(
                                         context, 1)),

@@ -50,9 +50,11 @@ class InvoiceController extends GetxController{
   }
 
   void getInvoiceData ({required int orderId})async{
+    isLoading = true;
+    update();
+    getAppCommission();
     Map<String,dynamic> data = await DioHelper.invoice(orderId: orderId);
    invoiceModel = InvoiceModel.fromJson(json: data['data']);
-   getAppCommission();
    isLoading= false;
    update();
   }
@@ -75,6 +77,7 @@ class InvoiceController extends GetxController{
       return;
     });
   }
+
   void uploadNotificationImage({required int orderId})async{
     await DioHelper.notificationImage(orderId: invoiceModel!.id, image: image!.path).then((value) {
       if (value['errors'] != null) {
@@ -82,9 +85,10 @@ class InvoiceController extends GetxController{
         return;
       } else {
         Get.offAll(const MainScreen());
-        Get.snackbar(AppWord.done, AppWord.editProfile);
+        Get.snackbar(AppWord.done, AppWord.notificationUploadedSuccessfully);
         return;
       }
     });
+    update();
   }
 }

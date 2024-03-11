@@ -140,7 +140,7 @@ class MyReservedSellsCard extends GetView<MyReservedSellsController> {
                           Positioned(
                             top: ScreenDimensions.heightPercentage(context, 0),
                             child: AppNetworkImage(baseUrlImages +
-                                controller.products[index]['images']['image'][0],
+                                controller.products[index]['images'][0]['image'],
                               width: ScreenDimensions.widthPercentage(context, 20),
                               height: ScreenDimensions.heightPercentage(context, 15),),
                           ),

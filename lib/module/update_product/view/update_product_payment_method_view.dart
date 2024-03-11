@@ -10,11 +10,13 @@ import 'package:gold_shop/core/images/images.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
-import 'package:gold_shop/module/product_payment_method/controller/product_payment_method_controller.dart';
+import '../../main/user/view/main_screen_view.dart';
+import '../controller/update_product_payment_method_controller.dart';
 
-class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
-   const ProductPaymentMethod({
+class UpdateProductPaymentMethod extends GetView<UpdateProductPaymentMethodController> {
+   const UpdateProductPaymentMethod({
     super.key,
+    required this.productId,
     required this.images,
     required this.descriptionController,
     required this.ageController,
@@ -23,15 +25,16 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
     required this.caliber,
     required this.profitController,
     required this.currentGoldPrice,
-     this.additionController,
-     this.additionDescriptionController,
+    this.additionController,
+    this.additionDescriptionController,
     required this.manufacturerController,
     required this.manufacturerType,
-     this.toggle,
-     this.discountToggle,
-     this.discountDescriptionController,
-     this.discountValueController,
+    this.toggle,
+    this.discountToggle,
+    this.discountDescriptionController,
+    this.discountValueController,
   });
+  final int productId;
   final List<File> images;
   final TextEditingController descriptionController;
   final TextEditingController ageController;
@@ -50,8 +53,8 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
   final double? discountValueController;
   @override
   Widget build(BuildContext context) {
-    Get.put(ProductPaymentMethodController());
-    return GetBuilder<ProductPaymentMethodController>(builder: (_) {
+    Get.put(UpdateProductPaymentMethodController());
+    return GetBuilder<UpdateProductPaymentMethodController>(builder: (_) {
       return Directions(
         child: SafeArea(
           child: Scaffold(
@@ -89,7 +92,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                             fontSize: AppFonts.smallTitleFont(context),
                             fontWeight: FontWeight.bold),
                       ),
-                      GetBuilder<ProductPaymentMethodController>(builder: (_) {
+                      GetBuilder<UpdateProductPaymentMethodController>(builder: (_) {
                         return Checkbox(
                           value: controller.inPerson,
                           onChanged: (value) {
@@ -115,7 +118,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                             fontSize: AppFonts.smallTitleFont(context),
                             fontWeight: FontWeight.bold),
                       ),
-                      GetBuilder<ProductPaymentMethodController>(builder: (_) {
+                      GetBuilder<UpdateProductPaymentMethodController>(builder: (_) {
                         return Checkbox(
                           value: controller.withMediatorShop,
                           onChanged: (value) {
@@ -154,7 +157,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                                           AppFonts.smallTitleFont(context),
                                       fontWeight: FontWeight.bold),
                                 ),
-                                GetBuilder<ProductPaymentMethodController>(
+                                GetBuilder<UpdateProductPaymentMethodController>(
                                     builder: (_) {
                                   return Checkbox(
                                     value: controller.mediatorShopBetween,
@@ -180,7 +183,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                                           AppFonts.smallTitleFont(context),
                                       fontWeight: FontWeight.bold),
                                 ),
-                                GetBuilder<ProductPaymentMethodController>(
+                                GetBuilder<UpdateProductPaymentMethodController>(
                                     builder: (_) {
                                   return Checkbox(
                                     value: controller.mediatorShopFromPlatform,
@@ -596,7 +599,7 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                           fontSize: AppFonts.smallTitleFont(context),
                           fontWeight: FontWeight.bold),
                     ),
-                      GetBuilder<ProductPaymentMethodController>(
+                      GetBuilder<UpdateProductPaymentMethodController>(
                         builder: (_) {
                           return Checkbox(value: controller.privacyCheck, onChanged: (value){
                             controller.privacyCheck= value!;
@@ -615,7 +618,8 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                               fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
-                          controller.addProduct(
+                          controller.updateProduct(
+                              productId: productId,
                               images: images,
                               descriptionController: descriptionController.text,
                               ageController: ageController.text,
@@ -633,6 +637,9 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                               discountValueController: discountValueController!,
                               offerDescriptionController: discountDescriptionController!.text,
                           );
+                          if(controller.updateLoader){
+                            Get.offAll(const MainScreen(),transition:  Transition.fade,duration: const Duration(milliseconds: 700));
+                          }
                         },
                         buttonBackground: AppImages.buttonLiteBackground),
                   ):Center(

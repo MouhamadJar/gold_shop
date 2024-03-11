@@ -11,7 +11,6 @@ class MyPutAsidePurchasesController extends GetxController {
     Get.log('requesting');
 
     Map<String, dynamic> data = await DioHelper.profileListsPurchasesOnHold();
-    print(data.toString());
     products.clear();
     if (data['data']['data'].isNotEmpty) {
       data['data']['data'].forEach((element) {products.add(element['product']);});}

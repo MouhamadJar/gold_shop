@@ -35,7 +35,6 @@ class HomeController extends GetxController with StateMixin {
   void homeADVS()async{
     Map<String ,dynamic> data = await DioHelper.homeADVS();
     data['data'].forEach((element){ads.add(element);});
-    print(ads.toString());
     update();
   }
 }

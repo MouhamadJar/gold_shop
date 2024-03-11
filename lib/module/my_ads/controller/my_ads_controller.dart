@@ -26,7 +26,6 @@ class MyAdsController extends GetxController {
     data['data']['data'].forEach((element) {
       products.add(element);
     });
-    print(products.toString());
     isLoading = false;
     update();
   }
@@ -40,7 +39,6 @@ class MyAdsController extends GetxController {
     data['data']['data'].forEach((element) {
       products.add(element);
     });
-    print(products.toString());
     isLoading = false;
     update();
   }
@@ -54,7 +52,6 @@ class MyAdsController extends GetxController {
     data['data']['data'].forEach((element) {
       products.add(element);
     });
-    print(products.toString());
     isLoading = false;
     update();
   }

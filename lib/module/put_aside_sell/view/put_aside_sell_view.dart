@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import 'package:gold_shop/core/components/problem_dialog.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/module/buy_order/view/buy_order_view.dart';
@@ -18,8 +19,9 @@ import '../../../core/utils/app_network_image.dart';
 import '../../invoice/view/invoice_view.dart';
 
 class PutAsideSell extends GetView<PutAsideSellController> {
-  const PutAsideSell({super.key});
+  const PutAsideSell({super.key,required this.productId});
 
+  final int productId;
   @override
   Widget build(BuildContext context) {
     Get.put(PutAsideSellController());
@@ -41,17 +43,19 @@ class PutAsideSell extends GetView<PutAsideSellController> {
             backgroundColor: CustomColors.white,
           ),
           body: GetBuilder<PutAsideSellController>(
+            initState: (state){
+              controller.getProductDetails(productId: productId);
+            },
             builder: (_) {
-              return SizedBox(
+              return controller.isLoading
+                  ?Center(child: CircularProgressIndicator(color: CustomColors.gold,),)
+                  :SizedBox(
                 width: ScreenDimensions.screenWidth(context),
                 height: ScreenDimensions.screenHeight(context),
                 child: Column(
                   children: [
-                    const PricesBar(),
-                    SizedBox(
-                      height: ScreenDimensions.heightPercentage(context, 3),
-                    ),
-                    AdvertisementBanner(
+                    const PricesBar().paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 3)),
+                    controller.isSubcategoriesLoading ? CircularProgressIndicator(color: CustomColors.gold,):controller.isBannersEmpty?const SizedBox.shrink():AdvertisementBanner(
                       itemBuilder: (context, index, realIndex) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -105,7 +109,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                               onTap: () {
                                 Get.dialog(InteractiveViewer(
                                     child:
-                                    AppNetworkImage(controller.model!.images[0]['image'])));
+                                    AppNetworkImage(baseUrlImages + controller.model!.images[0]['image'])));
                               },
                               child: Container(
                                 padding: EdgeInsetsDirectional.symmetric(
@@ -115,12 +119,11 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                 width: ScreenDimensions.screenWidth(context),
                                 height:
                                 ScreenDimensions.heightPercentage(context, 25),
-                                child: AppNetworkImage(controller.model!.images[0]['image']),
+                                child: AppNetworkImage(baseUrlImages + controller.model!.images[0]['image']),
                               ),
                             ),
                             SizedBox(
-                              height:
-                              ScreenDimensions.heightPercentage(context, 10),
+                              height: ScreenDimensions.heightPercentage(context, 10),
                               child:  ProductImages(
                                 image: controller.model!.images,
                                 itemCount: controller.model!.images.length,
@@ -161,7 +164,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                     ],
                                   ),
                                   Text(
-                                    AppWord.description,
+                                    controller.model!.description,
                                     style: TextStyle(
                                         fontSize:
                                         AppFonts.smallTitleFont(context)),
@@ -209,8 +212,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                 ],
                               ),
                             ).paddingSymmetric(
-                                horizontal:
-                                ScreenDimensions.widthPercentage(context, 5)),
+                                horizontal: ScreenDimensions.widthPercentage(context, 5)),
                             Directions(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -229,7 +231,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                   PutAsideSellProcessDetails(
                                       title: AppWord.amountPaid,
                                       subtitle: AppWord.sad,
-                                      amount: (controller.model!.price+controller.model!.profit+controller.model!.currentGoldPrice).toString()),
+                                      amount: (controller.model!.price+controller.appCommission).toString()),
                                   PutAsidePurchaseProcessDetails(
                                       title: AppWord.productPrice,
                                       subtitle: AppWord.sad,
@@ -241,15 +243,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                   PutAsideSellProcessDetails(
                                       title: AppWord.appServiceCost,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.profit.toString()
-                                  ),
-                                  PutAsideSellProcessDetails(
-                                    title: AppWord.buyerName,
-                                    subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
-                                  ),
-                                  PutAsideSellProcessDetails(
-                                    title: AppWord.buyerNumber,
-                                    subtitle: controller.model!.phoneNumber,
+                                      amount: controller.appCommission.toString()
                                   ),
                                 ],
                               ).paddingSymmetric(
@@ -261,29 +255,29 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(
-                                  'السعودية, المدينة المنورة , حي النبلاء',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppFonts.smallTitleFont(context)),
-                                ),
                                 SizedBox(
-                                  width:
-                                  ScreenDimensions.widthPercentage(context, 1),
+                                  width: ScreenDimensions.widthPercentage(context, 90),
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(text: ' ${controller.model!.country} '),
+                                        TextSpan(text: ' ${controller.model!.state} '),
+                                        TextSpan(text: ' ${controller.model!.city} '),
+                                        TextSpan(text: ' ${controller.model!.neighborhood} '),
+                                        TextSpan(text: ' ${controller.model!.street} '),
+                                      ],),
+                                    maxLines: 2,textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppFonts.smallTitleFont(context)),
+                                  ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                 ),
                                 SvgPicture.asset(
                                   AppImages.location,
                                 ),
                               ],
                             ),
-                            Container(
-                              width: ScreenDimensions.screenWidth(context),
-                              height:
-                              ScreenDimensions.heightPercentage(context, 15),
-                              decoration: BoxDecoration(border: Border.all()),
-                            ).paddingSymmetric(
-                                vertical:
-                                ScreenDimensions.heightPercentage(context, 2)),
+                            AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -426,8 +420,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                 ),
                               ),
                             ).paddingSymmetric(
-                                vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                                vertical: ScreenDimensions.heightPercentage(context, 1)),
                             AppButton(
                               onTap: () {
                                 Get.dialog(Material(
@@ -538,8 +531,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                               ),
                               buttonBackground: AppImages.buttonLiteBackground,
                             ).paddingSymmetric(
-                                vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                                vertical: ScreenDimensions.heightPercentage(context, 1)),
                             AppButton(
                               onTap: () {},
                               text: Text(
@@ -552,8 +544,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                               ),
                               buttonBackground: AppImages.buttonDarkBackground,
                             ).paddingSymmetric(
-                                vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                                vertical: ScreenDimensions.heightPercentage(context, 1)),
                           ],
                         ),
                       ),
