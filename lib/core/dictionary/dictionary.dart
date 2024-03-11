@@ -1,6 +1,5 @@
 import 'package:get/get.dart';
 import 'package:gold_shop/core/texts/words.dart';
-
 class Dictionary extends Translations {
   @override
   Map<String, Map<String, String>> get keys => {
@@ -273,6 +272,9 @@ class Dictionary extends Translations {
           AppWord.pleaseConfirmYourPurchase: 'Please confirm your purchase within 2 hours so the paying process don\'t be canceled',
           AppWord.youMustPayADeposit: 'You must pay deposit of',
           AppWord.messageSentSuccessfully: 'Your message sent successfully',
+          AppWord.checkInternet: 'check your internet connection',
+          AppWord.codeNotCorrect: 'check the code please',
+          AppWord.checkProduct: 'check product',
           AppWord.checkInternet: 'Check your internet connection',
           AppWord.codeNotCorrect: 'Check the code please',
           AppWord.checkAllRequiredFields: 'Please make sure that you filled all the required information',
@@ -286,9 +288,9 @@ class Dictionary extends Translations {
           AppWord.editProduct: 'Edit product',
           AppWord.updateAllInformation: 'Please enter the entire information again',
           AppWord.areYouSureYouWantToResell: 'Are you sure that you want to resell this product',
-
         },
         'ar': {
+          AppWord.checkProduct : AppWord.checkProduct,
           AppWord.splashText: AppWord.splashText,
           AppWord.checkInternet: AppWord.checkInternet,
           AppWord.codeNotCorrect: AppWord.codeNotCorrect,

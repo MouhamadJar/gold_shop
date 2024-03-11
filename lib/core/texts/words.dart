@@ -554,6 +554,11 @@ class AppWord {
   static String get checkInternet => 'لرجاء فحص الاتصال بالانترنت'.tr;
 
   static String get codeNotCorrect => 'الرجاء التأكد من صحة الرمز'.tr;
+  static String get checkAllRequiredFields =>
+      'الرجاء التحقق من ملئ كافة المعلومات الضرورية'.tr;
+
+  static String get checkProduct =>
+      'فحص منتج'.tr;
   static String get checkAllRequiredFields => 'الرجاء التحقق من ملئ كافة المعلومات الضرورية'.tr;
   static String get notificationUploadedSuccessfully => 'تم رفع صورة الإشعار بنجاح'.tr;
   static String get theFieldShouldNotBeEmpty => 'تأكد من كتابة رمز تأكيد عملية البيع'.tr;
