@@ -13,7 +13,7 @@ String baseUrlImages = 'https://mayadeen-md.com/goldStore/public/storage/';
 class DioHelper {
   static final Dio _dio = Dio(
     BaseOptions(
-      connectTimeout: Duration(milliseconds: 20000),
+      connectTimeout: const Duration(milliseconds: 20000),
       baseUrl: baseUrl,
       receiveDataWhenStatusError: true,
       headers: AppHeaders.header,
@@ -27,7 +27,7 @@ class DioHelper {
     try {
       response = await _dio.get(EndPoints.getAllCategories);
       return response.data;
-    } on DioException catch (error) {
+      } on DioException catch (error) {
       return error.response!.data;
     }
   }
