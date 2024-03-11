@@ -23,6 +23,8 @@ import '../../../categories/view/categories_view.dart';
 import '../../../home/view/home_view.dart';
 import '../../../map/view/mediator_shops_map_screen.dart';
 import '../../../profile/view/profile_view.dart';
+import '../../mediator_shop/product_code/view/product_code_view.dart';
+import '../../mediator_shop/signature/view/mediator_shop_view.dart';
 import '../components/components.dart';
 import '../controller/controller.dart';
 
@@ -140,73 +142,168 @@ class MainScreen extends GetView<MainScreenController> {
                                           const Duration(milliseconds: 700));
                                 }
                               : () {
-                            Get.dialog(
-                              Material(
-                                color: Colors.transparent,
-                                child: BackdropFilter(
-                                  filter: ImageFilter.blur(sigmaY: 10,sigmaX: 10),
-                                  child: Container(
-                                    height: ScreenDimensions.heightPercentage(
-                                        context, 25),
-                                    width: ScreenDimensions.widthPercentage(
-                                        context, 50),
-                                    margin: EdgeInsetsDirectional.symmetric(vertical: ScreenDimensions.heightPercentage(context, 30),horizontal: ScreenDimensions.widthPercentage(context, 5)),
-                                    padding: EdgeInsetsDirectional.symmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
-                                    decoration: BoxDecoration(color: CustomColors.white,borderRadius: BorderRadius.circular(ScreenDimensions.widthPercentage(context, 1))),
-                                    child: Column(
-                                      children: [
-                                        Align(alignment: Alignment.centerLeft,child: GestureDetector(onTap: (){Get.back();},child: Container(child: SvgPicture.asset(AppImages.x,width: ScreenDimensions.widthPercentage(context, 3)),))).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
-                                        Text(
-                                          AppWord.signupMethod,
-                                          style: TextStyle(
-                                            fontSize: AppFonts.smallTitleFont(context)+2,
-                                            fontWeight: FontWeight.bold,
-                                            color: CustomColors.black,
-                                          ),
-                                        ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 7)),
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                          children: [
-                                            GestureDetector(
-                                              onTap: (){
-                                                Get.to(const LoginScreen(),
-                                                  transition: Transition.rightToLeft,
-                                                  duration: const Duration(milliseconds: 700),);},
-                                              child: Column(
+                                  Get.dialog(
+                                    Material(
+                                      color: Colors.transparent,
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaY: 10, sigmaX: 10),
+                                        child: Container(
+                                          height:
+                                              ScreenDimensions.heightPercentage(
+                                                  context, 25),
+                                          width:
+                                              ScreenDimensions.widthPercentage(
+                                                  context, 50),
+                                          margin:
+                                              EdgeInsetsDirectional.symmetric(
+                                                  vertical: ScreenDimensions
+                                                      .heightPercentage(
+                                                          context, 30),
+                                                  horizontal: ScreenDimensions
+                                                      .widthPercentage(
+                                                          context, 5)),
+                                          padding:
+                                              EdgeInsetsDirectional.symmetric(
+                                                  horizontal: ScreenDimensions
+                                                      .widthPercentage(
+                                                          context, 5)),
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.white,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                      ScreenDimensions
+                                                          .widthPercentage(
+                                                              context, 1))),
+                                          child: Column(
+                                            children: [
+                                              Align(
+                                                  alignment:
+                                                      Alignment.centerLeft,
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        Get.back();
+                                                      },
+                                                      child: Container(
+                                                        child: SvgPicture.asset(
+                                                            AppImages.x,
+                                                            width: ScreenDimensions
+                                                                .widthPercentage(
+                                                                    context,
+                                                                    3)),
+                                                      ))).paddingSymmetric(
+                                                  vertical: ScreenDimensions
+                                                      .heightPercentage(
+                                                          context, 2)),
+                                              Text(
+                                                AppWord.signupMethod,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                      AppFonts.smallTitleFont(
+                                                              context) +
+                                                          2,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: CustomColors.black,
+                                                ),
+                                              ).paddingOnly(
+                                                  bottom: ScreenDimensions
+                                                      .heightPercentage(
+                                                          context, 7)),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceEvenly,
                                                 children: [
-                                                  SvgPicture.asset(AppImages.profileIcon,),
-                                                  Text(AppWord.user,style: TextStyle(fontSize: AppFonts.smallTitleFont(context),color: CustomColors.black),)
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Get.to(
+                                                        const LoginScreen(),
+                                                        transition: Transition
+                                                            .rightToLeft,
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    700),
+                                                      );
+                                                    },
+                                                    child: Column(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          AppImages.profileIcon,
+                                                        ),
+                                                        Text(
+                                                          AppWord.user,
+                                                          style: TextStyle(
+                                                              fontSize: AppFonts
+                                                                  .smallTitleFont(
+                                                                      context),
+                                                              color:
+                                                                  CustomColors
+                                                                      .black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      Get.to(
+                                                        const LoginMediatorShopScreen(),
+                                                        transition: Transition
+                                                            .rightToLeft,
+                                                        duration:
+                                                            const Duration(
+                                                                milliseconds:
+                                                                    700),
+                                                      );
+                                                    },
+                                                    child: Column(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          AppImages.store,
+                                                        ),
+                                                        Text(
+                                                          AppWord.mediatorShop,
+                                                          style: TextStyle(
+                                                              fontSize: AppFonts
+                                                                  .smallTitleFont(
+                                                                      context),
+                                                              color:
+                                                                  CustomColors
+                                                                      .black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ],
                                               ),
-                                            ),
-                                            GestureDetector(
-                                              onTap: (){
-                                                Get.to(const LoginMediatorShopScreen(),
-                                                  transition: Transition.rightToLeft,
-                                                  duration: const Duration(milliseconds: 700),);},
-                                              child: Column(
-                                                children: [
-                                                  SvgPicture.asset(AppImages.store,),
-                                                  Text(AppWord.mediatorShop,style: TextStyle(fontSize: AppFonts.smallTitleFont(context),color: CustomColors.black),)
-                                                ],
-                                              ),
-                                            ),
-                                          ],
+                                            ],
+                                          ).paddingSymmetric(
+                                              horizontal: ScreenDimensions
+                                                  .widthPercentage(context, 2)),
                                         ),
-                                      ],
-                                    ).paddingSymmetric(
-                                        horizontal:
-                                        ScreenDimensions.widthPercentage(
-                                            context, 2)),
-                                  ),
-                                ),
-                              ),
-                            );
-
+                                      ),
+                                    ),
+                                  );
                                 },
                         ),
+                        if (StorageHandler().role == "shop")
+                          DrawerListTiles(
+                            title: AppWord.checkProduct,
+                            imagePath: AppImages.add,
+                            onTap: () {
+                              if (StorageHandler().signature) {
+                                Get.to(() => const ProductCode());
+                              }else {
+                                Get.to(() => const MediatorShopHome());
+                              }
+                            },
+                          ),
                         DrawerListTiles(
-                          onTap: (){Get.to(const VerifyUserAccount(),transition: Transition.rightToLeft,duration: const Duration(milliseconds: 700));},
+                            onTap: () {
+                              Get.to(const VerifyUserAccount(),
+                                  transition: Transition.rightToLeft,
+                                  duration: const Duration(milliseconds: 700));
+                            },
                             title: AppWord.activateAccount,
                             imagePath: AppImages.verified),
                         DrawerListTiles(
@@ -225,10 +322,10 @@ class MainScreen extends GetView<MainScreenController> {
                             Get.log(Get.locale!.languageCode);
                             if (Get.locale!.languageCode == 'ar') {
                               Get.updateLocale(const Locale('en'));
-                            await  StorageHandler().setLocale('en');
+                              await StorageHandler().setLocale('en');
                             } else {
                               Get.updateLocale(const Locale('ar'));
-                            await  StorageHandler().setLocale('ar');
+                              await StorageHandler().setLocale('ar');
                             }
                           },
                         ),

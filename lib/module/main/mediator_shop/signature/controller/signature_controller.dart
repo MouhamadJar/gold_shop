@@ -34,15 +34,15 @@ class SignatureController extends GetxController {
         Get.snackbar(AppWord.done, '');
         StorageHandler().setSignature(true);
         Get.off(() => const ProductCode());
-      } else if (value['errors'] == null) {
+      } else  {
+        if(value['message']=='You already have a Signature.') {
+          StorageHandler().setSignature(true);
+          Get.off(() => const ProductCode());
+          return;
+        }
         Get.snackbar(AppWord.warning, AppWord.checkInternet);
       }
     });
   }
 
-  @override
-  void onInit() {
-
-    super.onInit();
-  }
 }

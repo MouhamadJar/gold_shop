@@ -15,7 +15,7 @@ class LoginModel {
   factory LoginModel.fromJson({required Map<String, dynamic> json}) {
     return LoginModel(
         token: json['token'],
-        userId: json['user_id'],
+        userId: json['user_id']??json['store_id'],
         name: json['name'],
         verified: json['verified']);
   }

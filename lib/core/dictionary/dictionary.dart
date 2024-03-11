@@ -275,9 +275,11 @@ class Dictionary extends Translations {
           AppWord.messageSentSuccessfully: 'Your message sent successfully',
           AppWord.checkInternet: 'check your internet connection',
           AppWord.codeNotCorrect: 'check the code please',
+          AppWord.checkProduct: 'check product',
 
         },
         'ar': {
+          AppWord.checkProduct : AppWord.checkProduct,
           AppWord.splashText: AppWord.splashText,
           AppWord.checkInternet: AppWord.checkInternet,
           AppWord.codeNotCorrect: AppWord.codeNotCorrect,
