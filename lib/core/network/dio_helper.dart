@@ -1246,8 +1246,8 @@ class DioHelper {
     required String name,
     required String email,
     required String photo,
-    required String latitude,
-    required String longitude,
+    required double latitude,
+    required double longitude,
     required String country,
     required String state,
     required String city,
@@ -1255,7 +1255,7 @@ class DioHelper {
     required String street,
     required List<String> numbers,
     required String description,
-    required int cost,
+    required dynamic cost,
   }) async {
     late Response response;
     try {
@@ -1332,7 +1332,9 @@ class DioHelper {
       {required String note,
       required String carat,
       required dynamic weight,
-      required String manufacturer}) async {
+      required String manufacturer,
+      required int productId,
+      }) async {
     late Response response;
     try {
       FormData body = FormData.fromMap({
@@ -1341,14 +1343,35 @@ class DioHelper {
         'wight': weight,
         'manufacture': manufacturer,
       });
-      response = await _dio.post(EndPoints.hisServiceCheck, data: body);
-      print('iuasdid : ${response.data.toString()}');
+      response = await _dio.post(EndPoints.hisServiceCheck(productId), data: body,options: Options(headers: AppHeaders.header));
+      print('iuasdid : ${response.toString()}');
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
     }
   }
 
+  static Future<Map<String, dynamic>> hisServiceUpdate(
+      {required String note,
+        required String carat,
+        required dynamic weight,
+        required String manufacturer,
+        required int productId,
+      }) async {
+    late Response response;
+    try {
+      FormData body = FormData.fromMap({
+        'note': note,
+        'carat': carat,
+        'wight': weight,
+        'manufacture': manufacturer,
+      });
+      response = await _dio.post(EndPoints.hisServiceUpdateProduct(productId), data: body,options: Options(headers: AppHeaders.header));
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
   // app signature
   static Future<Map<String, dynamic>> uploadSignature(
       {required File signatureImage}) async {
@@ -1380,6 +1403,7 @@ class DioHelper {
     try {
       response = await _dio.get(
         EndPoints.sendCode(code),
+        options: Options(headers: AppHeaders.header)
       );
       return response.data;
     } on DioException catch (error) {

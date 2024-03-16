@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:gold_shop/module/main/mediator_shop/edit_product/view/edit_product_view.dart';
+import 'package:gold_shop/module/privacy/view/privacy_view.dart';
 import '../../../../../core/components/components.dart';
 import '../../../../../core/texts/words.dart';
 import '../../../../../core/utils/app_fonts.dart';
@@ -178,7 +179,9 @@ class ProductCode extends GetView<ProductCodeController> {
                         DrawerListTiles(
                             title: AppWord.deal, imagePath: AppImages.contract),
                         DrawerListTiles(
-                            title: AppWord.info, imagePath: AppImages.info),
+                            title: AppWord.info, imagePath: AppImages.info,onTap: (){
+                              Get.back();
+                              Get.to(const Privacy(),transition: Transition.size,duration: const Duration(milliseconds: 700));}),
                         DrawerListTiles(
                             title: AppWord.contactUs,
                             imagePath: AppImages.contactUs2),

@@ -23,26 +23,30 @@ class EditProductController extends GetxController {
     isLoading = true;
     update();
     await DioHelper.sendCode(code: productCode).then((value) {
-      isLoading = false;
-      editProductModel = EditProductModel.fromJson(json: value['data']);
-      if (manufacturerController.text.isEmpty ||
-          manufacturerController.text == '') {
-        manufacturer = editProductModel!.manufacturer;
+      if (value['status'] == false) {
+        isLoading = true;
+        Get.back();
+        Get.snackbar(AppWord.warning, AppWord.codeNotCorrect);
+        update();
+      }else {
+        isLoading = false;
+        editProductModel = EditProductModel.fromJson(json: value['data']);
+        if (manufacturerController.text.isEmpty ||
+            manufacturerController.text == '') {
+          manufacturer = editProductModel!.manufacturer;
+          update();
+        }
+        if (caratController.text.isEmpty || caratController.text == '') {
+          carat = editProductModel!.carat;
+          update();
+        }
+        if (weightController.text.isEmpty || weightController.text == '') {
+          weight = editProductModel!.weight;
+          update();
+        }
+        subcategoryADVS(subcategoryId: editProductModel!.subcategoryId);
         update();
       }
-      if (caratController.text.isEmpty || caratController.text == '') {
-        carat = editProductModel!.carat;
-        update();
-      }
-      if (weightController.text.isEmpty || weightController.text == '') {
-        weight = editProductModel!.weight;
-        update();
-      }
-      subcategoryADVS(subcategoryId: editProductModel!.subcategoryId);
-      update();
-      // if (!value['status']) {
-      //   Get.snackbar(AppWord.warning, AppWord.codeNotCorrect);
-      // }
     });
   }
 
@@ -57,11 +61,32 @@ class EditProductController extends GetxController {
   }
 
   void sendReport() async {
+    noteController.text.isEmpty?noteController.text=AppWord.empty:noteController.text=noteController.text;
     await DioHelper.hisServiceCheck(
         note: noteController.text,
         carat: caratController.text,
         weight: weightController.text,
-        manufacturer: manufacturerController.text);
+        manufacturer: manufacturerController.text,
+    productId: editProductModel!.productId).then((value) {
+      if (value['message']== 'Report has already been stored.'){
+        Get.snackbar(AppWord.warning, AppWord.youCantSendMoreThanReportForAnyProduct);
+        update();
+      }
+    });
     update();
   }
+
+  void updateProduct() async {
+    await DioHelper.hisServiceUpdate(
+        note: noteController.text,
+        carat: caratController.text,
+        weight: weightController.text,
+        manufacturer: manufacturerController.text,
+    productId: editProductModel!.productId).then((value) {
+    });
+    Get.back();
+    Get.snackbar(AppWord.done, '');
+    update();
+  }
+
 }

@@ -421,6 +421,7 @@ class EditProduct extends GetView<EditProductController> {
                                             AppFonts.smallTitleFont(context))),
                               ],
                             ).paddingSymmetric(
+                              vertical: ScreenDimensions.heightPercentage(context, 1),
                                 horizontal: ScreenDimensions.widthPercentage(context, 10)),
                             AppButton(
                               onTap: () {
@@ -533,9 +534,111 @@ class EditProduct extends GetView<EditProductController> {
                                 ),
                               ),
                               buttonBackground: AppImages.buttonLiteBackground,
-                            ).paddingSymmetric(
-                                vertical:
-                                    ScreenDimensions.heightPercentage(context, 3)),
+                            ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                            AppButton(
+                              onTap: () {
+                                Get.dialog(
+                                    Material(
+                                  color: Colors.transparent,
+                                  child: BackdropFilter(
+                                    filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                    child: Container(
+                                        color: CustomColors.white,
+                                        margin: EdgeInsetsDirectional.only(
+                                            top: ScreenDimensions.heightPercentage(
+                                                context, 5),
+                                            start: ScreenDimensions.widthPercentage(
+                                                context, 5),
+                                            end: ScreenDimensions.widthPercentage(
+                                                context, 5),
+                                            bottom:
+                                                ScreenDimensions.heightPercentage(
+                                                    context, 70)),
+                                        padding: EdgeInsetsDirectional.all(
+                                            ScreenDimensions.widthPercentage(
+                                                context, 5)),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                GestureDetector(
+                                                    onTap: () {
+                                                      Get.back();
+                                                    },
+                                                    child: SizedBox(
+                                                        child: SvgPicture.asset(
+                                                            AppImages.x,height: ScreenDimensions.heightPercentage(context, 1.5),))),
+                                              ],
+                                            ),
+                                            Text(AppWord.areYouSureFromThisData,
+                                                style: TextStyle(
+                                                    fontSize:
+                                                    AppFonts.smallTitleFont(
+                                                        context),
+                                                    fontWeight:
+                                                    FontWeight.bold)).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                              Container(
+                                                alignment: AlignmentDirectional.center,
+                                                width: ScreenDimensions.widthPercentage(context, 6),
+                                                height: ScreenDimensions.widthPercentage(context, 6),
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    Get.back();
+                                                    controller.updateProduct();
+                                                  },
+                                                  child: Text(AppWord.yes,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                          AppFonts.smallTitleFont(context),
+                                                          fontWeight:
+                                                          FontWeight.bold)),
+                                                ),
+                                              ),
+                                              Container(
+                                                alignment: AlignmentDirectional.center,
+                                                width: ScreenDimensions.widthPercentage(context, 6),
+                                                height: ScreenDimensions.widthPercentage(context, 6),
+                                                child: GestureDetector(
+                                                  onTap: (){
+                                                    Get.back();
+                                                    },
+                                                  child: Text(AppWord.no,
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                          AppFonts.smallTitleFont(
+                                                              context),
+                                                          fontWeight:
+                                                          FontWeight.bold)),
+                                                ),
+                                              ),
+                                            ],).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 4)),
+                                          ],
+                                        )),
+                                  ),
+                                ));
+                              },
+                              text: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    AppWord.editProductInfo,
+                                    style: TextStyle(
+                                      color: CustomColors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: AppFonts.smallTitleFont(context),
+                                    ),
+                                  ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                                  SvgPicture.asset(AppImages.edit),
+                                ],
+                              ),
+                              buttonBackground: AppImages.buttonLiteBackground,
+                            ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
                           ],
                         ),
                       ),

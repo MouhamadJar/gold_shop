@@ -15,7 +15,7 @@ class EditProductModel {
   final String manufacturerType;
   final bool toggle;
   final dynamic deliveryType;
-  final String offerDescription;
+  final String? offerDescription;
   final dynamic discountValue;
   final dynamic views;
   final dynamic productStatus;
@@ -47,7 +47,7 @@ class EditProductModel {
     required this.manufacturerType,
     required this.toggle,
     required this.deliveryType,
-    required this.offerDescription,
+     this.offerDescription,
     this.discountValue,
     this.views,
     this.productStatus,
@@ -87,7 +87,7 @@ class EditProductModel {
       manufacturerType: json['product']['manufacture_type'],
       toggle: json['product']['toggle'],
       deliveryType: json['product']['delivery_type'],
-      offerDescription: json['product']['offer_description'],
+      offerDescription: json['product']['offer_description']??'',
       discountValue: json['product']['discount_value'],
       views: json['product']['views'],
       productStatus:json['product']['product_status'],

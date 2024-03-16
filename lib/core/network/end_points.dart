@@ -183,7 +183,8 @@ class EndPoints {
 
 //app store his service
   static String hisServiceShowProduct = '/api/app/store/product/show?code=vm15';
-  static String hisServiceCheck = '/api/app/store/order/15';
+  static String hisServiceCheck (int productId) => '/api/app/store/order/$productId';
+  static String  hisServiceUpdateProduct (int productId) => '/api/app/store/product/$productId';
 
 // app signature
   static String uploadSignature = '/api/app/store/signature';

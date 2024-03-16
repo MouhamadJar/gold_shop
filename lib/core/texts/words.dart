@@ -586,4 +586,6 @@ class AppWord {
   static String get editManufacturer => 'تعديل الشركة المصنعة'.tr;
   static String get editWeight => 'تعديل الوزن'.tr;
   static String get editCarat => 'تعديل العيار'.tr;
+  static String get areYouSureFromThisData => 'هل أنت متأكد من هذه المعلومات'.tr;
+  static String get youCantSendMoreThanReportForAnyProduct => 'لا يمكنك إرسال اكثر من تقرير واحد لأي منتج'.tr;
 }
