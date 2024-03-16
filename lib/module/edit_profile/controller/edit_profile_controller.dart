@@ -1,6 +1,11 @@
 import 'dart:io';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import '../../../core/location_service/geocoding_service.dart';
+import '../../../core/location_service/location_entity.dart';
+import '../../../core/location_service/location_model.dart';
+import '../../../core/location_service/marker_entity.dart';
 import '../../../core/network/dio_helper.dart';
 import '../../../core/texts/words.dart';
 import '../../../core/utils/image_handler.dart';
@@ -31,8 +36,12 @@ class EditProfileController extends GetxController {
   late String city;
 
   late String neighborhood;
-
+  LocationEntity location =
+      const LocationGoogleModel(lat: 24.470901, lon: 39.612236);
   late String street;
+  Set<Marker> markers = {};
+  GeocodingCoordinatesManager geocodingCoordinatesManager =
+      Get.put(GeocodingCoordinatesManager());
 
   void pickImage() async {
     ImageHandler.pickImage().then((value) {
@@ -47,20 +56,46 @@ class EditProfileController extends GetxController {
     });
   }
 
+  void onGoogleMapTapped(LatLng position) {
+    location = LocationGoogleModel.fromLatLon(position);
+    markers = {
+      MarkerEntity.fromMarkerInfo(
+        info: MarkerInfo(
+          markerId: 'markerId',
+          title: 'You Location',
+          subTitle: 'You are here',
+          location: location,
+        ),
+      ),
+    };
+    geocodingCoordinatesManager
+        .convertCoordinates(latitude: location.lat, longitude: location.lon)
+        .then((value) {
+      country = value.city;
+      city = value.country;
+      state = value.area;
+      neighborhood = value.neighborhood;
+      street = value.route;
+      update();
+    });
+    location.toString();
+    update();
+  }
 
   void editProfile() async {
     DioHelper.updateProfile(
             firstName: firstNameController.text,
             lastName: lastNameController.text,
-            email: emailController.text,
-            photo: image!.path,
-            longitude: 39.612236,
-              latitude: 24.470901,
+            email: emailController.text == profileController.user!.email ? null :emailController.text,
+            photo: image,
+            longitude: location.lon,
+            latitude: location.lat,
             country: country,
             state: state,
             city: city,
             neighborhood: neighborhood,
-            street: street).then((value) {
+            street: street)
+        .then((value) {
       if (value['errors'] != null) {
         Get.snackbar(AppWord.warning, value['message']);
         return;

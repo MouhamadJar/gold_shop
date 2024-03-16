@@ -645,8 +645,8 @@ class DioHelper {
   static Future<Map<String, dynamic>> updateProfile(
       {required String firstName,
       required String lastName,
-      required String email,
-      required String photo,
+      required String? email,
+      required File? photo,
       required double longitude,
       required double latitude,
       required String country,
@@ -659,8 +659,8 @@ class DioHelper {
       FormData body = FormData.fromMap({
         'first_name': firstName,
         'last_name': lastName,
-        'email': email,
-        'photo': await MultipartFile.fromFile(photo),
+        if(email != null)  'email': email,
+        if(photo != null) 'photo': await MultipartFile.fromFile(photo.path),
         'longitude': longitude,
         'latitude': latitude,
         'country': country,
