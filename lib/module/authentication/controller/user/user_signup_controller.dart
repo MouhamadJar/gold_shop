@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import '../../../../core/location_service/geocoding_service.dart';
 import '../../../../core/texts/words.dart';
 import '../../model/user/user_signup_model.dart';
 import '../../../../core/network/dio_helper.dart';
@@ -18,6 +19,8 @@ class UserSignupController extends GetxController {
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController addressController = TextEditingController();
+  GeocodingCoordinatesManager geocodingCoordinatesManager =
+      Get.put(GeocodingCoordinatesManager());
   double latitude = 1;
   double longitude = 1;
   String country = 'syria';
@@ -25,6 +28,7 @@ class UserSignupController extends GetxController {
   String city = 'city';
   String neighborhood = 'neighborhood';
   String street = 'street';
+  String area = 'area';
   LocationEntity location =
       const LocationGoogleModel(lat: 24.470901, lon: 39.612236);
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -49,7 +53,7 @@ class UserSignupController extends GetxController {
             neighborhood: neighborhood,
             street: street)
         .then((value) async {
-      if (value['errors'].isNotNull) {
+      if (value['errors'] != null) {
         Get.log('error');
         Get.snackbar(AppWord.warning, value['message']);
         return value;
@@ -78,6 +82,17 @@ class UserSignupController extends GetxController {
         ),
       ),
     };
+    geocodingCoordinatesManager
+        .convertCoordinates(latitude: location.lat, longitude: location.lon)
+        .then((value) {
+      country = value.city;
+      city = value.country;
+      state = value.area;
+      neighborhood = value.neighborhood;
+      street = value.route;
+      area = value.city;
+      update();
+    });
     location.toString();
     update();
   }

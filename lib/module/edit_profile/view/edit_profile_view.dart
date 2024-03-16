@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import '../../../core/images/images.dart';
 import '../../../core/texts/words.dart';
 import '../../../core/utils/app_fonts.dart';
@@ -171,14 +172,9 @@ class EditProfile extends GetView<EditProfileController> {
                               fontSize: AppFonts.smallTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ),
-                        Container(
-                          width: ScreenDimensions.screenWidth(context),
-                          height: ScreenDimensions.heightPercentage(context, 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                ScreenDimensions.radius(context, 1)),
-                            border: Border.all(color: CustomColors.grey1),
-                          ),
+                        AppGoogleMap(
+                          onTap: controller.onGoogleMapTapped,
+                          markers: controller.markers,
                         ),
                       ],
                     ).paddingSymmetric(

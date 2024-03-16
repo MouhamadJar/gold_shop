@@ -6,6 +6,7 @@ import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+import '../../../../core/location_service/geocoding_service.dart';
 import '../../../../core/location_service/location_entity.dart';
 import '../../../../core/location_service/location_model.dart';
 import '../../../../core/location_service/marker_entity.dart';
@@ -19,6 +20,8 @@ class RegisterMediatorShopController extends GetxController {
   TextEditingController passwordController = TextEditingController();
   TextEditingController serviceController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  GeocodingCoordinatesManager geocodingCoordinatesManager =
+  Get.put(GeocodingCoordinatesManager());
   List<TextEditingController> phoneControllers = [
     TextEditingController(),
   ];
@@ -27,6 +30,7 @@ class RegisterMediatorShopController extends GetxController {
   String city = 'city';
   String neighborhood = 'neighborhood';
   String street = 'street';
+  String area = 'area';
   LocationEntity location =
       const LocationGoogleModel(lat: 24.470901, lon: 39.612236);
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -85,6 +89,17 @@ class RegisterMediatorShopController extends GetxController {
         ),
       ),
     };
+    geocodingCoordinatesManager
+        .convertCoordinates(latitude: location.lat, longitude: location.lon)
+        .then((value) {
+      country = value.city;
+      city = value.country;
+      state = value.area;
+      neighborhood = value.neighborhood;
+      street = value.route;
+      area = value.city;
+      update();
+    });
     location.toString();
     update();
   }

@@ -117,7 +117,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                     controller: controller.firstNameController,
                                     validator: (value) {
                                       return AppValidator().nameValidator(
-                                          value);
+                                          value,3);
                                     },
                                     title: AppWord.firstName,
                                     keyboardType: TextInputType.name,
@@ -134,7 +134,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                     controller: controller.lastNameController,
                                     validator: (value) {
                                       return AppValidator().nameValidator(
-                                          value);
+                                          value,3);
                                     },
                                     keyboardType: TextInputType.name,
                                   )
@@ -243,7 +243,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   Directions(
                                     child: EditProfileCard(
                                       title: AppWord.area,
-                                      subtitle: AppWord.area,
+                                      subtitle: controller.area,
                                     ),
                                   ).marginOnly(
                                       bottom:
@@ -252,7 +252,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   Directions(
                                     child: EditProfileCard(
                                       title: AppWord.state,
-                                      subtitle: AppWord.state,
+                                      subtitle: controller.state,
                                     ),
                                   ).marginOnly(
                                       bottom:
@@ -261,7 +261,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   Directions(
                                     child: EditProfileCard(
                                       title: AppWord.city,
-                                      subtitle: AppWord.city,
+                                      subtitle: controller.city,
                                     ),
                                   ).marginOnly(
                                       bottom:
@@ -270,7 +270,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   Directions(
                                     child: EditProfileCard(
                                       title: AppWord.neighborhood,
-                                      subtitle: AppWord.neighborhood,
+                                      subtitle: controller.neighborhood,
                                     ),
                                   ).marginOnly(
                                       bottom:
@@ -279,7 +279,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   Directions(
                                     child: EditProfileCard(
                                       title: AppWord.street,
-                                      subtitle: AppWord.street,
+                                      subtitle: controller.street,
                                     ),
                                   ).marginOnly(
                                       bottom:
