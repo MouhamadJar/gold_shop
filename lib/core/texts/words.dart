@@ -315,8 +315,7 @@ class AppWord {
   static String get youCantDeleteProductReserved =>
       'لا يمكنك حذف المنتج, المنتج محجوز'.tr;
 
-  static String get deleted =>
-      'لقد تم الحذف بنجاح'.tr;
+  static String get deleted => 'لقد تم الحذف بنجاح'.tr;
 
   static String get uploadProfilePicture => 'تحميل صورة الملف الشخصي'.tr;
 
@@ -554,20 +553,37 @@ class AppWord {
   static String get checkInternet => 'لرجاء فحص الاتصال بالانترنت'.tr;
 
   static String get codeNotCorrect => 'الرجاء التأكد من صحة الرمز'.tr;
+
   static String get checkAllRequiredFields =>
       'الرجاء التحقق من ملئ كافة المعلومات الضرورية'.tr;
 
-  static String get checkProduct =>
-      'فحص منتج'.tr;
-  static String get checkAllRequiredFields => 'الرجاء التحقق من ملئ كافة المعلومات الضرورية'.tr;
-  static String get notificationUploadedSuccessfully => 'تم رفع صورة الإشعار بنجاح'.tr;
-  static String get theFieldShouldNotBeEmpty => 'تأكد من كتابة رمز تأكيد عملية البيع'.tr;
+  static String get checkProduct => 'فحص منتج'.tr;
+
+  static String get notificationUploadedSuccessfully =>
+      'تم رفع صورة الإشعار بنجاح'.tr;
+
+  static String get theFieldShouldNotBeEmpty =>
+      'تأكد من كتابة رمز تأكيد عملية البيع'.tr;
+
   static String get productSoldSuccessfully => 'تم بيع المنتج بنجاح'.tr;
-  static String get youCanFindTheCodeInBuyOrder => 'يمكنك إيجاد رمز التأكيد في سند القبض'.tr;
-  static String get chooseTheMediatorCarefully => 'الرجاء اختيار المتجر الوسيط بعناية'.tr;
+
+  static String get youCanFindTheCodeInBuyOrder =>
+      'يمكنك إيجاد رمز التأكيد في سند القبض'.tr;
+
+  static String get chooseTheMediatorCarefully =>
+      'الرجاء اختيار المتجر الوسيط بعناية'.tr;
+
   static String get choose => 'اختيار'.tr;
+
   static String get cancel => 'الغاء'.tr;
+
   static String get editProduct => 'تعديل منتج'.tr;
-  static String get updateAllInformation => 'الرجاء إعادة تعبئة كامل المعلومات'.tr;
+
+  static String get updateAllInformation =>
+      'الرجاء إعادة تعبئة كامل المعلومات'.tr;
+
   static String get areYouSureYouWantToResell => 'هل أنت متأكد من أنك تريد طلب إعادة بيع هذا المنتج'.tr;
+  static String get editManufacturer => 'تعديل الشركة المصنعة'.tr;
+  static String get editWeight => 'تعديل الوزن'.tr;
+  static String get editCarat => 'تعديل العيار'.tr;
 }

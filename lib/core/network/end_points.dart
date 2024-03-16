@@ -174,11 +174,12 @@ class EndPoints {
 
 //app store profile
   static String updateStoreProfile = '/api/app/store/profile/1';
-  static String showStoreProfile = '/api/app/store/profile/1';
+  static String showStoreProfile = '/api/app/store/profile/${StorageHandler().userId}';
   static String deleteStoreAccount = '/api/app/store/profile/58';
 
 //app store contact us
   static String storeContactUs = '/api/app/store/contact';
+  static String checkSignature = '/check/${StorageHandler().userId}';
 
 //app store his service
   static String hisServiceShowProduct = '/api/app/store/product/show?code=vm15';

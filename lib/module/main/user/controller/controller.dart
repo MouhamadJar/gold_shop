@@ -5,6 +5,7 @@ import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/texts/words.dart';
 
 import '../../../../core/colors/colors.dart';
+import '../view/main_screen_view.dart';
 
 
 class MainScreenController extends GetxController{
@@ -12,15 +13,20 @@ class MainScreenController extends GetxController{
   bool icon = false;
   Color selectedColor = CustomColors.yellow;
   Color unSelectedColor = CustomColors.white;
- Map <String,dynamic> loggingOut ={};
+  bool loader = true;
  void logout()async{
-   Map<String,dynamic> data = await DioHelper.logout();
-   loggingOut = data ;
-   StorageHandler().removeToken();
-   StorageHandler().removeUserId();
-   StorageHandler().removeSignature();
-   StorageHandler().removeRole();
-   Get.snackbar('',AppWord.loggedOut);
-   update();
+   await DioHelper.logout().then((value) {
+     StorageHandler().removeToken();
+     StorageHandler().removeUserId();
+     StorageHandler().removeSignature();
+     StorageHandler().removeRole();
+     loader = false;
+     Get.offAll(const MainScreen(),
+         transition: Transition.rightToLeft,
+         duration:
+         const Duration(milliseconds: 700));
+     Get.snackbar('',AppWord.loggedOut);
+     update();
+   });
  }
 }

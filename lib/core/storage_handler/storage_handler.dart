@@ -68,8 +68,7 @@ class StorageHandler {
   bool get hasRole => _storage.hasData('role');
 
   // signature
-  Future<void> setSignature(bool signature) =>
-      _storage.write('signature', signature);
+  Future<void> setSignature(bool signature) => _storage.write('signature', signature);
 
   Future<void> removeSignature() => _storage.remove('signature');
 

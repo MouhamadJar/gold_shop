@@ -1,22 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
+import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/texts/words.dart';
+import 'package:gold_shop/module/authentication/view/login_screen.dart';
 
 class ProductCodeController extends GetxController {
   TextEditingController codeController = TextEditingController();
-  bool isLoading = false;
+  bool loader = true;
 
-  void sendCode() async {
-    isLoading = true;
+  void logout () async {
+    loader = true;
     update();
-    await DioHelper.sendCode(code: codeController.text).then((value) {
-      Get.log(value.toString());
-      isLoading = false;
+    await DioHelper.storeLogout().then((value) {
+      StorageHandler().removeToken();
+      StorageHandler().removeUserId();
+      StorageHandler().removeRole();
+      StorageHandler().removeSignature();
+      Get.offAll(const LoginScreen(),transition: Transition.fade,duration:  const Duration(milliseconds: 700));
+      loader = false;
       update();
-      if (!value['status']) {
-        Get.snackbar(AppWord.warning, AppWord.codeNotCorrect);
-      }
     });
+    update();
   }
 }

@@ -27,7 +27,9 @@ class MySellsController extends GetxController{
     isLoading =true;
     update();
     Map<String,dynamic> data = await DioHelper.profileListsSales();
-    data['data']['data'].forEach((element){products.add(element);});
+    data['data']['data'].forEach((element){
+      print(element['price'].toString());
+      products.add(element);});
     isLoading = false;
     update();
   }

@@ -3,6 +3,7 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/validtor/app_validator.dart';
 import 'package:gold_shop/module/authentication/controller/user/user_login_controller.dart';
 import '../../../core/components/components.dart';
@@ -21,7 +22,8 @@ class LoginScreen extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     Get.put(LoginController());
-    return GetBuilder<LoginController>(builder: (_) {
+    return GetBuilder<LoginController>(
+        builder: (_) {
       return SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
@@ -126,13 +128,8 @@ class LoginScreen extends GetView<LoginController> {
                                 return AppValidator().passwordValidator(value);
                               },
                             )
-                                .paddingSymmetric(
-                                    horizontal:
-                                        ScreenDimensions.widthPercentage(
-                                            context, 5))
-                                .marginSymmetric(
-                                    vertical: ScreenDimensions.heightPercentage(
-                                        context, 2)),
+                                .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5))
+                                .marginSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
                             Align(
                               alignment: Get.locale == const Locale('ar')
                                   ? Alignment.centerRight
@@ -171,9 +168,137 @@ class LoginScreen extends GetView<LoginController> {
                                 onTap: ()  {
                                   if (!(controller.formKey.currentState!
                                       .validate())) return;
-                                  controller.login(
-                                      phone: controller.phoneController.text,
-                                      password: controller.passwordController.text);
+                                  Get.dialog(
+                                    Material(
+                                      color: Colors.transparent,
+                                      child: BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaY: 10, sigmaX: 10),
+                                        child: Container(
+                                          height: ScreenDimensions.heightPercentage(
+                                              context, 25),
+                                          width: ScreenDimensions.widthPercentage(
+                                              context, 50),
+                                          margin: EdgeInsetsDirectional.symmetric(
+                                              vertical: ScreenDimensions
+                                                  .heightPercentage(
+                                                  context, 30),
+                                              horizontal: ScreenDimensions
+                                                  .widthPercentage(
+                                                  context, 5)),
+                                          padding: EdgeInsetsDirectional.symmetric(
+                                              horizontal: ScreenDimensions
+                                                  .widthPercentage(
+                                                  context, 5)),
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.white,
+                                              borderRadius:
+                                              BorderRadius.circular(
+                                                  ScreenDimensions
+                                                      .widthPercentage(
+                                                      context, 1))),
+                                          child: Column(
+                                            children: [
+                                              Align(
+                                                  alignment:
+                                                  Alignment.centerLeft,
+                                                  child: GestureDetector(
+                                                      onTap: () {
+                                                        Get.back();
+                                                      },
+                                                      child: SizedBox(
+                                                        width: ScreenDimensions.widthPercentage(context, 2),
+                                                        height: ScreenDimensions.heightPercentage(context, 1),
+                                                        child: SvgPicture.asset(
+                                                            AppImages.x,
+                                                            width: ScreenDimensions.widthPercentage(
+                                                                context,
+                                                                3)),
+                                                      ))).paddingSymmetric(
+                                                  vertical: ScreenDimensions.heightPercentage(
+                                                      context, 2)),
+                                              Text(
+                                                AppWord.signupMethod,
+                                                style: TextStyle(
+                                                  fontSize:
+                                                  AppFonts.smallTitleFont(
+                                                      context) +
+                                                      2,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: CustomColors.black,
+                                                ),
+                                              ).paddingOnly(
+                                                  bottom: ScreenDimensions.heightPercentage(
+                                                      context, 7)),
+                                              Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .spaceEvenly,
+                                                children: [
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      controller.loader
+                                                          ?Get.dialog(Center(child: CircularProgressIndicator(color: CustomColors.gold,),),barrierDismissible: false)
+                                                          :Get.snackbar(AppWord.note,AppWord.loggedOut);
+                                                      controller.update();
+                                                      StorageHandler().setRole('user');
+                                                      controller.login(phone: controller.phoneController.text, password: controller.passwordController.text);
+                                                    },
+                                                    child: Column(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          AppImages.profileIcon,
+                                                        ),
+                                                        Text(
+                                                          AppWord.user,
+                                                          style: TextStyle(
+                                                              fontSize: AppFonts
+                                                                  .smallTitleFont(
+                                                                  context),
+                                                              color:
+                                                              CustomColors
+                                                                  .black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  GestureDetector(
+                                                    onTap: () {
+                                                      controller.loader
+                                                          ?Get.dialog(Center(child: CircularProgressIndicator(color: CustomColors.gold,),),barrierDismissible: false)
+                                                          :Get.snackbar(AppWord.note,AppWord.loggedOut);
+                                                      controller.update();
+                                                      StorageHandler().setRole('shop');
+                                                      controller.login(phone: controller.phoneController.text, password: controller.passwordController.text);
+                                                    },
+                                                    child: Column(
+                                                      children: [
+                                                        SvgPicture.asset(
+                                                          AppImages.store,
+                                                        ),
+                                                        Text(
+                                                          AppWord.mediatorShop,
+                                                          style: TextStyle(
+                                                              fontSize: AppFonts
+                                                                  .smallTitleFont(
+                                                                  context),
+                                                              color:
+                                                              CustomColors
+                                                                  .black),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ).paddingSymmetric(
+                                              horizontal: ScreenDimensions
+                                                  .widthPercentage(context, 2)),
+                                        ),
+                                      ),
+                                    ),
+                                  );
                                 },
                                 buttonBackground:
                                     AppImages.buttonLiteBackground),

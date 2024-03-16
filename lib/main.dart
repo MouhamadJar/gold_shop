@@ -4,8 +4,6 @@ import 'core/general_controllers/google_map_controller.dart';
 import 'core/general_controllers/problems_controller.dart';
 import 'core/storage_handler/storage_handler.dart';
 import 'core/dictionary/dictionary.dart';
-import 'module/main/mediator_shop/product_code/view/product_code_view.dart';
-import 'module/main/mediator_shop/signature/view/mediator_shop_view.dart';
 import 'module/splash/view/splash_view.dart';
 
 void main() async {
@@ -13,11 +11,10 @@ void main() async {
   await Future.wait([
     StorageHandler.init(),
   ]);
-  // StorageHandler().removeUserId();
-  // StorageHandler().removeToken();
   Get.log(StorageHandler().token);
   Get.log(StorageHandler().userId);
-  Get.log(StorageHandler().signature.toString());
+    Get.log(StorageHandler().signature.toString());
+    Get.log(StorageHandler().role.toString());
   runApp(const MyApp());
 }
 
@@ -44,4 +41,3 @@ void onAppInit () {
   Get.put(ProblemsController());
   Get.put(AppGoogleMapController());
 }
-//hvhezwz

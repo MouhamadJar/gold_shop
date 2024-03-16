@@ -1330,17 +1330,19 @@ class DioHelper {
 
   static Future<Map<String, dynamic>> hisServiceCheck(
       {required String note,
-      required int carat,
-      required int weight,
+      required String carat,
+      required dynamic weight,
       required String manufacturer}) async {
     late Response response;
     try {
-      response = await _dio.post(EndPoints.hisServiceCheck, data: {
+      FormData body = FormData.fromMap({
         'note': note,
         'carat': carat,
         'wight': weight,
         'manufacture': manufacturer,
       });
+      response = await _dio.post(EndPoints.hisServiceCheck, data: body);
+      print('iuasdid : ${response.data.toString()}');
       return response.data;
     } on DioException catch (error) {
       return error.response!.data;
@@ -1363,6 +1365,15 @@ class DioHelper {
     }
   }
 
+  static Future<Map<String,dynamic>> checkSignature()async{
+    late Response response ;
+    try{
+      response = await _dio.get(EndPoints.checkSignature);
+      return response.data;
+    }on DioException catch (error){
+      return error.response!.data;
+    }
+  }
   // product code
   static Future<Map<String, dynamic>> sendCode({required String code}) async {
     late Response response;
@@ -1370,10 +1381,8 @@ class DioHelper {
       response = await _dio.get(
         EndPoints.sendCode(code),
       );
-      log('success sending code image : ${response.data}');
       return response.data;
     } on DioException catch (error) {
-      // log('error sending code image : ${error.response!.data}');
       return {'status': false};
     }
   }

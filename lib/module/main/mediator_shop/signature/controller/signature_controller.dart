@@ -26,8 +26,7 @@ class SignatureController extends GetxController {
   void uploadSignatureImage() async {
     isLoading = true;
     update();
-    await DioHelper.uploadSignature(signatureImage: signatureImage!)
-        .then((value) {
+    await DioHelper.uploadSignature(signatureImage: signatureImage!).then((value) {
       isLoading = false;
       update();
       if (value['success']) {
@@ -45,4 +44,24 @@ class SignatureController extends GetxController {
     });
   }
 
+  void checkSignature()async{
+    await DioHelper.checkSignature().then((value) {
+    if(value['data']['signature'] == 1){
+      Get.offAll(() => const ProductCode(),transition:  Transition.fade,duration:  const Duration(milliseconds:  700));
+      update();
+      return;
+    }else if(value['data']['signature'] == 0 ){
+      uploadSignatureImage();
+      Get.off(() => const ProductCode(),transition:  Transition.fade, duration:  const Duration(milliseconds: 700));
+      update();
+      return;
+    }
+  });
+  update();
+  }
+  @override
+  void onInit() {
+    checkSignature();
+    super.onInit();
+  }
 }
