@@ -8,7 +8,7 @@ class SplashScreenController extends GetxController {
   @override
   void onInit() async {
     await Future.delayed(const Duration(seconds: 3)).then((value) {
-      if (StorageHandler().role == 'user'||StorageHandler().hasToken==false) {
+      if (StorageHandler().role == 'user' || StorageHandler().role == 'not authenticated'||StorageHandler().hasToken==false) {
         Get.offAll(
             const MainScreen(),
             transition: Transition.fade,
