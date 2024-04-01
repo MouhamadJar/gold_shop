@@ -179,13 +179,13 @@ class EditProfile extends GetView<EditProfileController> {
                             Get.snackbar(AppWord.warning,AppWord.pleaseZoomIn);
                           },
                           onCameraMoved: (cameraPosition){
-                            if (cameraPosition.zoom>=19.0){
+                            if (cameraPosition.zoom==19.0){
                               controller.zoomed = true;
-                            }
-                            else{
+                              controller.update();
+                            }if(cameraPosition.zoom ==18.9){
                               controller.zoomed = false;
+                              controller.update();
                             }
-                            controller.update();
                           },
                         ),
                       ],
