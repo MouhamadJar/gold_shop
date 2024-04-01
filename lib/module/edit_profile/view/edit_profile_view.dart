@@ -173,8 +173,20 @@ class EditProfile extends GetView<EditProfileController> {
                               fontWeight: FontWeight.bold),
                         ),
                         AppGoogleMap(
-                          onTap: controller.onGoogleMapTapped,
                           markers: controller.markers,
+                          onTap: controller.zoomed?controller.onGoogleMapTapped:(latLng){
+                            controller.update();
+                            Get.snackbar(AppWord.warning,AppWord.pleaseZoomIn);
+                          },
+                          onCameraMoved: (cameraPosition){
+                            if (cameraPosition.zoom>=19.0){
+                              controller.zoomed = true;
+                            }
+                            else{
+                              controller.zoomed = false;
+                            }
+                            controller.update();
+                          },
                         ),
                       ],
                     ).paddingSymmetric(

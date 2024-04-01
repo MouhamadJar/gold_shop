@@ -56,7 +56,7 @@ class EndPoints {
   static String login = '/api/user/login';
   static String loginMediatorShop = '/api/store/login';
   static String register = '/api/user/register';
-  static String registerStore = '/api/store/register';
+  static String registerStore = '/api/store/order';
   static String logout = '/api/user/logout';
 
   //app products
@@ -82,8 +82,8 @@ class EndPoints {
   static String problemTypes = '$problemStore/type';
 
 //app profile
-  static String updateProfile = '/api/app/profile/${StorageHandler().userId}';
-  static String showProfile = '/api/app/profile/${StorageHandler().userId}';
+  static String updateProfile(String id) => '/api/app/profile/$id}';
+  static String showProfile(String id) => '/api/app/profile/$id}';
   static String deleteAccount = '/api/app/profile/174';
 
 //app contact us
@@ -173,13 +173,13 @@ class EndPoints {
   static String storeLogout = '/api/app/store/logout';
 
 //app store profile
-  static String updateStoreProfile = '/api/app/store/profile/1';
-  static String showStoreProfile = '/api/app/store/profile/${StorageHandler().userId}';
+  static String updateStoreProfile(String id) => '/api/app/store/profile/$id';
+  static String showStoreProfile(String id) => '/api/app/store/profile/$id';
   static String deleteStoreAccount = '/api/app/store/profile/58';
 
 //app store contact us
   static String storeContactUs = '/api/app/store/contact';
-  static String checkSignature = '/check/${StorageHandler().userId}';
+  static String checkSignature(String id) => '/check/$id}';
 
 //app store his service
   static String hisServiceShowProduct = '/api/app/store/product/show?code=vm15';

@@ -44,7 +44,9 @@ final int productId;
               controller.getProductDetails(productId: productId);
             },
             builder: (_) {
-              return controller.isLoading?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):SizedBox(
+              return controller.isLoading
+                  ?Center(child: CircularProgressIndicator(color: CustomColors.gold,),)
+                  :SizedBox(
                 width: ScreenDimensions.screenWidth(context),
                 height: ScreenDimensions.screenHeight(context),
                 child: Column(
@@ -89,23 +91,23 @@ final int productId;
                                   TextSpan(
                                       text: '${AppWord.productState} : ',
                                       style: TextStyle(
-                                          fontSize: AppFonts.subTitleFont(context),
-                                          color: CustomColors.yellow,
                                           shadows: [
                                             Shadow(
-                                                blurRadius: 3,
-                                                color: CustomColors.shadow),
-                                          ])),
+                                                blurRadius: 0.5, color: CustomColors.black)
+                                          ],
+                                          color: CustomColors.gold,
+                                          fontSize: AppFonts.subTitleFont(context),
+                                          fontWeight: FontWeight.bold)),
                                   TextSpan(
                                       text: AppWord.reserved,
                                       style: TextStyle(
-                                          fontSize: AppFonts.subTitleFont(context),
-                                          color: CustomColors.yellow,
                                           shadows: [
                                             Shadow(
-                                                blurRadius: 3,
-                                                color: CustomColors.shadow),
-                                          ])),
+                                                blurRadius: 0.5, color: CustomColors.black)
+                                          ],
+                                          color: CustomColors.gold,
+                                          fontSize: AppFonts.subTitleFont(context),
+                                          fontWeight: FontWeight.bold)),
                                 ])),
                             GestureDetector(
                               onTap: () {
@@ -169,13 +171,13 @@ final int productId;
                                   Text(
                                     AppWord.productDetails,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Details(
                                       details: controller.model!.manufacturer!,
@@ -206,13 +208,13 @@ final int productId;
                                   Text(
                                     AppWord.purchaseProcessInfo,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   ReservedSellProcessDetails(
                                       title: AppWord.amountPaid,

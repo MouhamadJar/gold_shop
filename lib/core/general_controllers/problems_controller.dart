@@ -14,7 +14,6 @@ bool isLoading = false;
         problems.add(type);
       });
     });
-    Get.log('Problems added successfully');
   }
 
   void sendProblem({
@@ -27,7 +26,6 @@ bool isLoading = false;
       type: selectedProblemType['id'].toString(),
       productId: productId,
     ).then((value) {
-      Get.log(value.toString());
       if (value) {
         Get.back();
         descriptionController.clear();

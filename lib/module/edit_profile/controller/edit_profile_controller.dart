@@ -16,7 +16,7 @@ class EditProfileController extends GetxController {
   ProfileController profileController = Get.find();
 
   ///declare variables and controller for each field
-
+  bool zoomed =false;
   File? image;
 
   late TextEditingController firstNameController;
@@ -30,18 +30,13 @@ class EditProfileController extends GetxController {
   late TextEditingController phoneNumberController;
 
   late String country;
-
   late String state;
-
   late String city;
-
   late String neighborhood;
-  LocationEntity location =
-      const LocationGoogleModel(lat: 24.470901, lon: 39.612236);
   late String street;
+  LocationEntity location = const LocationGoogleModel(lat: 24.470901, lon: 39.612236);
   Set<Marker> markers = {};
-  GeocodingCoordinatesManager geocodingCoordinatesManager =
-      Get.put(GeocodingCoordinatesManager());
+  GeocodingCoordinatesManager geocodingCoordinatesManager = Get.put(GeocodingCoordinatesManager());
 
   void pickImage() async {
     ImageHandler.pickImage().then((value) {
@@ -57,6 +52,7 @@ class EditProfileController extends GetxController {
   }
 
   void onGoogleMapTapped(LatLng position) {
+    update();
     location = LocationGoogleModel.fromLatLon(position);
     markers = {
       MarkerEntity.fromMarkerInfo(
@@ -68,13 +64,11 @@ class EditProfileController extends GetxController {
         ),
       ),
     };
-    geocodingCoordinatesManager
-        .convertCoordinates(latitude: location.lat, longitude: location.lon)
-        .then((value) {
+    geocodingCoordinatesManager.convertCoordinates(latitude: location.lat, longitude: location.lon).then((value) {
       country = value.city;
+      state = value.neighborhood;
       city = value.country;
-      state = value.area;
-      neighborhood = value.neighborhood;
+      neighborhood = value.area;
       street = value.route;
       update();
     });
@@ -110,16 +104,11 @@ class EditProfileController extends GetxController {
   @override
   void onInit() {
     ///init variables and controller for each field
-    firstNameController =
-        TextEditingController(text: profileController.user!.firstName);
-    lastNameController =
-        TextEditingController(text: profileController.user!.lastName);
-    userNameController =
-        TextEditingController(text: profileController.user!.firstName);
-    emailController =
-        TextEditingController(text: profileController.user!.email);
-    phoneNumberController =
-        TextEditingController(text: profileController.user!.phoneNumber);
+    firstNameController = TextEditingController(text: profileController.user!.firstName);
+    lastNameController = TextEditingController(text: profileController.user!.lastName);
+    userNameController = TextEditingController(text: profileController.user!.firstName);
+    emailController = TextEditingController(text: profileController.user!.email);
+    phoneNumberController = TextEditingController(text: profileController.user!.phoneNumber);
 
     country = profileController.user!.country;
     state = profileController.user!.state;

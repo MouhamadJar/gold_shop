@@ -12,7 +12,7 @@ class MediatorShopProfileModel {
 
   final String phoneNumber;
 
-  final String photo;
+  final String? photo;
 
   final String email;
 
@@ -41,7 +41,7 @@ class MediatorShopProfileModel {
     required this.name,
     required this.description,
     required this.phoneNumber,
-    required this.photo,
+     this.photo,
     required this.email,
     required this.cost,
     required this.longitude,
@@ -63,7 +63,7 @@ class MediatorShopProfileModel {
       name: json['name'],
       description: json['description'],
       phoneNumber: json['phone_number'],
-      photo: baseUrlImages + json['photo'],
+      photo: json['photo'],
       email: json['email'],
       country: json['country'],
       state: json['state'],

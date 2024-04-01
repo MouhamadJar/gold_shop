@@ -82,9 +82,10 @@ class BuyOrder extends GetView<BuyOrderController> {
                           AppWord.vendorInfo,
                           style: TextStyle(
                               shadows: [
-                                Shadow(blurRadius: 3, color: CustomColors.shadow)
+                                Shadow(
+                                    blurRadius: 0.5, color: CustomColors.black)
                               ],
-                              color: CustomColors.yellow,
+                              color: CustomColors.gold,
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
@@ -121,9 +122,10 @@ class BuyOrder extends GetView<BuyOrderController> {
                           AppWord.address,
                           style: TextStyle(
                               shadows: [
-                                Shadow(blurRadius: 3, color: CustomColors.shadow)
+                                Shadow(
+                                    blurRadius: 0.5, color: CustomColors.black)
                               ],
-                              color: CustomColors.yellow,
+                              color: CustomColors.gold,
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
@@ -149,11 +151,6 @@ class BuyOrder extends GetView<BuyOrderController> {
                         AppGoogleMap(markers: {controller.marker!},cameraPosition: controller.position).paddingSymmetric(
                             vertical: ScreenDimensions.heightPercentage(
                                 context, 2)),
-                        // Container(
-                        //   width: ScreenDimensions.screenWidth(context),
-                        //   height: ScreenDimensions.heightPercentage(context, 15),
-                        //   decoration: BoxDecoration(border: Border.all()),
-                        // ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
                         SizedBox(
                           width: ScreenDimensions.widthPercentage(context, 50),
                           child: Row(
@@ -184,9 +181,10 @@ class BuyOrder extends GetView<BuyOrderController> {
                           AppWord.reservedProduct,
                           style: TextStyle(
                               shadows: [
-                                Shadow(blurRadius: 3, color: CustomColors.shadow)
+                                Shadow(
+                                    blurRadius: 0.5, color: CustomColors.black)
                               ],
-                              color: CustomColors.yellow,
+                              color: CustomColors.gold,
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(

@@ -1,6 +1,8 @@
+import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/components/maps.dart';
 import 'package:gold_shop/core/images/images.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
@@ -36,7 +38,9 @@ class MediatorShopEditProfile extends GetView<MediatorShopEditProfileController>
           ),
           body: GetBuilder<MediatorShopEditProfileController>(
             builder: (_) {
-              return SingleChildScrollView(
+              return controller.isLoading
+                  ? Center(child: CircularProgressIndicator(color: CustomColors.gold,),)
+                  : SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -75,47 +79,130 @@ class MediatorShopEditProfile extends GetView<MediatorShopEditProfileController>
                     AppTextField(
                       title: AppWord.mediatorShopName,
                       keyboardType: TextInputType.name,
+                      controller: controller.nameController,
+                      onChanged:  (value){
+                        if(value.isEmpty){
+                          controller.nameController.text = controller.mediatorShopProfileModel!.name;
+                          controller.update();
+                        }else{
+                        controller.nameController.text = value;
+                        controller.update();}
+                      },
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     AppTextField(
                       title: AppWord.email,
-                      keyboardType: TextInputType.name,
+                      keyboardType: TextInputType.emailAddress,
+                      controller:controller.emailController,onChanged:  (value){
+                      if(value.isEmpty){
+                        controller.emailController.text = controller.mediatorShopProfileModel!.email;
+                        controller.update();
+                      }else{
+                        controller.emailController.text = value;
+                        controller.update();}
+                    },
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        Text(
-                          AppWord.phoneNumber,
-                          style: TextStyle(
-                            fontSize: AppFonts.smallTitleFont(context),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(
-                          height: ScreenDimensions.heightPercentage(context, 2),
-                        ),
-                        Container(
-                          alignment: AlignmentDirectional.centerEnd,
-                          width: ScreenDimensions.screenWidth(context),
-                          height: ScreenDimensions.heightPercentage(context, 6),
-                          padding: EdgeInsetsDirectional.all(
-                              ScreenDimensions.radius(context, 1)),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(
-                                  ScreenDimensions.radius(context, 0.5)),
-                              border: Border.all(color: Colors.grey),
-                              color: Colors.grey[400]),
-                          child: Text(
-                            '0928123981',
-                            style: TextStyle(
-                                fontSize: AppFonts.smallTitleFont(context),
-                                color: Colors.grey[600],
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
+                        AppTextField(
+                          title: AppWord.phoneNumber,
+                          keyboardType: TextInputType.phone,
+                          enabled: false,
+                          controller: controller.firstPhoneNumberController,
+                          onChanged:  (value){
+                          if(value.isEmpty){
+                            controller.firstPhoneNumberController.text = controller.mediatorShopProfileModel!.phoneNumber;
+                            controller.update();
+                          }else{
+                            controller.firstPhoneNumberController.text = value;
+                            controller.update();}
+                        },).paddingSymmetric(
+                            vertical: ScreenDimensions.heightPercentage(context, 2)),
+                        // controller.phoneNumberCount==2||controller.phoneNumberCount==3
+                        //     ?DelayedDisplay(
+                        //   child: AppTextField(
+                        //     title: '${AppWord.phoneNumber} (2)',
+                        //     keyboardType: TextInputType.phone,
+                        //     controller: controller.secondPhoneNumberController,
+                        //     onChanged: (value){
+                        //       controller.secondPhoneNumberController!.text = value;
+                        //       controller.update();
+                        //     },).paddingSymmetric(
+                        //       vertical: ScreenDimensions.heightPercentage(context, 2)),
+                        // )
+                        //     :const SizedBox.shrink(),
+                        // controller.phoneNumberCount == 3
+                        //     ?DelayedDisplay(
+                        //   child: AppTextField(
+                        //     title: '${AppWord.phoneNumber} (3)',
+                        //     keyboardType: TextInputType.phone,
+                        //     controller: controller.thirdPhoneNumberController,
+                        //     onChanged: (value){
+                        //       controller.thirdPhoneNumberController!.text = value;
+                        //       controller.update();
+                        //     },).paddingSymmetric(
+                        //       vertical: ScreenDimensions.heightPercentage(context, 2)),
+                        // )
+                        //     :const SizedBox.shrink(),
+                        // Align(
+                        //   alignment: AlignmentDirectional.topStart,
+                        //   child: Row(
+                        //     children: [
+                        //       GestureDetector(
+                        //         onTap: () {
+                        //           controller.removePhoneNumber();
+                        //         },
+                        //         child: Container(
+                        //           width: ScreenDimensions.widthPercentage(context, 10),
+                        //           height: ScreenDimensions.heightPercentage(context, 5),
+                        //           decoration: BoxDecoration(
+                        //             boxShadow: [
+                        //               BoxShadow(
+                        //                   color: CustomColors.shadow,
+                        //                   spreadRadius: 0.1,
+                        //                   blurStyle: BlurStyle.outer,
+                        //                   blurRadius: 3)
+                        //             ],
+                        //             color: CustomColors.gold,
+                        //           ),
+                        //           child: Icon(
+                        //             Icons.remove,
+                        //             size: ScreenDimensions.widthPercentage(context, 7),
+                        //             color: CustomColors.white,
+                        //           ),
+                        //         ),
+                        //       ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
+                        //       GestureDetector(
+                        //         onTap: () {controller.addPhoneNumber();},
+                        //         child: Container(
+                        //           width: ScreenDimensions.widthPercentage(context, 10),
+                        //           height: ScreenDimensions.heightPercentage(context, 5),
+                        //           decoration: BoxDecoration(
+                        //             boxShadow: [
+                        //               BoxShadow(
+                        //                   color: CustomColors.shadow,
+                        //                   spreadRadius: 0.1,
+                        //                   blurStyle: BlurStyle.outer,
+                        //                   blurRadius: 3)
+                        //             ],
+                        //             color: CustomColors.gold,
+                        //           ),
+                        //           child: Icon(
+                        //             Icons.add,
+                        //             size: ScreenDimensions.widthPercentage(context, 7),
+                        //             color: CustomColors.white,
+                        //           ),
+                        //         ),
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ).paddingSymmetric(
+                        //   vertical: ScreenDimensions.heightPercentage(context, 2),
+                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
@@ -146,13 +233,32 @@ class MediatorShopEditProfile extends GetView<MediatorShopEditProfileController>
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     AppTextField(
                       title: AppWord.checkingServiceCommission,
-                      keyboardType: TextInputType.name,
+                      keyboardType: TextInputType.number,
+                      controller: controller.profitController,
+                      onChanged:  (value){
+                      if(value.isEmpty){
+                        controller.profitController.text = controller.mediatorShopProfileModel!.cost;
+                        controller.update();
+                      }else{
+                        controller.profitController.text = value;
+                        controller.update();}
+                    },
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    AppTextField(maxLines: 5,
+                    AppTextField(
+                        maxLines: 5,
                       title: AppWord.aboutMediatorShop,
-                      keyboardType: TextInputType.name,
+                      keyboardType: TextInputType.text,
+                      controller : controller.descriptionController,
+                      onChanged:  (value){
+                      if(value.isEmpty){
+                        controller.descriptionController.text = controller.mediatorShopProfileModel!.description;
+                        controller.update();
+                      }else{
+                        controller.descriptionController.text = value;
+                        controller.update();}
+                    },
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
@@ -164,46 +270,54 @@ class MediatorShopEditProfile extends GetView<MediatorShopEditProfileController>
                           style: TextStyle(
                               fontSize: AppFonts.smallTitleFont(context),
                               fontWeight: FontWeight.bold),
-                        ),
-                        Container(
-                          width: ScreenDimensions.screenWidth(context),
-                          height: ScreenDimensions.heightPercentage(context, 20),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(
-                                ScreenDimensions.radius(context, 1)),
-                            border: Border.all(color: CustomColors.grey1),
-                          ),
+                        ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                        AppGoogleMap(
+                            markers: {controller.marker},
+                            cameraPosition: controller.position,
+                          onTap: controller.zoomed?controller.onGoogleMapTapped:(latLng){
+                            controller.update();
+                            Get.snackbar(AppWord.warning,AppWord.pleaseZoomIn);
+                          },
+                          onCameraMoved: (cameraPosition){
+                            if (cameraPosition.zoom>=19.0){
+                              controller.zoomed = true;
+                            }
+                            else{
+                              controller.zoomed = false;
+                            }
+                            controller.update();
+                          },
                         ),
                       ],
                     ).paddingSymmetric(
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     EditProfileCard(
                       title: AppWord.area,
-                      subtitle: AppWord.area,
+                      subtitle: controller.country,
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     EditProfileCard(
                       title: AppWord.state,
-                      subtitle: AppWord.state,
+                      subtitle: controller.state,
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     EditProfileCard(
                       title: AppWord.city,
-                      subtitle: AppWord.city,
+                      subtitle: controller.city,
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     EditProfileCard(
                       title: AppWord.neighborhood,
-                      subtitle: AppWord.neighborhood,
+                      subtitle: controller.neighborhood,
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     EditProfileCard(
                       title: AppWord.street,
-                      subtitle: AppWord.street,
+                      subtitle: controller.street,
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
@@ -222,7 +336,9 @@ class MediatorShopEditProfile extends GetView<MediatorShopEditProfileController>
                               SizedBox(width: ScreenDimensions.widthPercentage(context, 2),),
                               SvgPicture.asset(AppImages.edit)
                             ]),
-                        onTap: () {Get.back();},
+                        onTap: () {
+                          controller.editProfile();
+                          },
                         buttonBackground: AppImages.buttonLiteBackground)
                         .paddingSymmetric(
                         horizontal:

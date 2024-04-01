@@ -4,25 +4,30 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/general_controllers/google_map_controller.dart';
 import 'package:gold_shop/core/location_service/marker_entity.dart';
+import 'package:gold_shop/core/texts/words.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../utils/dimensions.dart';
 
 class AppGoogleMap extends GetView<AppGoogleMapController> {
-  const AppGoogleMap({
-    super.key,
-    this.markers = const {},
-    this.cameraPosition,
-    this.height,
-    this.width,
-    this.onTap,
-  });
+   AppGoogleMap(
+      {super.key,
+      this.markers = const {},
+      this.cameraPosition,
+      this.height,
+      this.width,
+      this.onTap,
+      this.canTap = false,
+      this.onCameraMoved
+      });
 
   final Set<Marker> markers;
   final CameraPosition? cameraPosition;
   final double? width;
   final double? height;
-  final Function(LatLng)? onTap;
+  Function(LatLng)? onTap;
+  Function(CameraPosition)? onCameraMoved;
+   bool canTap;
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +36,23 @@ class AppGoogleMap extends GetView<AppGoogleMapController> {
       height: height ?? ScreenDimensions.heightPercentage(context, 25),
       decoration: BoxDecoration(border: Border.all()),
       child: GoogleMap(
+        onCameraMove: onCameraMoved,
         onMapCreated: (mapController) {
           controller.mapController = mapController;
         },
         onTap: onTap,
+        minMaxZoomPreference: const MinMaxZoomPreference(6, 19),
         gestureRecognizers: {
           Factory(
             () => EagerGestureRecognizer(
-                allowedButtonsFilter: (buttons) => true,
-                supportedDevices: {PointerDeviceKind.touch}),
+              allowedButtonsFilter: (buttons) => true,
+              supportedDevices: {
+                PointerDeviceKind.touch,
+              },
+            ),
           ),
         },
-        initialCameraPosition:
-            cameraPosition == null ? controller.position! : cameraPosition!,
+        initialCameraPosition: cameraPosition == null ? controller.position! : cameraPosition!,
         markers: markers,
       ),
     ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2));

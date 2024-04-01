@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart'as dio;
 import 'package:gold_shop/core/texts/words.dart';
+import 'package:gold_shop/module/main/user/view/main_screen_view.dart';
 import 'package:gold_shop/module/product_payment_method/model/product_payment_method_model.dart';
 
 import '../../../core/network/dio_helper.dart';
@@ -20,6 +21,7 @@ class ProductPaymentMethodController extends GetxController {
   int phoneNumberCount = 1;
   List<StoresModel> storesModel=[];
   int? selectedStoreId;
+  bool isLoading  =false;
 
   void addPhoneNumber(){
     phoneNumberCount<3?phoneNumberCount ++:phoneNumberCount = 3;
@@ -89,16 +91,16 @@ void addProduct({
   required int subcategoryId,
   required double currentGoldPriceController,
   required double profitController,
-  required double additionController,
-  required String additionDescriptionController,
+   double? additionController,
+   String? additionDescriptionController,
   required String manufacturerController,
   required String manufacturerType,
   required int toggle,
   required int discountToggle,
-  required double discountValueController,
-  required String offerDescriptionController,
+   double? discountValueController,
+   String? offerDescriptionController,
 }) async {
- Map<String,dynamic> data =  await DioHelper.store(
+   await DioHelper.store(
     images: images,
     description: descriptionController,
     age: ageController,
@@ -118,7 +120,18 @@ void addProduct({
     discountToggle:  discountToggle,
     discountValue: discountValueController,
     offerDescription: offerDescriptionController,
-  );
+  ).then((value) {
+    print(value.toString());
+    if (value['message'] == 'Product created successfully.'){
+    Get.snackbar(AppWord.done, '');
+    update();
+    Get.offAll(const MainScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700));
+    }else{
+      Get.back();
+      Get.snackbar(AppWord.warning, AppWord.checkAllRequiredFields);
+      update();
+    }
+   });
   update();
 }
 

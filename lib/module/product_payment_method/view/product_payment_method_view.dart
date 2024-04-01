@@ -22,13 +22,13 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
     required this.subcategoryId,
     required this.caliber,
     required this.profitController,
-    required this.currentGoldPrice,
+    required this.caliberPriceValue,
      this.additionController,
      this.additionDescriptionController,
     required this.manufacturerController,
     required this.manufacturerType,
-     this.toggle,
-     this.discountToggle,
+     required this.toggle,
+     required this.discountToggle,
      this.discountDescriptionController,
      this.discountValueController,
   });
@@ -39,15 +39,15 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
   final int subcategoryId;
   final String caliber;
   final TextEditingController profitController;
-  final TextEditingController currentGoldPrice;
+  final double caliberPriceValue;
   final TextEditingController? additionController;
   final TextEditingController? additionDescriptionController;
   final TextEditingController manufacturerController;
   final String manufacturerType;
-  final int? toggle;
-  final bool? discountToggle;
+  final int toggle;
+  final bool discountToggle ;
   final TextEditingController? discountDescriptionController;
-  final double? discountValueController;
+  final TextEditingController? discountValueController;
   @override
   Widget build(BuildContext context) {
     Get.put(ProductPaymentMethodController());
@@ -615,6 +615,8 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                               fontWeight: FontWeight.bold),
                         ),
                         onTap: () {
+                          Get.dialog(
+                            WillPopScope(onWillPop: ()async{return false;}, child: Center(child: CircularProgressIndicator(color: CustomColors.gold,),)),barrierDismissible: false,);
                           controller.addProduct(
                               images: images,
                               descriptionController: descriptionController.text,
@@ -622,17 +624,19 @@ class ProductPaymentMethod extends GetView<ProductPaymentMethodController> {
                               weightController: double.parse(weightController.text),
                               carat: caliber,
                               subcategoryId: subcategoryId,
-                              currentGoldPriceController: double.parse(currentGoldPrice.text),
+                              currentGoldPriceController:caliberPriceValue,
                               profitController: double.parse(profitController.text),
                               additionController: double.parse(profitController.text),
                               additionDescriptionController: additionDescriptionController!.text,
                               manufacturerController: manufacturerController.text,
                               manufacturerType: manufacturerType,
-                              discountToggle: discountToggle==false?0:1,
-                              toggle: toggle!,
-                              discountValueController: discountValueController!,
+                              discountToggle: discountToggle==true?1:0,
+                              toggle: toggle,
+                              discountValueController: double.parse(discountValueController!.text),
                               offerDescriptionController: discountDescriptionController!.text,
                           );
+                            controller.update();
+
                         },
                         buttonBackground: AppImages.buttonLiteBackground),
                   ):Center(

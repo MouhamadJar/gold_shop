@@ -22,16 +22,9 @@ class SubcategoryProductsController extends GetxController {
   String? selectedCity;
 
   void getAllProducts({required int subcategoryId}) async {
-    Map<String, dynamic> data =
-        await DioHelper.allProducts(subcategoryId: subcategoryId);
+    Map<String, dynamic> data = await DioHelper.allProducts(subcategoryId: subcategoryId);
     product.clear();
-    data['data']['data'].forEach((element) {
-      product.add(ProductsModel.fromJson(json: element));
-      Get.log("""
-      element : $element
-      list index : ${product.length}
-      """);
-    });
+    data['data']['data'].forEach((element) { product.add(ProductsModel.fromJson(json: element));});
     isLoading = false;
     product.isEmpty ? isSubcategoryEmpty == true : isSubcategoryEmpty = false;
     update();
@@ -48,11 +41,23 @@ class SubcategoryProductsController extends GetxController {
   }
 
   void chooseCity({required String city,required int subcategoryId}) async {
-    Map<String, dynamic> data = await DioHelper.productsByCity(city: city, subcategoryId: subcategoryId);
-    data['data']['data'].forEach((element) {
-      productByCity.add(ProductsModel.fromJson(json: element));
-      print(data.toString());
-      product = productByCity;
+    isLoading = true;
+    update();
+    await DioHelper.productsByCity(city: city, subcategoryId: subcategoryId).then((value) {
+      product.clear();
+      update();
+      if(value['data']['data'] == []){
+        isSubcategoryEmpty = false;
+        isLoading = false;
+        update();
+      }else{
+        value['data']['data'].forEach((element) {
+          productByCity.add(ProductsModel.fromJson(json: element));
+        });
+        product = productByCity;
+        isLoading = false;
+        update();
+      }
     });
     update();
   }
@@ -81,4 +86,5 @@ class SubcategoryProductsController extends GetxController {
         return AppWord.sold;
     }
   }
+
 }

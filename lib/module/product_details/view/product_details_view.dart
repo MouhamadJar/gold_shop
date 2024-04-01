@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
+import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/module/invoice/view/invoice_view.dart';
 import 'package:gold_shop/module/product_details/controller/product_details_controller.dart';
@@ -64,9 +65,7 @@ class ProductDetails extends GetView<ProductDetailsController> {
                   height: ScreenDimensions.screenHeight(context),
                   child: Column(
                     children: [
-                      const PricesBar().paddingOnly(
-                          bottom:
-                              ScreenDimensions.heightPercentage(context, 3)),
+                      const PricesBar().paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 3)),
                       controller.isBannersEmpty
                           ? const SizedBox.shrink()
                           : AdvertisementBanner(
@@ -149,21 +148,17 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                       style: TextStyle(
                                           fontSize:
                                               AppFonts.smallTitleFont(context)),
-                                    ).paddingSymmetric(
-                                        vertical:
-                                            ScreenDimensions.heightPercentage(
-                                                context, 1)),
+                                    ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
                                     Text(
                                       AppWord.productDetails,
                                       style: TextStyle(
-                                          fontSize:
-                                              AppFonts.subTitleFont(context),
-                                          color: CustomColors.yellow,
                                           shadows: [
                                             Shadow(
-                                                blurRadius: 3,
-                                                color: CustomColors.shadow),
-                                          ]),
+                                                blurRadius: 0.5, color: CustomColors.black)
+                                          ],
+                                          color: CustomColors.gold,
+                                          fontSize: AppFonts.subTitleFont(context),
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     Details(
                                         withIcon: true,
@@ -201,8 +196,7 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                   ],
                                 ),
                               ).paddingSymmetric(
-                                  horizontal: ScreenDimensions.widthPercentage(
-                                      context, 5)),
+                                  horizontal: ScreenDimensions.widthPercentage(context, 5)),
                               Directions(
                                 child: Row(
                                   mainAxisAlignment:
@@ -535,7 +529,7 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                     vertical: ScreenDimensions.widthPercentage(
                                         context, 2)),
                               ),
-                              AppButton(
+                              StorageHandler().userId == controller.model!.userId.toString()?const SizedBox.shrink():AppButton(
                                 onTap: () {
                                   Get.dialog(
                                       barrierDismissible: true,
@@ -614,8 +608,13 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                                                   child: SizedBox(child: Text(AppWord.no,style: TextStyle(fontSize: AppFonts.subTitleFont(context),fontWeight: FontWeight.bold,color: CustomColors.black),),),),
                                                                 GestureDetector(
                                                                   onTap: (){
-                                                                    Get.back();
-                                                                    controller.addProductToPutAside(productId: controller.model!.id);
+                                                                    if(controller.model!.productStatus == '0'){
+                                                                      Get.back();
+                                                                      controller.addProductToPutAside(productId: controller.model!.id);
+                                                                    }else{
+                                                                      Get.back();
+                                                                      Get.snackbar(AppWord.warning, AppWord.reservedProduct);
+                                                                    }
                                                                   },
                                                                   child: SizedBox(child: Text(AppWord.yes,style: TextStyle(fontSize: AppFonts.subTitleFont(context),fontWeight: FontWeight.bold,color: CustomColors.black),),),)
                                                               ],

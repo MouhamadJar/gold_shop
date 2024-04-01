@@ -55,7 +55,10 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                 child: Column(
                   children: [
                     const PricesBar().paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 3)),
-                    controller.isSubcategoriesLoading ? CircularProgressIndicator(color: CustomColors.gold,):controller.isBannersEmpty?const SizedBox.shrink():AdvertisementBanner(
+                    controller.isSubcategoriesLoading ? CircularProgressIndicator(color: CustomColors.gold,)
+                        :controller.isBannersEmpty
+                        ?const SizedBox.shrink()
+                        :AdvertisementBanner(
                       itemBuilder: (context, index, realIndex) => Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -87,23 +90,23 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                   TextSpan(
                                       text: '${AppWord.productState} : ',
                                       style: TextStyle(
-                                          fontSize: AppFonts.subTitleFont(context),
-                                          color: CustomColors.yellow,
                                           shadows: [
                                             Shadow(
-                                                blurRadius: 3,
-                                                color: CustomColors.shadow),
-                                          ])),
+                                                blurRadius: 0.5, color: CustomColors.black)
+                                          ],
+                                          color: CustomColors.gold,
+                                          fontSize: AppFonts.subTitleFont(context),
+                                          fontWeight: FontWeight.bold)),
                                   TextSpan(
                                       text: AppWord.putAside,
                                       style: TextStyle(
-                                          fontSize: AppFonts.subTitleFont(context),
-                                          color: CustomColors.yellow,
                                           shadows: [
                                             Shadow(
-                                                blurRadius: 3,
-                                                color: CustomColors.shadow),
-                                          ])),
+                                                blurRadius: 0.5, color: CustomColors.black)
+                                          ],
+                                          color: CustomColors.gold,
+                                          fontSize: AppFonts.subTitleFont(context),
+                                          fontWeight: FontWeight.bold)),
                                 ])),
                             GestureDetector(
                               onTap: () {
@@ -172,13 +175,13 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                   Text(
                                     AppWord.productDetails,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Details(
                                       withIcon: true,
@@ -220,13 +223,13 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                   Text(
                                     AppWord.purchaseProcessInfo,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   PutAsideSellProcessDetails(
                                       title: AppWord.amountPaid,

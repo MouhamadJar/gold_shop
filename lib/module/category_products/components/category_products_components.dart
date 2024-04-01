@@ -19,6 +19,7 @@ import 'package:gold_shop/module/product_details/view/product_details_view.dart'
 import '../../../core/images/images.dart';
 import '../../../core/storage_handler/storage_handler.dart';
 import '../../authentication/view/login_screen.dart';
+import '../../authentication/view/user/verify_account_screen.dart';
 import '../../main/user/view/main_screen_view.dart';
 
 class ProductsCard extends GetView<SubcategoryProductsController> {
@@ -50,8 +51,7 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
             delay: Duration(milliseconds: (index * 10) + 10),
             child: GestureDetector(
               onTap: () {
-                if (!(StorageHandler().hasToken))
-                {
+                if (!(StorageHandler().hasToken)) {
                   Get.dialog(
                       barrierDismissible: false,
                       Material(
@@ -165,9 +165,122 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
                       ));
                   return;
                 }else{
-                  Get.to( ProductDetails(productId: controller.product[index].id,),
+                  if(StorageHandler().verified == '0'){
+                      Get.dialog(
+                          barrierDismissible: false,
+                          Material(
+                            color: Colors.transparent,
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: WillPopScope(
+                                onWillPop: () async {
+                                  return false;
+                                },
+                                child: Container(
+                                  width: ScreenDimensions.screenWidth(context),
+                                  height: ScreenDimensions.screenHeight(context),
+                                  padding: EdgeInsetsDirectional.all(
+                                      ScreenDimensions.widthPercentage(context, 5)),
+                                  margin: EdgeInsetsDirectional.symmetric(
+                                      horizontal:
+                                      ScreenDimensions.widthPercentage(
+                                          context, 5),
+                                      vertical: ScreenDimensions.heightPercentage(
+                                          context, 30)),
+                                  decoration: BoxDecoration(
+                                      color: CustomColors.gold,
+                                      borderRadius: BorderRadius.circular(
+                                          ScreenDimensions.radius(context, 1))),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SvgPicture.asset(
+                                        AppImages.verified,
+                                        width: ScreenDimensions.widthPercentage(
+                                          context,
+                                          10,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          AppWord.youMustVerify,
+                                          maxLines: 3,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize:
+                                            AppFonts.subTitleFont(context),
+                                            color: CustomColors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(const VerifyUserAccount(),
+                                              transition: Transition.rightToLeft,
+                                              duration: const Duration(
+                                                  milliseconds: 700));
+                                        },
+                                        child: Container(
+                                          height: ScreenDimensions.heightPercentage(
+                                              context, 5),
+                                          width: ScreenDimensions.heightPercentage(
+                                              context, 20),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.white,
+                                              border: Border.all(),
+                                              borderRadius: BorderRadius.circular(
+                                                  ScreenDimensions
+                                                      .heightPercentage(
+                                                      context, 1))),
+                                          child: Text(
+                                              AppWord.verify,
+                                              style: TextStyle(
+                                                  color: CustomColors.black,
+                                                  fontSize:
+                                                  AppFonts.smallTitleFont(
+                                                      context))),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.back();
+                                        },
+                                        child: Container(
+                                          height:
+                                          ScreenDimensions.heightPercentage(
+                                              context, 5),
+                                          width:
+                                          ScreenDimensions.heightPercentage(
+                                              context, 20),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.white,
+                                              border: Border.all(),
+                                              borderRadius: BorderRadius.circular(
+                                                  ScreenDimensions
+                                                      .heightPercentage(
+                                                      context, 1))),
+                                          child: Text(AppWord.goBack,
+                                              style: TextStyle(
+                                                  color: CustomColors.black,
+                                                  fontSize:
+                                                  AppFonts.smallTitleFont(
+                                                      context))),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ));
+                      return;
+                  }else{
+                  Get.to(ProductDetails(productId: controller.product[index].id,),
                     duration: const Duration(milliseconds: 700),
-                    transition: Transition.rightToLeft);
+                    transition: Transition.rightToLeft);}
                 }
               },
               child: Stack(

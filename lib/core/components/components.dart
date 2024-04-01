@@ -60,11 +60,11 @@ class AppPopUpMenu extends StatelessWidget {
       {super.key,
       required this.title,
       required this.items,
-      required this.onSelected});
+       this.onSelected});
 
   final String title;
   final List<PopupMenuItem> items;
-  final PopupMenuItemSelected onSelected;
+  final PopupMenuItemSelected? onSelected;
 
   @override
   Widget build(BuildContext context) {
@@ -329,13 +329,13 @@ class AppDialog extends StatelessWidget {
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: AppFonts.subTitleFont(context) - 2,
-                      color: CustomColors.yellow,
-                      fontWeight: FontWeight.bold,
-                      shadows: [
-                        Shadow(blurRadius: 3, color: CustomColors.shadow),
-                      ],
-                    ),
+                        shadows: [
+                          Shadow(
+                              blurRadius: 0.5, color: CustomColors.black)
+                        ],
+                        color: CustomColors.gold,
+                        fontSize: AppFonts.subTitleFont(context)-2,
+                        fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -452,11 +452,11 @@ class FloatingContainer extends StatelessWidget {
 }
 
 class AppTextField extends StatelessWidget {
-  const AppTextField({
+   AppTextField({
     super.key,
     this.title,
     this.hintText,
-    required this.keyboardType,
+     this.keyboardType,
     this.label,
     this.controller,
     this.enabled,
@@ -467,11 +467,12 @@ class AppTextField extends StatelessWidget {
     this.maxLines,
     this.validator,
     this.onChanged,
+    this.initialValue,
+    this.obscureText = false,
   });
-
   final String? title;
   final String? hintText;
-  final TextInputType keyboardType;
+  final TextInputType? keyboardType;
   final Widget? label;
   final TextEditingController? controller;
   final bool? enabled;
@@ -482,6 +483,8 @@ class AppTextField extends StatelessWidget {
   final int? maxLines;
   final FormFieldValidator? validator;
   final void Function(String)? onChanged;
+  final String? initialValue;
+   bool obscureText;
 
   @override
   Widget build(BuildContext context) {
@@ -502,6 +505,8 @@ class AppTextField extends StatelessWidget {
           ),
           TextFormField(
             onChanged:onChanged ,
+            obscureText: obscureText,
+            initialValue: initialValue,
             validator: validator,
             maxLines: maxLines,
             enabled: enabled,
@@ -537,15 +542,16 @@ class AppTextField extends StatelessWidget {
 class BackArrow extends StatelessWidget {
   const BackArrow({
     super.key,
+    this.color
   });
-
+ final Color? color;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           Get.back();
         },
-        child: const Icon(Icons.arrow_back));
+        child:  Icon(Icons.arrow_back,color: color,));
   }
 }
 

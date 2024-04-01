@@ -6,7 +6,10 @@ import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/storage_handler/storage_handler.dart';
+import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/module/about_us/view/about_us_view.dart';
+import 'package:gold_shop/module/authentication/view/mediator_shop/mediator_login.dart';
+import 'package:gold_shop/module/authentication/view/user/signup_screen.dart';
 import 'package:gold_shop/module/authentication/view/user/verify_account_screen.dart';
 import '../../../../core/colors/colors.dart';
 import '../../../../core/components/components.dart';
@@ -84,29 +87,41 @@ class MainScreen extends GetView<MainScreenController> {
                                       )
                                     ])),
                             Container(
-                              height: ScreenDimensions.heightPercentage(
-                                  context, 18),
-                              width:
-                                  ScreenDimensions.widthPercentage(context, 36),
+                              height: ScreenDimensions.heightPercentage(context, 18),
+                              width: ScreenDimensions.widthPercentage(context, 36),
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                               ),
-                              child: Icon(Icons.person_2_outlined,
+                              child: StorageHandler().hasPhoto
+                                  ?AppNetworkImage(
+                                StorageHandler().profilePhoto,
+                                fit: BoxFit.contain,shape: BoxShape.circle,)
+                                  :Icon(Icons.person_2_outlined,
                                   size: ScreenDimensions.heightPercentage(
                                       context, 15)),
                             ),
                           ],
                         ),
                         Text(
-                          AppWord.userName,
+                          StorageHandler().userName,
                           style: TextStyle(
                               fontSize: AppFonts.subTitleFont(context),
                               color: CustomColors.white,
                               fontWeight: FontWeight.bold),
                         ),
-                        Row(
+                        StorageHandler().verified == '1'
+                            ? Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Icon(
+                              Icons.verified,
+                              color: CustomColors.white,
+                              size: ScreenDimensions.radius(context, 3),
+                            ),
+                            SizedBox(
+                              width:
+                                  ScreenDimensions.widthPercentage(context, 3),
+                            ),
                             Text(
                               AppWord.activatedAccount,
                               style: TextStyle(
@@ -114,27 +129,30 @@ class MainScreen extends GetView<MainScreenController> {
                                   color: CustomColors.white,
                                   fontWeight: FontWeight.bold),
                             ),
-                            SizedBox(
-                              width:
-                                  ScreenDimensions.widthPercentage(context, 3),
-                            ),
-                            Icon(
-                              Icons.verified,
-                              color: CustomColors.white,
-                              size: ScreenDimensions.radius(context, 3),
+                          ],
+                        )
+                            : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              AppWord.notActivatedAccount,
+                              style: TextStyle(
+                                  fontSize: AppFonts.subTitleFont(context),
+                                  color: CustomColors.white,
+                                  fontWeight: FontWeight.bold),
                             ),
                           ],
                         ),
                         DrawerListTiles(
                           title: StorageHandler().hasToken
-                              ? AppWord.logout
-                              : AppWord.login,
+                              ? AppWord.logoutUser
+                              : AppWord.loginAsUser,
                           imagePath: AppImages.login,
                           onTap: StorageHandler().hasToken
                               ? () {
                                   controller.logout();
                                   controller.loader
-                                      ?Get.dialog(Center(child: CircularProgressIndicator(color: CustomColors.gold,),),barrierDismissible: false)
+                                      ?Get.dialog(WillPopScope(onWillPop: ()async{return false;},child: Center(child: CircularProgressIndicator(color: CustomColors.gold,),)),barrierDismissible: false)
                                       :Get.snackbar(AppWord.note,AppWord.loggedOut);
                                   controller.update();
                                 }
@@ -142,18 +160,17 @@ class MainScreen extends GetView<MainScreenController> {
                             Get.to(const LoginScreen(),transition:  Transition.fade,duration: const Duration(milliseconds: 700));
                                 },
                         ),
-                        if (StorageHandler().role == "shop")
-                          DrawerListTiles(
-                            title: AppWord.checkProduct,
-                            imagePath: AppImages.add,
-                            onTap: () {
-                              if (StorageHandler().signature) {
-                                Get.to(() => const ProductCode());
-                              }else {
-                                Get.to(() => const MediatorShopHome());
-                              }
-                            },
-                          ),
+                        DrawerListTiles(
+                          title: StorageHandler().mediatorHasToken?AppWord.myMediatorShop:AppWord.loginAsMediatorShop,
+                          imagePath: StorageHandler().mediatorHasToken?AppImages.map:AppImages.login,
+                          onTap: StorageHandler().mediatorHasToken?(){
+                            StorageHandler().removeRole();
+                            StorageHandler().setRole('shop');
+                            Get.to(const ProductCode(),transition: Transition.fade,duration: const Duration(milliseconds: 700));
+                          }:(){
+                            Get.to(const MediatorLoginScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700));
+                          },
+                        ),
                         DrawerListTiles(
                             onTap: () {
                               Get.to(const VerifyUserAccount(),
@@ -162,8 +179,6 @@ class MainScreen extends GetView<MainScreenController> {
                             },
                             title: AppWord.activateAccount,
                             imagePath: AppImages.verified),
-                        DrawerListTiles(
-                            title: AppWord.add, imagePath: AppImages.add),
                         DrawerListTiles(
                           title: AppWord.mediatorShops,
                           imagePath: AppImages.map,
@@ -295,12 +310,16 @@ class MainScreen extends GetView<MainScreenController> {
                                         10,
                                       ),
                                     ),
-                                    Text(
-                                      AppWord.youHaveToLoginOrSignup,
-                                      style: TextStyle(
-                                        fontSize:
-                                            AppFonts.subTitleFont(context),
-                                        color: CustomColors.white,
+                                    SizedBox(
+                                      child: Text(
+                                        AppWord.youHaveToLoginOrSignup,
+                                        maxLines: 3,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize:
+                                              AppFonts.subTitleFont(context),
+                                          color: CustomColors.white,
+                                        ),
                                       ),
                                     ),
                                     GestureDetector(
@@ -335,8 +354,34 @@ class MainScreen extends GetView<MainScreenController> {
                                     ),
                                     GestureDetector(
                                       onTap: () {
-                                        Get.offAll(const MainScreen(),
+                                        Get.to(const UserSignUpScreen(),
                                             transition: Transition.rightToLeft,
+                                            duration: const Duration(
+                                                milliseconds: 700));
+                                      },
+                                      child: Container(
+                                        height: ScreenDimensions.heightPercentage(context, 5),
+                                        width: ScreenDimensions.heightPercentage(context, 20),
+                                        alignment: Alignment.center,
+                                        decoration: BoxDecoration(
+                                            color: CustomColors.white,
+                                            border: Border.all(),
+                                            borderRadius: BorderRadius.circular(
+                                                ScreenDimensions
+                                                    .heightPercentage(
+                                                        context, 1))),
+                                        child: Text(AppWord.signupAsUser,
+                                            style: TextStyle(
+                                                color: CustomColors.black,
+                                                fontSize:
+                                                    AppFonts.smallTitleFont(
+                                                        context))),
+                                      ),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        Get.offAll(const MainScreen(),
+                                            transition: Transition.fadeIn,
                                             duration: const Duration(
                                                 milliseconds: 700));
                                       },
@@ -355,7 +400,7 @@ class MainScreen extends GetView<MainScreenController> {
                                                 ScreenDimensions
                                                     .heightPercentage(
                                                         context, 1))),
-                                        child: Text(AppWord.later,
+                                        child: Text(AppWord.goBack,
                                             style: TextStyle(
                                                 color: CustomColors.black,
                                                 fontSize:
@@ -370,6 +415,126 @@ class MainScreen extends GetView<MainScreenController> {
                           ),
                         ));
                     return;
+                  }
+                }
+                if(currentIndex == 3 && StorageHandler().hasToken){
+                  if(StorageHandler().verified == '0'){
+                    {
+                      Get.dialog(
+                          barrierDismissible: false,
+                          Material(
+                            color: Colors.transparent,
+                            child: BackdropFilter(
+                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                              child: WillPopScope(
+                                onWillPop: () async {
+                                  return false;
+                                },
+                                child: Container(
+                                  width: ScreenDimensions.screenWidth(context),
+                                  height: ScreenDimensions.screenHeight(context),
+                                  padding: EdgeInsetsDirectional.all(
+                                      ScreenDimensions.widthPercentage(context, 5)),
+                                  margin: EdgeInsetsDirectional.symmetric(
+                                      horizontal:
+                                      ScreenDimensions.widthPercentage(
+                                          context, 5),
+                                      vertical: ScreenDimensions.heightPercentage(
+                                          context, 30)),
+                                  decoration: BoxDecoration(
+                                      color: CustomColors.gold,
+                                      borderRadius: BorderRadius.circular(
+                                          ScreenDimensions.radius(context, 1))),
+                                  child: Column(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      SvgPicture.asset(
+                                        AppImages.verified,
+                                        width: ScreenDimensions.widthPercentage(
+                                          context,
+                                          10,
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        child: Text(
+                                          AppWord.youMustVerify,
+                                          maxLines: 3,
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize:
+                                            AppFonts.subTitleFont(context),
+                                            color: CustomColors.white,
+                                          ),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.to(const VerifyUserAccount(),
+                                              transition: Transition.rightToLeft,
+                                              duration: const Duration(
+                                                  milliseconds: 700));
+                                        },
+                                        child: Container(
+                                          height: ScreenDimensions.heightPercentage(
+                                              context, 5),
+                                          width: ScreenDimensions.heightPercentage(
+                                              context, 20),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.white,
+                                              border: Border.all(),
+                                              borderRadius: BorderRadius.circular(
+                                                  ScreenDimensions
+                                                      .heightPercentage(
+                                                      context, 1))),
+                                          child: Text(
+                                              AppWord.verify,
+                                              style: TextStyle(
+                                                  color: CustomColors.black,
+                                                  fontSize:
+                                                  AppFonts.smallTitleFont(
+                                                      context))),
+                                        ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          Get.offAll(const MainScreen(),
+                                              transition: Transition.fadeIn,
+                                              duration: const Duration(
+                                                  milliseconds: 700));
+                                        },
+                                        child: Container(
+                                          height:
+                                          ScreenDimensions.heightPercentage(
+                                              context, 5),
+                                          width:
+                                          ScreenDimensions.heightPercentage(
+                                              context, 20),
+                                          alignment: Alignment.center,
+                                          decoration: BoxDecoration(
+                                              color: CustomColors.white,
+                                              border: Border.all(),
+                                              borderRadius: BorderRadius.circular(
+                                                  ScreenDimensions
+                                                      .heightPercentage(
+                                                      context, 1))),
+                                          child: Text(AppWord.goBack,
+                                              style: TextStyle(
+                                                  color: CustomColors.black,
+                                                  fontSize:
+                                                  AppFonts.smallTitleFont(
+                                                      context))),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ));
+                      return;
+                    }
                   }
                 }
                 controller.currentIndex = currentIndex;

@@ -88,23 +88,23 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                               TextSpan(
                                   text: '${AppWord.productState} : ',
                                   style: TextStyle(
-                                      fontSize: AppFonts.subTitleFont(context),
-                                      color: CustomColors.yellow,
                                       shadows: [
                                         Shadow(
-                                            blurRadius: 3,
-                                            color: CustomColors.shadow),
-                                      ])),
+                                            blurRadius: 0.5, color: CustomColors.black)
+                                      ],
+                                      color: CustomColors.gold,
+                                      fontSize: AppFonts.subTitleFont(context),
+                                      fontWeight: FontWeight.bold)),
                               TextSpan(
                                   text: AppWord.putAside,
                                   style: TextStyle(
-                                      fontSize: AppFonts.subTitleFont(context),
-                                      color: CustomColors.yellow,
                                       shadows: [
                                         Shadow(
-                                            blurRadius: 3,
-                                            color: CustomColors.shadow),
-                                      ])),
+                                            blurRadius: 0.5, color: CustomColors.black)
+                                      ],
+                                      color: CustomColors.gold,
+                                      fontSize: AppFonts.subTitleFont(context),
+                                      fontWeight: FontWeight.bold)),
                             ])),
                             GestureDetector(
                               onTap: () {
@@ -174,13 +174,13 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   Text(
                                     AppWord.productDetails,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Details(
                                     withIcon:true,
@@ -223,13 +223,13 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   Text(
                                     AppWord.purchaseProcessInfo,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   PutAsidePurchaseProcessDetails(
                                       title: AppWord.amountPaid,

@@ -22,3 +22,31 @@ class CategoriesModel {
     );
   }
 }
+
+
+class HomeADVSModel {
+  final int id;
+
+  final int categoryId;
+
+
+  final String paragraph;
+
+  final String image;
+
+  HomeADVSModel(
+      {required this.id,
+        required this.categoryId,
+        required this.paragraph,
+        required this.image,
+      });
+
+  factory HomeADVSModel.fromJson({required Map<String, dynamic> json}) {
+    return HomeADVSModel(
+        id: json['id'],
+        categoryId: json['category_id'],
+        paragraph: json['paragraph'],
+        image: json['image'],);
+  }
+}
+

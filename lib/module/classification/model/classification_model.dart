@@ -31,7 +31,7 @@ class CategoryADVSModel {
 
   final int categoryId;
 
-  final int subcategoryId;
+  final int? subcategoryId;
 
   final String paragraph;
 
@@ -44,7 +44,7 @@ class CategoryADVSModel {
   CategoryADVSModel(
       {required this.id,
       required this.categoryId,
-      required this.subcategoryId,
+        this.subcategoryId,
       required this.paragraph,
       required this.image,
       required this.createdAt,

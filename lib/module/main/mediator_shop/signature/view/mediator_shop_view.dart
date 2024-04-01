@@ -3,9 +3,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/module/authentication/view/mediator_shop/verify_account_screen.dart';
-import 'package:gold_shop/module/main/mediator_shop/mediator_shop_profile/view/mediator_shop_profile.dart';
-import 'package:gold_shop/module/main/mediator_shop/product_code/view/product_code_view.dart';
 
 import '../../../../../core/colors/colors.dart';
 import '../../../../../core/components/components.dart';
@@ -13,9 +10,6 @@ import '../../../../../core/images/images.dart';
 import '../../../../../core/texts/words.dart';
 import '../../../../../core/utils/app_fonts.dart';
 import '../../../../../core/utils/dimensions.dart';
-import '../../../../authentication/view/login_screen.dart';
-import '../../../../map/view/mediator_shops_map_screen.dart';
-import '../../../user/components/components.dart';
 import '../controller/signature_controller.dart';
 
 class MediatorShopHome extends GetView<SignatureController> {
@@ -50,9 +44,10 @@ class MediatorShopHome extends GetView<SignatureController> {
                 AppWord.eSignaturePic,
                 style: TextStyle(
                     shadows: [
-                      Shadow(blurRadius: 3, color: CustomColors.shadow)
+                      Shadow(
+                          blurRadius: 0.5, color: CustomColors.black)
                     ],
-                    color: CustomColors.yellow,
+                    color: CustomColors.gold,
                     fontSize: AppFonts.subTitleFont(context),
                     fontWeight: FontWeight.bold),
               ),

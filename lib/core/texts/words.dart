@@ -453,7 +453,7 @@ class AppWord {
 
   static String get reset => 'إعادة تعيين '.tr;
 
-  static String get mediatorFirstName => 'اسم المتجر الوسيط'.tr;
+  static String get mediatorName => 'اسم المتجر الوسيط'.tr;
 
   static String get backupPhoneNumber => 'رقم هاتف احتياط'.tr;
 
@@ -529,8 +529,7 @@ class AppWord {
 
   static String get noDataForThisFilter => 'لا يوجد بيانات مطابقة للفلترة'.tr;
 
-  static String get youHaveToLoginOrSignup =>
-      'يرجى انشاء حساب او تسجيل الدخول'.tr;
+  static String get youHaveToLoginOrSignup => 'يرجى انشاء حساب او تسجيل الدخول'.tr;
 
   static String get loggedOut => 'تم تسجيل الخروج بنجاح'.tr;
 
@@ -579,8 +578,7 @@ class AppWord {
 
   static String get editProduct => 'تعديل منتج'.tr;
 
-  static String get updateAllInformation =>
-      'الرجاء إعادة تعبئة كامل المعلومات'.tr;
+  static String get updateAllInformation => 'الرجاء إعادة تعبئة كامل المعلومات'.tr;
 
   static String get areYouSureYouWantToResell => 'هل أنت متأكد من أنك تريد طلب إعادة بيع هذا المنتج'.tr;
   static String get editManufacturer => 'تعديل الشركة المصنعة'.tr;
@@ -588,4 +586,50 @@ class AppWord {
   static String get editCarat => 'تعديل العيار'.tr;
   static String get areYouSureFromThisData => 'هل أنت متأكد من هذه المعلومات'.tr;
   static String get youCantSendMoreThanReportForAnyProduct => 'لا يمكنك إرسال اكثر من تقرير واحد لأي منتج'.tr;
+  static String get pleaseSelectPhoto => 'الرجاء اختيار صورة (يمكنك أيضا إعادة إرسال نفس الصورة الحالية)'.tr;
+  static String get signupAsMediatorShop => 'إنشاء حساب متجر وسيط'.tr;
+  static String get signupAsUser => 'إنشاء حساب مستخدم'.tr;
+  static String get loginAsMediatorShop => 'تسجيل الدخول كمتجر وسيط'.tr;
+  static String get loginAsUser => 'تسجيل الدخول كمستخدم'.tr;
+  static String get logoutMediatorShop => 'تسجيل خروج متجر وسيط'.tr;
+  static String get logoutUser => 'تسجيل خروج حساب المستخدم'.tr;
+  static String get myMediatorShop => 'متجري الوسيط'.tr;
+  static String get myUserAccount => 'حساب المستخدم خاصتي'.tr;
+  static String get backToGuestMode => 'العودة إلى وضع الزائر'.tr;
+  static String get wrongUserNameOrPassword => 'اسم مستخدم او كلمة مرور خاطئة'.tr;
+  static String get wrongPhoneNumberOrPassword => 'رقم او كلمة مرور خاطئة'.tr;
+  static String get takenEmail => 'البريد الإلكتروني مأخوذ مسبقا'.tr;
+  static String get takenNumber => 'الرقم مأخوذ مسبقا'.tr;
+  static String get youMustVerify => 'يجب عليك توثيق حسابك لتسطيع القيام بعمليات الشراء والإضافة'.tr;
+  static String get verify => 'توثيق'.tr;
+  static String get goBack => 'رجوع'.tr;
+  static String get selectYourLocation => 'الرجاء تحديد موقعك بدقة'.tr;
+  static String get commercialRegisterNumber => 'رقم السجل التجاري'.tr;
+  static String get license => 'الرخصة'.tr;
+  static String get invalidDescription => 'وصف غير صالح'.tr;
+  static String get invalidValue => 'قيمة غير صالحة'.tr;
+  static String get invalidNationalNumber => 'رقم وطني غير صالح'.tr;
+  static String get invalidCommercialRegister => 'سجل تجاري غير صالح'.tr;
+  static String get invalidLicense => 'رخصة غير صالحة'.tr;
+  static String get uploadLicensePicture => 'تحميل صورة الرخصة'.tr;
+  static String get uploadCommercialRegisterPicture => 'تحميل صورة السجل التجاري'.tr;
+  static String get uploadCommercialRegisterAndLicensePics => 'الرجاء تحميل صورة السجل التجاري والرخصة'.tr;
+  static String get takenNumberAndEmail => 'الرقم والبريد الالكتروني مأخوذين مسبقا '.tr;
+  static String get pleaseZoomIn => 'الرجاء التكبير اكثر للحصول على الموقع بدقة'.tr;
+  static String get noOffers => 'لا يوجد عروض'.tr;
+  static String get atLeast9Characters => 'تسعة رموز عالأقل'.tr;
+  static String get only10Characters => 'عشرة أرقام حصرا'.tr;
+  static String get atLeast5Characters => 'خمسة رموز على الأقل'.tr;
+  static String get atLeast6Characters => 'ستة رموز على الأقل'.tr;
+  static String get atLeast1 => ' واحد على الأقل'.tr;
+  static String get firstNumberMustBe1 => 'الرقم الأول يجب ان يكون واحد'.tr;
+  static String get emailHasToBeLike => 'يجب ان يكون البريد الإلكتروني من الشكل المعروض'.tr;
+  static String get notNumbersOnly => 'ليس أرقام فقط'.tr;
+  static String get onlyNumbers => 'أرقام فقط'.tr;
+  static String get notOnlyAlphabetic => 'ليس احرف فقط'.tr;
+  static String get createUserAccount => 'إنشاء حساب مستخدم'.tr;
+  static String get createMediatorAccountRequest => 'طلب إنشاء حساب متجر وسيط'.tr;
+  static String get sendRequest => 'إرسال الطلب'.tr;
+  static String get years => 'سنوات'.tr;
+  static String get additions => 'إضافات'.tr;
 }

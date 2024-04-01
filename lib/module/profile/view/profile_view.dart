@@ -56,8 +56,7 @@ class Profile extends GetView<ProfileController> {
                           delegate: SliverChildListDelegate([
                         SizedBox(
                           width: ScreenDimensions.screenWidth(context),
-                          height:
-                              ScreenDimensions.heightPercentage(context, 60),
+                          height: ScreenDimensions.heightPercentage(context, 60),
                           child: Stack(
                             children: [
                               Positioned(
@@ -73,10 +72,10 @@ class Profile extends GetView<ProfileController> {
                                     width: ScreenDimensions.screenWidth(context),
                                     height: ScreenDimensions.heightPercentage(context, 20),
                                     decoration: BoxDecoration(
-                                      gradient: LinearGradient(
+                                      gradient: LinearGradient(stops: const [0.1,0.5],
                                         colors: [
-                                          CustomColors.black,
                                           CustomColors.gold,
+                                          CustomColors.black,
                                         ],
                                       ),
                                     ),
@@ -118,15 +117,11 @@ class Profile extends GetView<ProfileController> {
                                               ));
                                             },
                                             child: AppNetworkImage(
-                                              baseUrlImages +
-                                                  controller.model['photo'],
+                                              baseUrlImages + controller.model['photo'],
                                               shape: BoxShape.circle,
                                               fit: BoxFit.contain,
-                                              width: ScreenDimensions
-                                                  .widthPercentage(context, 40),
-                                              height: ScreenDimensions
-                                                  .heightPercentage(
-                                                      context, 30),
+                                              width: ScreenDimensions.widthPercentage(context, 40),
+                                              height: ScreenDimensions.heightPercentage(context, 30),
                                             ),
                                           )
                                         : DelayedDisplay(
@@ -192,17 +187,35 @@ class Profile extends GetView<ProfileController> {
                               Positioned(
                                 bottom: 1,
                                 width: ScreenDimensions.screenWidth(context),
-                                child: Text('${controller.model['country']}, ${controller.model['state']} , ${controller.model['city']} , ${controller.model['neighborhood']} , ${controller.model['street']}',
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                            fontSize:
-                                                AppFonts.smallTitleFont(
-                                                    context),
-                                            fontWeight: FontWeight.bold))
-                                    .paddingSymmetric(
-                                        horizontal: ScreenDimensions
-                                            .widthPercentage(context, 1)),
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(
+                                          width: ScreenDimensions.widthPercentage(context, 90),
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                TextSpan(text: ' ${controller.model['country']} '),
+                                                TextSpan(text: ' ${controller.model['state']} '),
+                                                TextSpan(text: ' ${controller.model['city']} '),
+                                                TextSpan(text: ' ${controller.model['neighborhood']} '),
+                                                TextSpan(text: ' ${controller.model['street']} '),
+                                              ],),
+                                            maxLines: 2,textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: AppFonts.smallTitleFont(context)),
+                                          ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                                        ),
+                                        SvgPicture.asset(
+                                          AppImages.location,
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
                             ],
                           ),
@@ -237,10 +250,8 @@ class Profile extends GetView<ProfileController> {
                             ],
                           ),
                         ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.widthPercentage(context, 5),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal: ScreenDimensions.widthPercentage(context, 5),
+                            vertical: ScreenDimensions.heightPercentage(context, 1)),
                         Directions(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -257,25 +268,21 @@ class Profile extends GetView<ProfileController> {
                             ],
                           ),
                         ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.widthPercentage(context, 5),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal: ScreenDimensions.widthPercentage(context, 5),
+                            vertical: ScreenDimensions.heightPercentage(context, 1)),
                         Text(
                           AppWord.myPurchasesAndPutAside,
                           style: TextStyle(
                               shadows: [
                                 Shadow(
-                                    blurRadius: 3, color: CustomColors.shadow)
+                                    blurRadius: 0.5, color: CustomColors.black)
                               ],
-                              color: CustomColors.yellow,
+                              color: CustomColors.gold,
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.heightPercentage(context, 2),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
+                            horizontal: ScreenDimensions.heightPercentage(context, 2),
+                            vertical: ScreenDimensions.heightPercentage(context, 1)),
                         SizedBox(
                             width: ScreenDimensions.screenWidth(context),
                             height:
@@ -312,18 +319,15 @@ class Profile extends GetView<ProfileController> {
                                       color: CustomColors.black,
                                       fontSize:
                                           AppFonts.smallTitleFont(context)),
-                                ))
-                            .paddingSymmetric(
-                                horizontal: ScreenDimensions.widthPercentage(
-                                    context, 2)),
+                                )).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                         Text(
                           AppWord.mySellsAndPutAside,
                           style: TextStyle(
                               shadows: [
                                 Shadow(
-                                    blurRadius: 3, color: CustomColors.shadow)
+                                    blurRadius: 0.5, color: CustomColors.black)
                               ],
-                              color: CustomColors.yellow,
+                              color: CustomColors.gold,
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
@@ -366,17 +370,16 @@ class Profile extends GetView<ProfileController> {
                                   color: CustomColors.black,
                                   fontSize: AppFonts.smallTitleFont(context)),
                             )).paddingSymmetric(
-                          horizontal:
-                              ScreenDimensions.widthPercentage(context, 2),
+                          horizontal: ScreenDimensions.widthPercentage(context, 2),
                         ),
                         Text(
                           AppWord.myAds,
                           style: TextStyle(
                               shadows: [
                                 Shadow(
-                                    blurRadius: 3, color: CustomColors.shadow)
+                                    blurRadius: 0.5, color: CustomColors.black)
                               ],
-                              color: CustomColors.yellow,
+                              color: CustomColors.gold,
                               fontSize: AppFonts.subTitleFont(context),
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(

@@ -1,11 +1,14 @@
 // ignore_for_file: deprecated_member_use
 
+import 'dart:ui';
+
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/components/maps.dart';
+import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
@@ -62,10 +65,10 @@ class MediatorShopProfile extends GetView<MediatorProfileController> {
                                   height:
                                       ScreenDimensions.heightPercentage(context, 20),
                                   decoration: BoxDecoration(
-                                    gradient: LinearGradient(
+                                    gradient: LinearGradient(stops: const [0.1,0.5],
                                       colors: [
-                                        CustomColors.black,
                                         CustomColors.gold,
+                                        CustomColors.black,
                                       ],
                                     ),
                                   ),
@@ -87,13 +90,32 @@ class MediatorShopProfile extends GetView<MediatorProfileController> {
                                 child: CircleAvatar(
                                   backgroundColor: CustomColors.white1,
                                   radius: ScreenDimensions.radius(context, 9),
-                                  child: controller.model!.photo == null || controller.model!.photo.isEmpty
+                                  child: controller.model!.photo == null || controller.model!.photo!.isEmpty
                                       ?Icon(
                                     Icons.person_2_outlined,
                                     size: ScreenDimensions.heightPercentage(
                                         context, 10),
                                   )
-                                      :AppNetworkImage(controller.model!.photo),
+                                      :GestureDetector(
+                                    onTap: (){
+                                      Get.dialog(BackdropFilter(
+                                        filter: ImageFilter.blur(
+                                            sigmaY: 10, sigmaX: 10),
+                                        child: InteractiveViewer(
+                                          child: AppNetworkImage(
+                                            baseUrlImages + controller.model!.photo!,
+                                            fit: BoxFit.contain,
+                                          ),
+                                        ),
+                                      ));
+                                    },
+                                        child: AppNetworkImage(
+                                          baseUrlImages + controller.model!.photo!,
+                                          shape: BoxShape.circle,
+                                          height: ScreenDimensions.heightPercentage(context, 20),
+                                          width: ScreenDimensions.widthPercentage(context, 40),
+                                          fit: BoxFit.contain,),
+                                      ),
                                 )),
                             Positioned(
                               left: 0,
@@ -158,14 +180,6 @@ class MediatorShopProfile extends GetView<MediatorProfileController> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    Text(
-                                        controller.model!.name,
-                                        style: TextStyle(
-                                            fontSize:
-                                            AppFonts.smallTitleFont(
-                                                context),
-                                            fontWeight:
-                                            FontWeight.bold)),
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
@@ -199,7 +213,7 @@ class MediatorShopProfile extends GetView<MediatorProfileController> {
                         ),
                       ),
                       AppGoogleMap(markers: {controller.marker!},cameraPosition: controller.position,).paddingSymmetric(
-                          vertical: ScreenDimensions.heightPercentage(context, 2)),
+                          vertical: ScreenDimensions.heightPercentage(context, 2)).marginSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                       Directions(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -259,45 +273,46 @@ class MediatorShopProfile extends GetView<MediatorProfileController> {
                           ],
                         ),
                       ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5), vertical: ScreenDimensions.heightPercentage(context, 1)),
-                      Directions(
-                          child: Text(
-                        controller.model!.description,
-                        style: TextStyle(
-                            fontSize: AppFonts.smallTitleFont(context),
-                            fontWeight: FontWeight.bold),
-                      )).paddingSymmetric(
-                          vertical: ScreenDimensions.heightPercentage(context, 1),
-                          horizontal: ScreenDimensions.widthPercentage(context, 10)),
-                      Directions(
-                        child: Center(
-                          child: AppButton(
-                              text: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    AppWord.editProfile,
-                                    style: TextStyle(
-                                        color: CustomColors.white,
-                                        fontSize: AppFonts.smallTitleFont(context),
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  SizedBox(
-                                    width:
-                                        ScreenDimensions.widthPercentage(context, 1),
-                                  ),
-                                  SvgPicture.asset(AppImages.edit,
-                                      color: CustomColors.white),
-                                ],
-                              ),
-                              onTap: () {
-                                Get.to(
-                                    const MediatorShopEditProfile(),
-                                    transition: Transition.fade,
-                                    duration: const Duration(milliseconds: 500));
-                              },
-                              buttonBackground: AppImages.buttonLiteBackground),
-                        ),
+                      SizedBox(
+                        width: ScreenDimensions.screenWidth(context),
+                        child: Text(
+                          controller.model!.description,
+                          textAlign: TextAlign.end,
+                          style: TextStyle(
+                          fontSize: AppFonts.smallTitleFont(context),
+                          fontWeight: FontWeight.bold),
+                                              ).paddingSymmetric(
+                            vertical: ScreenDimensions.heightPercentage(context, 1),
+                            horizontal: ScreenDimensions.widthPercentage(context, 10)),
                       ),
+                      Center(
+                        child: AppButton(
+                            text: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  AppWord.editProfile,
+                                  style: TextStyle(
+                                      color: CustomColors.white,
+                                      fontSize: AppFonts.smallTitleFont(context),
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                SizedBox(
+                                  width:
+                                      ScreenDimensions.widthPercentage(context, 1),
+                                ),
+                                SvgPicture.asset(AppImages.edit,
+                                    color: CustomColors.white),
+                              ],
+                            ),
+                            onTap: () {
+                              Get.to(
+                                  const MediatorShopEditProfile(),
+                                  transition: Transition.fade,
+                                  duration: const Duration(milliseconds: 500));
+                            },
+                            buttonBackground: AppImages.buttonLiteBackground),
+                      ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
                     ],
                   ),
                 ),

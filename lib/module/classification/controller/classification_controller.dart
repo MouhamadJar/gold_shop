@@ -30,8 +30,8 @@ class ClassificationController extends GetxController {
   }
 
   void categoryADVS({required int categoryId}) async {
-    Map<String, dynamic> data =
-        await DioHelper.categoryADVS(categoryId: categoryId);
+    Map<String, dynamic> data = await DioHelper.categoryADVS(categoryId: categoryId);
+    print(data);
     data['data'].forEach((element) {
       categoriesADVS.add(CategoryADVSModel.fromJson(json: element));
     });
@@ -39,15 +39,15 @@ class ClassificationController extends GetxController {
     update();
   }
 
-  void getCity() async {
-    Map<String, dynamic> data = await DioHelper.getCity();
-    data['data'].forEach((element) {
-      cities.add(element);
-      selectedCity = AppWord.chooseCity;
-    });
-    isCityEmpty = false;
-    update();
-  }
+  // void getCity() async {
+  //   Map<String, dynamic> data = await DioHelper.getCity();
+  //   data['data'].forEach((element) {
+  //     cities.add(element);
+  //     selectedCity = AppWord.chooseCity;
+  //   });
+  //   isCityEmpty = false;
+  //   update();
+  // }
 
 
 }

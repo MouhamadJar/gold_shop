@@ -10,23 +10,24 @@ class AppValidator {
 
   String? userNameValidator(String? value) {
     if (value == null || value.isEmpty) return AppWord.empty;
-    if (value.length < 4) return AppWord.invalidUserName;
+    if (value.length < 5) return AppWord.atLeast5Characters;
     return null;
   }
   String? emailValidator(String? value) {
     if (value == null || value.isEmpty) return AppWord.empty;
-    if (!value.isEmail) return AppWord.invalidEmail;
-    if (value.length < 4) return AppWord.invalidUserName;
+    if (!value.isEmail) return AppWord.emailHasToBeLike;
+    if (value.length < 10) return AppWord.invalidEmail;
     return null;
   }
 
   String? phoneValidator(String? value) {
     if (value == null || value.isEmpty) return AppWord.empty;
-    if (!value.isPhoneNumber) return AppWord.invalidPhoneNumber;
+    if (!value.isPhoneNumber) return AppWord.only10Characters;
+    if (value.length != 10) return AppWord.only10Characters;
     return null;
   }
 
-  String? numberValidator(String? value) {
+  String? numberValidator(String? value,) {
     if (value == null || value.isEmpty) return AppWord.empty;
     if (!value.isNum) return AppWord.notNumber;
     return null;
@@ -34,13 +35,14 @@ class AppValidator {
 
   String? nameValidator(String? value, [int len = 6]) {
     if (value == null || value.isEmpty) return AppWord.empty;
-    if ((value.length < len)) return AppWord.invalidLength;
+    if ((value.length < len)) return AppWord.atLeast6Characters;
+    if ((value.isNum)) return AppWord.notNumbersOnly;
     return null;
   }
 
-  String? passwordValidator(String? value, [int len = 8]) {
+  String? passwordValidator(String? value, [int len = 9]) {
     if (value == null || value.isEmpty) return AppWord.empty;
-    if ((value.length < len)) return AppWord.invalidLength;
+    if ((value.length < len)) return AppWord.atLeast9Characters;
 
     return null;
   }

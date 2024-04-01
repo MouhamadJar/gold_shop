@@ -17,6 +17,8 @@ class LoginModel {
         token: json['token'],
         userId: json['user_id']??json['store_id'],
         name: json['name'],
-        verified: json['verified']);
+        verified: json['verified'],
+      photo: json['photo']??'no image',
+    );
   }
 }

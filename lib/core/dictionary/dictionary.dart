@@ -221,7 +221,7 @@ class Dictionary extends Translations {
           AppWord.newPassword: 'New password',
           AppWord.confirmNewPassword: 'Confirm new password',
           AppWord.reset: 'Reset',
-          AppWord.mediatorFirstName: 'Mediator shop name',
+          AppWord.mediatorName: 'Mediator shop name',
           AppWord.backupPhoneNumber: 'Backup phone number',
           AppWord.serviceValue: 'Service value',
           AppWord.verificationAccountTerms:
@@ -497,7 +497,7 @@ class Dictionary extends Translations {
           AppWord.newPassword: AppWord.newPassword,
           AppWord.confirmNewPassword: AppWord.confirmNewPassword,
           AppWord.reset: AppWord.reset,
-          AppWord.mediatorFirstName: AppWord.mediatorFirstName,
+          AppWord.mediatorName: AppWord.mediatorName,
           AppWord.backupPhoneNumber: AppWord.backupPhoneNumber,
           AppWord.serviceValue: AppWord.serviceValue,
           AppWord.verificationAccountTerms: AppWord.verificationAccountTerms,

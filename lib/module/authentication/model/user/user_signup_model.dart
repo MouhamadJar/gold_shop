@@ -16,9 +16,11 @@ class UserSignupModel {
 
   factory UserSignupModel.fromJson({required Map<String, dynamic> json}) {
     return UserSignupModel(
-      token: json['token'].toString(),
-      userId: int.parse(json['user_id'].toString()),
-      name: '',
+      token: json['token'],
+      userId: json['user_id'],
+      name: json['user_name'],
+      photo: json['photo'],
+      verified:json['verified']??0 ,
     );
   }
 }

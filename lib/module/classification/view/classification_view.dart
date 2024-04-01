@@ -53,29 +53,29 @@ class Classification extends GetView<ClassificationController> {
           initState: (state) {
         controller.getSubcategories(categoryId: categoryId);
         controller.categoryADVS(categoryId: categoryId);
-        controller.getCity();
+        // controller.getCity();
       }, builder: (_) {
         return Column(
           children: [
             const PricesBar(),
-            Directions(
-              child: Container(
-                  alignment: AlignmentDirectional.centerEnd,
-                  width: ScreenDimensions.screenWidth(context),
-                  height: ScreenDimensions.heightPercentage(context, 9),
-                  margin: EdgeInsetsDirectional.symmetric(
-                      horizontal: ScreenDimensions.widthPercentage(context, 5)),
-                  child: controller.isCityEmpty?const SizedBox.shrink():AppPopUpMenu(
-                    title: controller.selectedCity!,
-                    items: controller.cities.map((element) => PopupMenuItem(value: element,child: Text(element,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: AppFonts.smallTitleFont(context))),)).toList(),
-                    onSelected: (value) {
-                      controller.selectedCity = value ;
-                      controller.update();
-                    },
-
-                  ),
-              ),
-            ),
+            // Directions(
+            //   child: Container(
+            //       alignment: AlignmentDirectional.centerEnd,
+            //       width: ScreenDimensions.screenWidth(context),
+            //       height: ScreenDimensions.heightPercentage(context, 9),
+            //       margin: EdgeInsetsDirectional.symmetric(
+            //           horizontal: ScreenDimensions.widthPercentage(context, 5)),
+            //       child: controller.isCityEmpty?const SizedBox.shrink():AppPopUpMenu(
+            //         title: controller.selectedCity!,
+            //         items: controller.cities.map((element) => PopupMenuItem(value: element,child: Text(element,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: AppFonts.smallTitleFont(context))),)).toList(),
+            //         onSelected: (value) {
+            //           controller.selectedCity = value ;
+            //           controller.update();
+            //         },
+            //
+            //       ),
+            //   ),
+            // ),
             controller.isBannersEmpty
                 ? const SizedBox.shrink()
                 : AdvertisementBanner(

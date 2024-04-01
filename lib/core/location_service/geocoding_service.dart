@@ -1,11 +1,14 @@
 import 'package:get/get.dart';
+import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 
 class GeocodingCoordinatesManager extends GetConnect {
-  Future<CoordinatesLocation> convertCoordinates(
-      {required double latitude, required double longitude}) async {
+  Future<CoordinatesLocation> convertCoordinates({
+    required double latitude,
+    required double longitude,
+  }) async {
     List<CoordinatesLocation> tmp = [];
     await get(
-            'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyAMKYCHSG1l-kOoLe1lBPyiyXd2MaukDx4')
+            'https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=AIzaSyAMKYCHSG1l-kOoLe1lBPyiyXd2MaukDx4&language=${StorageHandler().lang}')
         .then((location) {
       location.body['results'].forEach((miniLocation) {
         tmp.add(CoordinatesLocation.fromResult(miniLocation));

@@ -8,13 +8,20 @@ import 'module/splash/view/splash_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Future.wait([
-    StorageHandler.init(),
-  ]);
+ await  StorageHandler.init();
   Get.log(StorageHandler().token);
   Get.log(StorageHandler().userId);
-    Get.log(StorageHandler().signature.toString());
-    Get.log(StorageHandler().role.toString());
+  Get.log(StorageHandler().userName.toString());
+  Get.log(StorageHandler().profilePhoto.toString());
+  Get.log(StorageHandler().verified.toString());
+  Get.log('--------------------------------');
+  Get.log(StorageHandler().mediatorToken);
+  Get.log(StorageHandler().mediatorId);
+  Get.log(StorageHandler().signature.toString());
+  Get.log(StorageHandler().role.toString());
+  Get.log(StorageHandler().mediatorName.toString());
+  Get.log(StorageHandler().mediatorProfilePhoto.toString());
+  Get.log(StorageHandler().verifiedMediator.toString());
   runApp(const MyApp());
 }
 
@@ -27,9 +34,7 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       locale: StorageHandler().locale,
       translations: Dictionary(),
-      theme: ThemeData(
-        useMaterial3: true,
-      ),
+      theme: ThemeData(useMaterial3: true,),
       onInit: onAppInit,
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),

@@ -20,6 +20,9 @@ class MainScreenController extends GetxController{
      StorageHandler().removeUserId();
      StorageHandler().removeSignature();
      StorageHandler().removeRole();
+     StorageHandler().removePhoto();
+     StorageHandler().removeUserName();
+     StorageHandler().removeVerification();
      loader = false;
      Get.offAll(const MainScreen(),
          transition: Transition.rightToLeft,

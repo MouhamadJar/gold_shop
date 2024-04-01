@@ -16,13 +16,16 @@ class AddProductController extends GetxController {
   Color fontColor2 = CustomColors.white;
   Color cardColor = CustomColors.white;
   Color cardColor2 = CustomColors.gold;
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isChecked = false;
+  bool additionCheck = false;
   bool isPinned = false;
   bool isLoading = true;
+  bool checkSubId = false;
   String categoriesTitle = AppWord.productCategory;
   String subcategoriesTitle = AppWord.productClassification;
   String calibers = AppWord.caliber;
-  dynamic caliberPrice = 0;
+  int caliberPrice = 0;
   int appCommission = 0;
 
   List<CategoriesModel> categoriesModel = [];
@@ -31,21 +34,26 @@ class AddProductController extends GetxController {
   List<DIO.MultipartFile> tmp = [];
   TextEditingController descriptionController = TextEditingController();
   TextEditingController ageController = TextEditingController();
-  TextEditingController weightController = TextEditingController(text: '0');
-  TextEditingController additionController = TextEditingController(text: '0');
+  TextEditingController weightController = TextEditingController();
+  TextEditingController additionController = TextEditingController();
   TextEditingController additionDescriptionController = TextEditingController();
   TextEditingController appCommissionController = TextEditingController();
   TextEditingController totalGramPriceController = TextEditingController();
-  TextEditingController totalProductPriceController = TextEditingController();
-  TextEditingController profitController = TextEditingController(text: '0');
+  TextEditingController? totalProductPriceController;
+  TextEditingController profitController = TextEditingController();
   TextEditingController currentGoldPriceController = TextEditingController();
   TextEditingController manufacturerController = TextEditingController();
   TextEditingController caliberPriceValueController = TextEditingController();
   TextEditingController offerDescriptionController = TextEditingController();
   TextEditingController discountValueController = TextEditingController();
-  int? discountToggle;
+  int discountToggle = 0;
   int? subcategoryId;
-  int? toggle;
+  int toggle = 0;
+  double totalGramPrice = 0;
+  double weight = 0;
+  double profit = 0;
+  double addition = 0;
+  double discountValue = 0;
   String manufacturerType = 'local';
 
   List<File>? listImagePath =[];
@@ -93,12 +101,11 @@ class AddProductController extends GetxController {
   }
 
   void getSubcategories({required int categoryId}) async {
-    Map<String, dynamic> subcategories =
-        await DioHelper.getAllSubCategories(categoryId: categoryId);
-    subcategoriesModel.clear();
+    Map<String, dynamic> subcategories = await DioHelper.getAllSubCategories(categoryId: categoryId);
     subcategories['data']['data'].forEach((element) {
       subcategoriesModel.add(ClassificationCategoriesModel.fromJson(json: element));
     });
+    update();
   }
 
   void selectMultipleImage() async {
@@ -125,9 +132,10 @@ class AddProductController extends GetxController {
   }
 
   void getAllCaratPrices()async{
-    Map<String,dynamic> data = await DioHelper.getAllCaratPrices();
-    update();
-    caliberPrice = data['data']['data'][calibers];
+    await DioHelper.getAllCaratPrices().then((value) {
+      update();
+      caliberPrice = value['data'][calibers].toInt();
+    });
     update();
   }
 

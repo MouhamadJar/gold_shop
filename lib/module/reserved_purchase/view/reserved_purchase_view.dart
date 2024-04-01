@@ -87,23 +87,23 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                               TextSpan(
                                   text: '${AppWord.productState} : ',
                                   style: TextStyle(
-                                      fontSize: AppFonts.subTitleFont(context),
-                                      color: CustomColors.yellow,
                                       shadows: [
                                         Shadow(
-                                            blurRadius: 3,
-                                            color: CustomColors.shadow),
-                                      ])),
+                                            blurRadius: 0.5, color: CustomColors.black)
+                                      ],
+                                      color: CustomColors.gold,
+                                      fontSize: AppFonts.subTitleFont(context),
+                                      fontWeight: FontWeight.bold)),
                               TextSpan(
                                   text: AppWord.reserved,
                                   style: TextStyle(
-                                      fontSize: AppFonts.subTitleFont(context),
-                                      color: CustomColors.yellow,
                                       shadows: [
                                         Shadow(
-                                            blurRadius: 3,
-                                            color: CustomColors.shadow),
-                                      ])),
+                                            blurRadius: 0.5, color: CustomColors.black)
+                                      ],
+                                      color: CustomColors.gold,
+                                      fontSize: AppFonts.subTitleFont(context),
+                                      fontWeight: FontWeight.bold)),
                             ])),
                             GestureDetector(
                               onTap: () {
@@ -172,13 +172,13 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                   Text(
                                     AppWord.productDetails,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   Details(
                                       withIcon: true,
@@ -219,13 +219,13 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                   Text(
                                     AppWord.purchaseProcessInfo,
                                     style: TextStyle(
-                                        fontSize: AppFonts.subTitleFont(context),
-                                        color: CustomColors.yellow,
                                         shadows: [
                                           Shadow(
-                                              blurRadius: 3,
-                                              color: CustomColors.shadow),
-                                        ]),
+                                              blurRadius: 0.5, color: CustomColors.black)
+                                        ],
+                                        color: CustomColors.gold,
+                                        fontSize: AppFonts.subTitleFont(context),
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   ReservedPurchaseProcessDetails(
                                       title: AppWord.amountPaid,

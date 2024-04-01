@@ -4,25 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/validtor/app_validator.dart';
-import 'package:gold_shop/module/authentication/controller/user/user_login_controller.dart';
-import '../../../core/components/components.dart';
-import '../../../core/texts/words.dart';
-import '../../../core/utils/app_fonts.dart';
-import '../../../core/colors/colors.dart';
-import '../../../core/images/images.dart';
-import '../../../core/utils/dimensions.dart';
-import 'check_code_screen.dart';
-import 'mediator_shop/signup_screen.dart';
-import 'user/signup_screen.dart';
+import 'package:gold_shop/module/authentication/controller/mediator_shop/login_mediator_shop_controller.dart';
+import 'package:gold_shop/module/authentication/view/mediator_shop/signup_screen.dart';
+import '../../../../core/colors/colors.dart';
+import '../../../../core/components/components.dart';
+import '../../../../core/images/images.dart';
+import '../../../../core/texts/words.dart';
+import '../../../../core/utils/app_fonts.dart';
+import '../../../../core/utils/dimensions.dart';
+import '../check_code_screen.dart';
+import '../user/signup_screen.dart';
 
-class LoginScreen extends GetView<LoginController> {
-  const LoginScreen({super.key});
+class MediatorLoginScreen extends GetView<LoginMediatorShopController> {
+  const MediatorLoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(LoginController());
-    return GetBuilder<LoginController>(
-        builder: (_) {
+    Get.put(LoginMediatorShopController());
+    return GetBuilder<LoginMediatorShopController>(builder: (_) {
       return SafeArea(
         child: Scaffold(
           body: SingleChildScrollView(
@@ -34,11 +33,7 @@ class LoginScreen extends GetView<LoginController> {
                     stops: const [0, 0.5],
                     begin: AlignmentDirectional.topCenter,
                     end: AlignmentDirectional.bottomCenter,
-                    colors: [
-                      //CustomColors().grey,
-                      CustomColors.grey1,
-                      CustomColors.black
-                    ]),
+                    colors: [CustomColors.grey1, CustomColors.black]),
               ),
               child: Stack(
                 children: [
@@ -98,19 +93,20 @@ class LoginScreen extends GetView<LoginController> {
                               width: ScreenDimensions.screenWidth(context),
                             ),
                             Text(
-                              AppWord.loginAsUser,
+                              AppWord.loginAsMediatorShop,
                               style: TextStyle(
                                 fontSize: AppFonts.subTitleFont(context),
                               ),
-                            ).marginSymmetric(vertical: ScreenDimensions.heightPercentage(context, 3)),
+                            ).marginSymmetric(
+                                vertical: ScreenDimensions.heightPercentage(context, 3)),
                             AppTextField(
-                              controller: controller.phoneController,
+                              controller: controller.userNameController,
                               validator: (value) {
-                                return AppValidator().phoneValidator(value);
+                                return AppValidator().userNameValidator(value);
                               },
-                              title: AppWord.phoneNumber,
-                              keyboardType: TextInputType.phone,
-                              suffix: Icon(Icons.phone,color: controller.phoneController.text.isEmpty?CustomColors.black:CustomColors.gold,),
+                              title: AppWord.userName,
+                              keyboardType: TextInputType.name,
+                              suffix: Icon(Icons.person,color: controller.userNameController.text.isEmpty?CustomColors.black:CustomColors.gold,),
                               onChanged: (value){
                                 controller.update();
                               },
@@ -119,7 +115,7 @@ class LoginScreen extends GetView<LoginController> {
                             AppTextField(
                               controller: controller.passwordController,
                               title: AppWord.password,
-                              maxLines: 1,
+                              maxLines:1,
                               keyboardType: TextInputType.visiblePassword,
                               validator: (value) {
                                 return AppValidator().passwordValidator(value);
@@ -136,8 +132,10 @@ class LoginScreen extends GetView<LoginController> {
                                   },
                                   child: Icon(Icons.remove_red_eye,color: controller.hidePassword?CustomColors.black:CustomColors.gold,)),
                             )
-                                .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5))
-                                .marginSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                                .paddingSymmetric(
+                                    horizontal: ScreenDimensions.widthPercentage(context, 5))
+                                .marginSymmetric(
+                                    vertical: ScreenDimensions.heightPercentage(context, 2)),
                             Align(
                               alignment: Get.locale == const Locale('ar')
                                   ? Alignment.centerRight
@@ -173,17 +171,16 @@ class LoginScreen extends GetView<LoginController> {
                                     color: CustomColors.white,
                                   ),
                                 ),
-                                onTap: ()  {
+                                onTap: () {
                                   if (!(controller.formKey.currentState!.validate())) return;
-                                  controller.loader
-                                      ?Get.dialog(WillPopScope(
-                                    onWillPop: ()async{
-                                      return false;
-                                    },
-                                      child: Center(child: CircularProgressIndicator(color: CustomColors.gold,),)),barrierDismissible: false)
-                                      :Get.snackbar(AppWord.note,AppWord.loggedOut);
-                                  controller.update();
+                                  Get.dialog(
+                                      Center(child: CircularProgressIndicator(
+                                          color: CustomColors.gold,
+                                        ),
+                                      ),
+                                      barrierDismissible: true);
                                   controller.login();
+                                  controller.update();
                                   // Get.dialog(
                                   //   Material(
                                   //     color: Colors.transparent,
@@ -191,68 +188,93 @@ class LoginScreen extends GetView<LoginController> {
                                   //       filter: ImageFilter.blur(
                                   //           sigmaY: 10, sigmaX: 10),
                                   //       child: Container(
-                                  //         height: ScreenDimensions.heightPercentage(
-                                  //             context, 25),
-                                  //         width: ScreenDimensions.widthPercentage(
-                                  //             context, 50),
-                                  //         margin: EdgeInsetsDirectional.symmetric(
-                                  //             vertical: ScreenDimensions
-                                  //                 .heightPercentage(
-                                  //                 context, 30),
-                                  //             horizontal: ScreenDimensions
-                                  //                 .widthPercentage(
-                                  //                 context, 5)),
-                                  //         padding: EdgeInsetsDirectional.symmetric(
-                                  //             horizontal: ScreenDimensions
-                                  //                 .widthPercentage(
-                                  //                 context, 5)),
+                                  //         height:
+                                  //             ScreenDimensions.heightPercentage(context, 25),
+                                  //         width:
+                                  //             ScreenDimensions.widthPercentage(
+                                  //                 context, 50),
+                                  //         margin:
+                                  //             EdgeInsetsDirectional.symmetric(
+                                  //                 vertical: ScreenDimensions
+                                  //                     .heightPercentage(
+                                  //                         context, 30),
+                                  //                 horizontal: ScreenDimensions
+                                  //                     .widthPercentage(
+                                  //                         context, 5)),
+                                  //         padding:
+                                  //             EdgeInsetsDirectional.symmetric(
+                                  //                 horizontal: ScreenDimensions
+                                  //                     .widthPercentage(
+                                  //                         context, 5)),
                                   //         decoration: BoxDecoration(
                                   //             color: CustomColors.white,
                                   //             borderRadius:
-                                  //             BorderRadius.circular(
-                                  //                 ScreenDimensions
-                                  //                     .widthPercentage(
-                                  //                     context, 1))),
+                                  //                 BorderRadius.circular(
+                                  //                     ScreenDimensions
+                                  //                         .widthPercentage(
+                                  //                             context, 1))),
                                   //         child: Column(
                                   //           children: [
                                   //             Align(
                                   //                 alignment:
-                                  //                 Alignment.centerLeft,
+                                  //                     Alignment.centerLeft,
                                   //                 child: GestureDetector(
                                   //                     onTap: () {
                                   //                       Get.back();
                                   //                     },
                                   //                     child: SizedBox(
-                                  //                       width: ScreenDimensions.widthPercentage(context, 2),
-                                  //                       height: ScreenDimensions.heightPercentage(context, 1),
+                                  //                       width: ScreenDimensions
+                                  //                           .widthPercentage(
+                                  //                               context, 2),
+                                  //                       height: ScreenDimensions
+                                  //                           .heightPercentage(
+                                  //                               context, 1),
                                   //                       child: SvgPicture.asset(
                                   //                           AppImages.x,
-                                  //                           width: ScreenDimensions.widthPercentage(
-                                  //                               context,
-                                  //                               3)),
+                                  //                           width: ScreenDimensions
+                                  //                               .widthPercentage(
+                                  //                                   context,
+                                  //                                   3)),
                                   //                     ))).paddingSymmetric(
-                                  //                 vertical: ScreenDimensions.heightPercentage(
-                                  //                     context, 2)),
+                                  //                 vertical: ScreenDimensions
+                                  //                     .heightPercentage(
+                                  //                         context, 2)),
                                   //             Text(
                                   //               AppWord.signupMethod,
                                   //               style: TextStyle(
                                   //                 fontSize:
-                                  //                 AppFonts.smallTitleFont(
-                                  //                     context) +
-                                  //                     2,
+                                  //                     AppFonts.smallTitleFont(
+                                  //                             context) +
+                                  //                         2,
                                   //                 fontWeight: FontWeight.bold,
                                   //                 color: CustomColors.black,
                                   //               ),
                                   //             ).paddingOnly(
-                                  //                 bottom: ScreenDimensions.heightPercentage(
-                                  //                     context, 7)),
+                                  //                 bottom: ScreenDimensions
+                                  //                     .heightPercentage(
+                                  //                         context, 7)),
                                   //             Row(
                                   //               mainAxisAlignment:
-                                  //               MainAxisAlignment
-                                  //                   .spaceEvenly,
+                                  //                   MainAxisAlignment
+                                  //                       .spaceEvenly,
                                   //               children: [
                                   //                 GestureDetector(
                                   //                   onTap: () {
+                                  //                     // Get.dialog(
+                                  //                     //     Center(
+                                  //                     //       child:
+                                  //                     //           CircularProgressIndicator(
+                                  //                     //         color:
+                                  //                     //             CustomColors
+                                  //                     //                 .gold,
+                                  //                     //       ),
+                                  //                     //     ),
+                                  //                     //     barrierDismissible:
+                                  //                     //         false);
+                                  //                     controller.update();
+                                  //                     // controller.login(
+                                  //                     //     phone: controller.phoneController.text,
+                                  //                     //     password: controller.passwordController.text);
                                   //                   },
                                   //                   child: Column(
                                   //                     children: [
@@ -264,16 +286,17 @@ class LoginScreen extends GetView<LoginController> {
                                   //                         style: TextStyle(
                                   //                             fontSize: AppFonts
                                   //                                 .smallTitleFont(
-                                  //                                 context),
+                                  //                                     context),
                                   //                             color:
-                                  //                             CustomColors
-                                  //                                 .black),
+                                  //                                 CustomColors
+                                  //                                     .black),
                                   //                       )
                                   //                     ],
                                   //                   ),
                                   //                 ),
                                   //                 GestureDetector(
-                                  //                   onTap: () {},
+                                  //                   onTap: () {
+                                  //                   },
                                   //                   child: Column(
                                   //                     children: [
                                   //                       SvgPicture.asset(
@@ -284,10 +307,10 @@ class LoginScreen extends GetView<LoginController> {
                                   //                         style: TextStyle(
                                   //                             fontSize: AppFonts
                                   //                                 .smallTitleFont(
-                                  //                                 context),
+                                  //                                     context),
                                   //                             color:
-                                  //                             CustomColors
-                                  //                                 .black),
+                                  //                                 CustomColors
+                                  //                                     .black),
                                   //                       )
                                   //                     ],
                                   //                   ),
@@ -307,70 +330,10 @@ class LoginScreen extends GetView<LoginController> {
                                     AppImages.buttonLiteBackground),
                             GestureDetector(
                               onTap: () {
-                                Get.to(const UserSignUpScreen(),
+                                Get.to( MediatorSignupScreen(),
                                   transition: Transition.fadeIn,
                                   duration: const Duration(milliseconds: 700),);
-                                // Get.dialog(
-                                //   Material(
-                                //     color: Colors.transparent,
-                                //     child: BackdropFilter(
-                                //       filter: ImageFilter.blur(sigmaY: 10,sigmaX: 10),
-                                //       child: Container(
-                                //         height: ScreenDimensions.heightPercentage(
-                                //             context, 25),
-                                //         width: ScreenDimensions.widthPercentage(
-                                //             context, 50),
-                                //         margin: EdgeInsetsDirectional.symmetric(vertical: ScreenDimensions.heightPercentage(context, 30),horizontal: ScreenDimensions.widthPercentage(context, 5)),
-                                //         padding: EdgeInsetsDirectional.symmetric(horizontal: ScreenDimensions.widthPercentage(context, 5)),
-                                //         decoration: BoxDecoration(color: CustomColors.white,borderRadius: BorderRadius.circular(ScreenDimensions.widthPercentage(context, 1))),
-                                //         child: Column(
-                                //           children: [
-                                //             Align(alignment: Alignment.centerLeft,child: GestureDetector(onTap: (){Get.back();},child: Container(child: SvgPicture.asset(AppImages.x,width: ScreenDimensions.widthPercentage(context, 3)),))).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
-                                //             Text(
-                                //               AppWord.signupMethod,
-                                //               style: TextStyle(
-                                //                 fontSize: AppFonts.smallTitleFont(context)+2,
-                                //                 fontWeight: FontWeight.bold,
-                                //                 color: CustomColors.black,
-                                //               ),
-                                //             ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 7)),
-                                //             Row(
-                                //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                //               children: [
-                                //                 GestureDetector(
-                                //                   onTap: (){
-                                //                     },
-                                //                 child: Column(
-                                //                   children: [
-                                //                     SvgPicture.asset(AppImages.profileIcon,),
-                                //                     Text(AppWord.user,style: TextStyle(fontSize: AppFonts.smallTitleFont(context),color: CustomColors.black),)
-                                //                   ],
-                                //                 ),
-                                //               ),
-                                //                 GestureDetector(
-                                //                   onTap: (){
-                                //                     Get.to(const MediatorSignupScreen(),
-                                //                         transition: Transition.rightToLeft,
-                                //                         duration: const Duration(milliseconds: 700),);},
-                                //                 child: Column(
-                                //                   children: [
-                                //                     SvgPicture.asset(AppImages.store,),
-                                //                     Text(AppWord.mediatorShop,style: TextStyle(fontSize: AppFonts.smallTitleFont(context),color: CustomColors.black),)
-                                //                   ],
-                                //                 ),
-                                //               ),
-                                //               ],
-                                //             ),
-                                //           ],
-                                //         ).paddingSymmetric(
-                                //             horizontal:
-                                //                 ScreenDimensions.widthPercentage(
-                                //                     context, 2)),
-                                //       ),
-                                //     ),
-                                //   ),
-                                // );
-                              },
+                                },
                               child: RichText(
                                 text: TextSpan(
                                   children: [
@@ -384,7 +347,7 @@ class LoginScreen extends GetView<LoginController> {
                                       ),
                                     ),
                                     TextSpan(
-                                      text: AppWord.createUserAccount,
+                                      text: AppWord.createMediatorAccountRequest,
                                       style: TextStyle(
                                         fontSize:
                                             AppFonts.smallTitleFont(context),
@@ -405,7 +368,16 @@ class LoginScreen extends GetView<LoginController> {
                       ),
                     ),
                   ),
-                  Positioned(child: Directions(child: Align(alignment: Alignment.topLeft,child: BackArrow(color: CustomColors.white,),),)),
+                  Positioned(
+                    child: Directions(
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: BackArrow(
+                          color: CustomColors.white,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

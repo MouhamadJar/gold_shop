@@ -22,64 +22,76 @@ class HomeScreen extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     Get.put(HomeController());
-    return GetBuilder<HomeController>(initState: (state) {
-      controller.getCity();
-      controller.homeADVS();
-    }, builder: (_) {
+    return GetBuilder<HomeController>(builder: (_) {
       return Column(
         children: [
-          Directions(
-            child: Container(
-              alignment: AlignmentDirectional.centerEnd,
-              width: ScreenDimensions.screenWidth(context),
-              height: ScreenDimensions.heightPercentage(context, 9),
-              margin: EdgeInsetsDirectional.symmetric(
-                  horizontal: ScreenDimensions.widthPercentage(context, 5)),
-              child: controller.isCityEmpty
-                  ? const SizedBox.shrink()
-                  : AppPopUpMenu(
-                      title: controller.selectedCity!,
-                      items: controller.cities.map((element) => PopupMenuItem(
-                                value: element,
-                                child: Text(
-                                    element,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize:
-                                            AppFonts.smallTitleFont(context))),
-                              ))
-                          .toList(),
-                      onSelected: (value) {
-                        controller.selectedCity = value;
-                        controller.update();
-                      },
-                    ),
+          // Directions(
+          //   child: Container(
+          //     alignment: AlignmentDirectional.centerEnd,
+          //     width: ScreenDimensions.screenWidth(context),
+          //     height: ScreenDimensions.heightPercentage(context, 9),
+          //     margin: EdgeInsetsDirectional.symmetric(
+          //         horizontal: ScreenDimensions.widthPercentage(context, 5)),
+          //     child: controller.isCityEmpty
+          //         ? const SizedBox.shrink()
+          //         : AppPopUpMenu(
+          //             title: controller.selectedCity!,
+          //             items: controller.cities.map((element) => PopupMenuItem(
+          //                       value: element,
+          //                       child: Text(
+          //                           element,
+          //                           overflow: TextOverflow.ellipsis,
+          //                           style: TextStyle(
+          //                               fontSize:
+          //                                   AppFonts.smallTitleFont(context))),
+          //                     ))
+          //                 .toList(),
+          //             onSelected: (value) {
+          //               controller.selectedCity = value;
+          //               controller.update();
+          //             },
+          //           ),
+          //   ),
+          // ),
+          controller.isBannerLoading
+          ?  Center(child: CircularProgressIndicator(color: CustomColors.gold,))
+              : controller.isBannerEmpty
+              ? Container(
+            width: ScreenDimensions.screenWidth(context),
+            height: ScreenDimensions.heightPercentage(context, 15),
+            decoration: BoxDecoration(gradient:  LinearGradient(
+              stops: const [0, 1],
+              colors: [
+                CustomColors.black,
+                CustomColors.greyDark,
+              ],
             ),
-          ),
-          AdvertisementBanner(
+            ),
+            alignment: Alignment.center,
+            child: Text(AppWord.noOffers,textAlign: TextAlign.center,style: TextStyle(fontSize: AppFonts.subTitleFont(context),color: CustomColors.white,fontWeight: FontWeight.bold)),
+          )
+              : AdvertisementBanner(
+            itemBuilder: (context, index, realIndex) => Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: AppNetworkImage(
+                    baseUrlImages + controller.ads[index].image,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
+                Expanded(
+                  child: Text(
+                    controller.ads[index].paragraph,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: AppFonts.smallTitleFont(context)),
+                  ),
+                ),
+              ],
+            ),
             itemCount: controller.ads.length,
-            itemBuilder: (BuildContext context, int index, int realIndex) {
-              return controller.ads.isEmpty ? const SizedBox.shrink():Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: AppNetworkImage(
-                    baseUrlImages +  controller.ads[index]['image'],
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      controller.ads[index]['paragraph'],
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: AppFonts.smallTitleFont(context)),
-                    ),
-                  ),
-                ],
-              );
-            },
           ),
           Directions(
             child: Container(
@@ -97,8 +109,8 @@ class HomeScreen extends GetView<HomeController> {
               ),
             ),
           ),
-          const Expanded(
-            child: Category(),
+           Expanded(
+            child: Category(categories: controller.categories,),
           )
         ],
       );

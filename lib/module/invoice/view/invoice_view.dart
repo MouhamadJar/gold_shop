@@ -87,9 +87,10 @@ class Invoice extends GetView<InvoiceController> {
                         AppWord.reservedProduct,
                         style: TextStyle(
                             shadows: [
-                              Shadow(blurRadius: 3, color: CustomColors.shadow)
+                              Shadow(
+                                  blurRadius: 0.5, color: CustomColors.black)
                             ],
-                            color: CustomColors.yellow,
+                            color: CustomColors.gold,
                             fontSize: AppFonts.subTitleFont(context),
                             fontWeight: FontWeight.bold),
                       ).paddingSymmetric(
@@ -389,8 +390,7 @@ class Invoice extends GetView<InvoiceController> {
                                             expand: true,
                                             title: AppWord.payingReservationPolicy,
                                             description: controller.paymentInfoModel!.paymentInfo,
-                                            card1: Text(
-                                              AppWord.wishYouLovelyShopping,
+                                            card1: Text(AppWord.wishYouLovelyShopping,
                                               style: TextStyle(
                                                   fontSize: AppFonts.smallTitleFont(context)),
                                             ),

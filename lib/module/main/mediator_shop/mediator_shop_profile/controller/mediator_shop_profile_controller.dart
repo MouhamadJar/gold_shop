@@ -15,6 +15,7 @@ class MediatorProfileController extends GetxController{
   bool isLoading = true ;
   void getMediatorProfile ()async {
     await DioHelper.showStoreProfile().then((value) {
+      print(value.toString());
      model = MediatorShopProfileModel.fromJson(json: value['data'][0]);
      position = CameraPosition(target: model!.location.toLatLng,zoom: 10);
      marker = MarkerEntity.fromMarkerInfo(info: MarkerInfo(location: model!.location,title: 'your location',markerId: model!.userId.toString(),subTitle: 'you are here'));

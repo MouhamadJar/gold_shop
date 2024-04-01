@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/components/components.dart';
-import 'package:gold_shop/core/network/dio_helper.dart';
-import 'package:gold_shop/core/utils/app_network_image.dart';
-import 'package:gold_shop/module/category_products/components/category_products_components.dart';
-import 'package:gold_shop/module/category_products/controller/category_products_controller.dart';
-import 'package:gold_shop/module/filter/view/filter_view.dart';
-import 'package:gold_shop/module/sort/view/sort_view.dart';
-
+import '../../../core/components/components.dart';
+import '../../../core/network/dio_helper.dart';
+import '../../../core/utils/app_network_image.dart';
+import '../components/category_products_components.dart';
+import '../controller/category_products_controller.dart';
+import '../../filter/view/filter_view.dart';
+import '../../sort/view/sort_view.dart';
 import '../../../core/colors/colors.dart';
 import '../../../core/images/images.dart';
 import '../../../core/texts/words.dart';
@@ -72,10 +71,7 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
                       child: SvgPicture.asset(AppImages.filter,
                           height:
                               ScreenDimensions.heightPercentage(context, 3)),
-                    ),
-                    SizedBox(
-                      width: ScreenDimensions.widthPercentage(context, 3),
-                    ),
+                    ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 3)),
                     GestureDetector(
                       onTap: () {
                         Get.to(const SortScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700));
@@ -86,12 +82,22 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
                       ),
                     ),
                     const Spacer(),
-                    controller.isCityEmpty?const SizedBox.shrink():AppPopUpMenu(
+                    controller.isCityEmpty
+                        ?const SizedBox.shrink()
+                        :AppPopUpMenu(
                       title: controller.selectedCity!,
-                      items: controller.cities.map((element) => PopupMenuItem(value: element,child: Text(element,overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: AppFonts.smallTitleFont(context))),)).toList(),
+                      items: controller.cities.map((element) => PopupMenuItem(
+                        onTap: (){
+                          controller.chooseCity(city: element, subcategoryId: subcategoryId);
+                          controller.update();
+                        },
+                        value: element,
+                        child: Text(
+                            element,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),),).toList(),
                       onSelected: (value) {
                         controller.selectedCity = value ;
-                        controller.chooseCity(subcategoryId: 1, city: value,);
                         controller.update();
                       },
 
