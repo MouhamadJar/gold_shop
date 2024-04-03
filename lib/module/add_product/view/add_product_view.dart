@@ -435,7 +435,7 @@ class AddProduct extends GetView<AddProductController> {
                   if (value.toString().isEmpty|| value==null){
                     return AppWord.empty;
                   }
-                    if (!value.toString().isNum) {
+                    if (value.toString().isNum) {
                       return AppWord.notNumbersOnly;
                     }
                     if (value.toString().length<5){

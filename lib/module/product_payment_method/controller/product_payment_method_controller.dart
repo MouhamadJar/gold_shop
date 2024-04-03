@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:dio/dio.dart'as dio;
 import 'package:gold_shop/core/texts/words.dart';
@@ -10,12 +11,13 @@ import 'package:gold_shop/module/product_payment_method/model/product_payment_me
 import '../../../core/network/dio_helper.dart';
 
 class ProductPaymentMethodController extends GetxController {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool inPerson = true;
   bool withMediatorShop = false;
   bool mediatorShopBetween = false;
   bool mediatorShopFromPlatform = false;
   bool privacyCheck = true;
-  TextEditingController firstPhoneNumberController = TextEditingController(text: '099487156');
+  TextEditingController firstPhoneNumberController = TextEditingController();
   TextEditingController? secondPhoneNumberController;
   TextEditingController? thirdPhoneNumberController;
   int phoneNumberCount = 1;
@@ -30,7 +32,6 @@ class ProductPaymentMethodController extends GetxController {
        secondPhoneNumberController = TextEditingController();
        update();
      }else{
-       secondPhoneNumberController = TextEditingController();
        thirdPhoneNumberController = TextEditingController();
        update();
      }
@@ -121,12 +122,17 @@ void addProduct({
     discountValue: discountValueController,
     offerDescription: offerDescriptionController,
   ).then((value) {
-    print(value.toString());
+    if(value['message'] == 'The selected delivery type is invalid.'){
+      Get.back();
+      Get.snackbar(AppWord.warning, AppWord.chooseTheMediatorCarefully);
+      update();
+    }
     if (value['message'] == 'Product created successfully.'){
     Get.snackbar(AppWord.done, '');
-    update();
     Get.offAll(const MainScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700));
-    }else{
+    update();
+    }
+    else{
       Get.back();
       Get.snackbar(AppWord.warning, AppWord.checkAllRequiredFields);
       update();
