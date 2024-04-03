@@ -26,8 +26,8 @@ class InvoiceModel {
 
   final String description;
   final String carat;
-  final double price;
-  final double currentGoldPrice;
+  final dynamic price;
+  final dynamic currentGoldPrice;
   final List<dynamic> images;
 
   InvoiceModel({
