@@ -23,18 +23,7 @@ class FilterScreen extends GetView<FilterController> {
             backgroundColor: CustomColors.white,
             centerTitle: true,
             elevation: 1,
-            leading: const SizedBox.shrink(),
-            actions: [
-              GestureDetector(
-                onTap: () {
-                  Get.back();
-                },
-                child: Icon(
-                  Icons.arrow_forward,
-                  size: ScreenDimensions.widthPercentage(context, 6),
-                ),
-              )
-            ],
+            leading: const BackArrow(),
             title: Text(
               AppWord.filterProducts,
               style: TextStyle(
@@ -43,7 +32,7 @@ class FilterScreen extends GetView<FilterController> {
               ),
             ),
           ),
-          body: SizedBox(
+          body: controller.isLoading? Center(child: CircularProgressIndicator(color: CustomColors.gold,)):SizedBox(
             height: ScreenDimensions.screenHeight(context),
             width: ScreenDimensions.screenWidth(context),
             child: Form(
@@ -59,33 +48,50 @@ class FilterScreen extends GetView<FilterController> {
                         ),
                       ),
                       AppPopUpMenu(
-                        onSelected: (value) {
-                          controller.value = value;
-                          controller.pupUpText();
-                        },
                         title: controller.title,
-                        items: [
-                          PopupMenuItem(
-                            value: 0,
-                            child: Text('${AppWord.caliber} \t 24'),
-                          ),
-                          PopupMenuItem(
-                            value: 1,
-                            child: Text('${AppWord.caliber} \t 22'),
-                          ),
-                          PopupMenuItem(
-                            value: 2,
-                            child: Text('${AppWord.caliber} \t 21'),
-                          ),
-                          PopupMenuItem(
-                            value: 3,
-                            child: Text('${AppWord.caliber} \t 18'),
-                          ),
-                        ],
+                        items: controller.carats.map((e) => PopupMenuItem(child: Text(e,style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),
+                          onTap: (){
+                          controller.title= e;
+                          controller.carat = controller.title;
+                          controller.update();
+                           },)).toList(),
                       ).paddingSymmetric(
                           horizontal:
                               ScreenDimensions.widthPercentage(context, 10)),
                     ],
+                  ),
+                  Padding(
+                    padding:  EdgeInsets.symmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                    child: Row(
+                      children: [
+                        Text(
+                          AppWord.productType,
+                          style: TextStyle(
+                            fontSize: AppFonts.smallTitleFont(context),
+                          ),
+                        ),
+                        AppPopUpMenu(
+                          title: controller.selectedProductType,
+                          items: controller.productTypes.map((e) => PopupMenuItem(child: Text(e,style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),
+                            onTap: (){
+                            controller.selectedProductType= e;
+                            if(controller.selectedProductType == AppWord.news){
+                              controller.productType = 1;
+                              controller.update();
+                            }
+                            if(controller.selectedProductType == AppWord.likeNew){
+                              controller.productType = 3;
+                              controller.update();
+                            }
+                            if(controller.selectedProductType == AppWord.used){
+                              controller.productType = 2;
+                              controller.update();
+                            }
+                            controller.update();
+                             },)).toList(),
+                        ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 12)),
+                      ],
+                    ),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -93,9 +99,13 @@ class FilterScreen extends GetView<FilterController> {
                       Row(
                         children: [
                           Checkbox(
-                              value: controller.checked,
+                              value: controller.priceCheck,
                               onChanged: (value) {
-                                controller.checkValue();
+                                controller.priceCheck = value!;
+                                controller.weightCheck = false;
+                                controller.priceCheck?controller.byPrice=1:controller.byPrice=0;
+                                controller.byWeight = 0;
+                                controller.update();
                               },
                               activeColor: CustomColors.gold),
                           RichText(
@@ -114,9 +124,13 @@ class FilterScreen extends GetView<FilterController> {
                       Row(
                         children: [
                           Checkbox(
-                              value: !controller.checked,
+                              value: controller.weightCheck,
                               onChanged: (value) {
-                                controller.uncheckValue();
+                                controller.weightCheck = value!;
+                                controller.priceCheck = false;
+                                controller.weightCheck?controller.byWeight=1:controller.byWeight=0;
+                                controller.byPrice = 0;
+                                controller.update();
                               },
                               activeColor: CustomColors.gold),
                           RichText(
@@ -153,17 +167,15 @@ class FilterScreen extends GetView<FilterController> {
                         width: ScreenDimensions.widthPercentage(context, 30),
                         child: TextFormField(
                           validator: (value) {
-                            if (controller.checked) {
+                            if (controller.priceCheck) {
                               if (value!.isEmpty) {
                                 return AppWord.empty;
-                              } else {
-                                return '';
                               }
-                            } else {}
+                            }
                           },
                           textAlign: TextAlign.center,
                           textDirection: TextDirection.ltr,
-                          enabled: controller.checked,
+                          enabled: controller.priceCheck,
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
@@ -190,17 +202,15 @@ class FilterScreen extends GetView<FilterController> {
                         width: ScreenDimensions.widthPercentage(context, 30),
                         child: TextFormField(
                           validator: (value) {
-                            if (controller.checked) {
+                            if (controller.priceCheck) {
                               if (value!.isEmpty) {
                                 return AppWord.empty;
-                              } else {
-                                return '';
                               }
-                            } else {}
+                            }
                           },
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          enabled: controller.checked,
+                          enabled: controller.priceCheck,
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
@@ -235,17 +245,15 @@ class FilterScreen extends GetView<FilterController> {
                         width: ScreenDimensions.widthPercentage(context, 30),
                         child: TextFormField(
                           validator: (value) {
-                            if (!controller.checked) {
+                            if (controller.weightCheck) {
                               if (value!.isEmpty) {
                                 return AppWord.empty;
-                              } else {
-                                return '';
                               }
-                            } else {}
+                            }
                           },
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          enabled: !controller.checked,
+                          enabled: controller.weightCheck,
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
@@ -272,17 +280,15 @@ class FilterScreen extends GetView<FilterController> {
                         width: ScreenDimensions.widthPercentage(context, 30),
                         child: TextFormField(
                           validator: (value) {
-                            if (!controller.checked) {
+                            if (controller.weightCheck) {
                               if (value!.isEmpty) {
                                 return AppWord.empty;
-                              } else {
-                                return '';
                               }
-                            } else {}
+                            }
                           },
                           textDirection: TextDirection.ltr,
                           textAlign: TextAlign.center,
-                          enabled: !controller.checked,
+                          enabled: controller.weightCheck,
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
                               focusedBorder: OutlineInputBorder(
@@ -298,25 +304,43 @@ class FilterScreen extends GetView<FilterController> {
                       vertical: ScreenDimensions.heightPercentage(context, 2)),
                   const Spacer(),
                   AppButton(
-                      text: Text(
-                        AppWord.search,
-                        style: TextStyle(
-                            color: CustomColors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: AppFonts.smallTitleFont(context)),
-                      ),
-                      onTap: () {
-                        print(controller.fromWeightController.text);
-                        print(controller.toWeightController.text);
-                        controller.caratNotNull();
-                        if (controller.formKey.currentState!.validate()) {}
-                        if (controller.checked == false) {
-                          controller.weightFilter();
-                        } else {
-                          controller.priceFilter();
-                        }
-                      },
-                      buttonBackground: AppImages.buttonLiteBackground)
+                          text: Text(
+                            AppWord.search,
+                            style: TextStyle(
+                                color: CustomColors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: AppFonts.smallTitleFont(context)),
+                          ),
+                          onTap: () {
+                            if(controller.weightCheck==false&&controller.priceCheck==false){
+                              ControllerSnackBar(errorMessage: AppWord.choosePriceOrWeight);
+                            }
+                            if(controller.priceCheck){
+                              if(controller.fromPriceController.text.isEmpty||controller.toPriceController.text.isEmpty){
+                                ControllerSnackBar(errorMessage: AppWord.pricesShouldNotBeEmpty);
+                                if (!(controller.formKey.currentState!.validate())) {
+                                  return;
+                                }
+                              }
+                            }
+                            if(controller.weightCheck){
+                              if(controller.fromWeightController.text.isEmpty||controller.toWeightController.text.isEmpty){
+                                ControllerSnackBar(errorMessage: AppWord.weightsShouldNotBeEmpty);
+                                if (!(controller.formKey.currentState!.validate())) {
+                                  return;
+                                }
+                              }
+                            }
+                            if(controller.productType == null){
+                              ControllerSnackBar(errorMessage: AppWord.productTypeIsRequired);
+                            }
+                            if(controller.carat == null){
+                              ControllerSnackBar(errorMessage: AppWord.caliberIsRequired);
+                            }
+                            else{controller.filterProducts();}
+                          },
+                          buttonBackground: AppImages.buttonLiteBackground),
+
                 ],
               ).paddingSymmetric(
                   vertical: ScreenDimensions.heightPercentage(context, 3),

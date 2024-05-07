@@ -14,13 +14,13 @@ class ReservedSellController extends GetxController {
   bool isLoading = true;
   bool isBannersEmpty = true;
   bool isSubcategoryLoading = true;
-  ProfileProductSellsModel? model;
+  ReservedSellModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS = [];
-  int appCommission = 0;
-
-  CameraPosition? position;
-  GoogleMapController? mapController;
+  int appCommission = 0;  CameraPosition? position;
   MarkerEntity? marker;
+  GoogleMapController? mapController;
+  String productType = '';
+  bool isMapExisted = false;
   TextEditingController sellingConfirmationController = TextEditingController();
 
 
@@ -41,10 +41,32 @@ class ReservedSellController extends GetxController {
     getAppCommission();
     update();
     Map<String,dynamic> data = await DioHelper.profileListsShowProduct(productId: productId);
-    model = ProfileProductSellsModel.fromJson(json: data['data']);
+    model = ReservedSellModel.fromJson(json: data['data'],deliveryType: data['data']['product']['delivery_type']);
+    if (model!.productType=='1'){
+      productType = AppWord.news;
+    }if(model!.productType == '2'){
+      productType = AppWord.used;
+    }else{
+      productType = AppWord.likeNew;
+    }
+    if (model!.deliveryType == '2'){
+      if(data['data']['receiving_location']!=null){
+        isMapExisted =true ;
+        position = CameraPosition(target: model!.selectedLocation!.toLatLng, zoom: 10);
+        marker = MarkerEntity.fromMarkerInfo(
+            info: MarkerInfo(
+                location: model!.selectedLocation!,
+                markerId: model!.id.toString(),
+                title: '',
+                subTitle: ''));
+        update();
+      }else{
+        isMapExisted = isMapExisted = false;
+        ControllerSnackBar(errorMessage: AppWord.checkInternet);
+        update();
+      }
+    }
     subcategoryADVS(subcategoryId: model!.subcategoryId);
-    position = CameraPosition(target:  model!.location.toLatLng,zoom: 10);
-    marker = MarkerEntity.fromMarkerInfo(info: MarkerInfo(markerId: model!.id.toString(), title: '', subTitle: '', location: model!.location));
     isLoading = false;
     update();
   }

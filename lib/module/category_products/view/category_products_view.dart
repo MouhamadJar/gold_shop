@@ -23,45 +23,39 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
   @override
   Widget build(BuildContext context) {
     Get.put(SubcategoryProductsController());
-    return Scaffold(
-      appBar: AppBar(
-        actions: [
-          SvgPicture.asset(
-            AppImages.saudiArabia,
-            height: ScreenDimensions.heightPercentage(context, 5),
-          ).paddingAll(ScreenDimensions.widthPercentage(context, 2)),
-        ],
-        centerTitle: true,
-        title: Text(
-          pageTitle,
-          style: TextStyle(
-            color: CustomColors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: AppFonts.subTitleFont(context),
+    return Directions(
+      child: Scaffold(
+        appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            pageTitle,
+            style: TextStyle(
+              color: CustomColors.black,
+              fontWeight: FontWeight.bold,
+              fontSize: AppFonts.subTitleFont(context),
+            ),
           ),
+          leading: const BackArrow(),
+          elevation: 1,
+          backgroundColor: CustomColors.white,
         ),
-        leading: const BackArrow(),
-        elevation: 1,
-        backgroundColor: CustomColors.white,
-      ),
-      body: GetBuilder<SubcategoryProductsController>(initState: (state) {
-        controller.getAllProducts(subcategoryId: subcategoryId);
-        controller.product.clear();
-        controller.subcategoriesADVS.clear();
-        controller.subcategoryADVS(subcategoryId: subcategoryId);
-        controller.getCity();
-      }, builder: (_) {
-        return Column(
-          children: [
-            const PricesBar(),
-            Container(
-              alignment: AlignmentDirectional.centerEnd,
-              width: ScreenDimensions.screenWidth(context),
-              height: ScreenDimensions.heightPercentage(context, 6),
-              margin: EdgeInsetsDirectional.symmetric(
-                horizontal: ScreenDimensions.widthPercentage(context, 5),
-              ),
-              child: Directions(
+        body: GetBuilder<SubcategoryProductsController>(initState: (state) {
+          controller.getAllProducts(subcategoryId: subcategoryId);
+          controller.product.clear();
+          controller.subcategoriesADVS.clear();
+          controller.subcategoryADVS(subcategoryId: subcategoryId);
+          controller.getCity();
+        }, builder: (_) {
+          return Column(
+            children: [
+              const PricesBar(),
+              Container(
+                alignment: AlignmentDirectional.centerEnd,
+                width: ScreenDimensions.screenWidth(context),
+                height: ScreenDimensions.heightPercentage(context, 6),
+                margin: EdgeInsetsDirectional.symmetric(
+                  horizontal: ScreenDimensions.widthPercentage(context, 5),
+                ),
                 child: Row(
                   children: [
                     GestureDetector(
@@ -85,80 +79,88 @@ class SubcategoryProducts extends GetView<SubcategoryProductsController> {
                     controller.isCityEmpty
                         ?const SizedBox.shrink()
                         :AppPopUpMenu(
-                      title: controller.selectedCity!,
+                      title: controller.selectedCity,
                       items: controller.cities.map((element) => PopupMenuItem(
                         onTap: (){
-                          controller.chooseCity(city: element, subcategoryId: subcategoryId);
+                          controller.chooseCity(city: element.city, subcategoryId: subcategoryId);
+                          controller.selectedCity = element.city;
                           controller.update();
                         },
                         value: element,
                         child: Text(
-                            element,
+                            element.city,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),),),).toList(),
-                      onSelected: (value) {
-                        controller.selectedCity = value ;
-                        controller.update();
-                      },
 
                     ),
                   ],
                 ),
               ),
-            ),
-            controller.isBannersEmpty
-                ? const SizedBox.shrink()
-                : AdvertisementBanner(
-              itemBuilder: (context, index, realIndex) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: AppNetworkImage(
-                      baseUrlImages + controller.subcategoriesADVS[index].image,
-                      fit: BoxFit.fitHeight,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      controller.subcategoriesADVS[index].paragraph,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: AppFonts.smallTitleFont(context)),
-                    ),
-                  ),
-                ],
-              ),
-              itemCount: controller.subcategoriesADVS.length,
-            ),
-            controller.isLoading
-                ? Expanded(
-                  child: Center(
-                      child: CircularProgressIndicator(
-                        color: CustomColors.gold,
+              controller.isBannersEmpty
+                  ? const SizedBox.shrink()
+                  : AdvertisementBanner(
+                itemBuilder: (context, index, realIndex) => Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: AppNetworkImage(
+                        baseUrlImages + controller.subcategoriesADVS[index].image,
+                        fit: BoxFit.fitHeight,
                       ),
                     ),
-                )
-                : controller.isSubcategoryEmpty
-                  ? Expanded(
-                      child: Center(
-                          child: Text(
-                            AppWord.nothingToShow,
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            controller.subcategoriesADVS[index].paragraph,
+                            textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: CustomColors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: AppFonts.subTitleFont(context)),
+                                color: Colors.white,
+                                fontSize: AppFonts.smallTitleFont(context)),
                           ),
+                          AppNetworkImage(
+                            baseUrlImages + controller.subcategoriesADVS[index].background,
+                            fit: BoxFit.contain,
+                            width: ScreenDimensions.widthPercentage(context, 25),
+                            height: ScreenDimensions.heightPercentage(context, 5),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                itemCount: controller.subcategoriesADVS.length,
+              ),
+              controller.isLoading
+                  ? Expanded(
+                    child: Center(
+                        child: CircularProgressIndicator(
+                          color: CustomColors.gold,
                         ),
-                    )
-                  : Expanded(
-                        child: ProductsCard(
-                          subcategoryId: subcategoryId,
-                        ),
+                      ),
+                  )
+                  : controller.isSubcategoryEmpty
+                    ? Expanded(
+                        child: Center(
+                            child: Text(
+                              AppWord.nothingToShow,
+                              style: TextStyle(
+                                color: CustomColors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: AppFonts.subTitleFont(context)),
+                            ),
+                          ),
                       )
-          ],
-        );
-      }),
+                    : Expanded(
+                          child: ProductsCard(
+                            subcategoryId: subcategoryId,
+                          ),
+                        )
+            ],
+          );
+        }),
+      ),
     );
   }
 }

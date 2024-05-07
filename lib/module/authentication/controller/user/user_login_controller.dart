@@ -7,6 +7,7 @@ import 'package:gold_shop/module/authentication/model/user/user_login_model.dart
 import 'package:gold_shop/module/authentication/view/check_code_screen.dart';
 import 'package:gold_shop/module/main/user/view/main_screen_view.dart';
 
+import '../../../../core/components/components.dart';
 import '../../../main/mediator_shop/signature/view/mediator_shop_view.dart';
 
 class LoginController extends GetxController {
@@ -45,12 +46,12 @@ class LoginController extends GetxController {
           }
           else if(result['message']== 'Unauthorised.'){
             Get.back();
-            Get.snackbar(AppWord.warning, AppWord.wrongPhoneNumberOrPassword);
+            ControllerSnackBar(errorTitle: AppWord.warning,errorMessage: AppWord.wrongPhoneNumberOrPassword,);
             update();
           }
           else{
             Get.back();
-            Get.snackbar(AppWord.warning, AppWord.checkInternet);
+            ControllerSnackBar(errorTitle: AppWord.warning,errorMessage: AppWord.checkInternet,);
             update();
           }
     });

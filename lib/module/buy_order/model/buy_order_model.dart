@@ -1,8 +1,9 @@
 import 'package:gold_shop/core/location_service/location_entity.dart';
 
 class BuyOrderModel {
-  final LocationEntity location;
+
   final int buyerId;
+
   final String buyerFirstName;
 
   final String buyerLastName;
@@ -19,17 +20,7 @@ class BuyOrderModel {
 
   final String country;
 
-  final String state;
-
   final String city;
-
-  final String neighborhood;
-
-  final String street;
-
-  final double longitude;
-
-  final double latitude;
 
   final int productId;
 
@@ -53,19 +44,13 @@ class BuyOrderModel {
     required this.sellerLastName,
     required this.sellerPhoneNumber,
     required this.country,
-    required this.state,
     required this.city,
-    required this.neighborhood,
-    required this.street,
-    required this.longitude,
-    required this.latitude,
     required this.productId,
     required this.description,
     this.carat,
     this.productPrice,
     required this.images,
     required this.orderCode,
-    required this.location,
   });
 
   factory BuyOrderModel.fromJson({required Map<String, dynamic> json}) {
@@ -78,20 +63,14 @@ class BuyOrderModel {
       sellerFirstName: json['seller']['first_name'],
       sellerLastName: json['seller']['last_name'],
       sellerPhoneNumber: json['seller']['phone_number'],
-      country: json['seller']['country'],
-      state: json['seller']['state'],
-      city: json['seller']['city'],
-      neighborhood: json['seller']['neighborhood'],
-      street: json['seller']['street'],
-      longitude: json['seller']['longitude'],
-      latitude: json['seller']['latitude'],
+      country: json['product']['address']['country'],
+      city: json['product']['address']['city']  ,
       productId: json['product']['id'],
       description: json['product']['description'],
       images: json['product']['images'],
       carat: json['product']['carat'],
       productPrice: json['product_price'],
       orderCode: json['order_code'],
-      location: LocationEntity(lon: json['seller']['longitude'], lat: json['seller']['latitude']),
     );
   }
 }

@@ -1,9 +1,8 @@
-import 'dart:ui';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/validtor/app_validator.dart';
+import '../../../../core/validator/app_validator.dart';
 import 'package:gold_shop/module/authentication/controller/user/user_login_controller.dart';
 import '../../../core/components/components.dart';
 import '../../../core/texts/words.dart';
@@ -12,7 +11,6 @@ import '../../../core/colors/colors.dart';
 import '../../../core/images/images.dart';
 import '../../../core/utils/dimensions.dart';
 import 'check_code_screen.dart';
-import 'mediator_shop/signup_screen.dart';
 import 'user/signup_screen.dart';
 
 class LoginScreen extends GetView<LoginController> {
@@ -21,6 +19,7 @@ class LoginScreen extends GetView<LoginController> {
   @override
   Widget build(BuildContext context) {
     Get.put(LoginController());
+    List<String>phoneNumber = [];
     return GetBuilder<LoginController>(
         builder: (_) {
       return SafeArea(
@@ -106,8 +105,13 @@ class LoginScreen extends GetView<LoginController> {
                             AppTextField(
                               controller: controller.phoneController,
                               validator: (value) {
+                                phoneNumber = value.toString().characters.toList();
+                                if(phoneNumber[0]!='0'||phoneNumber[1]!='5'){
+                                  return AppWord.mustStartWith05;
+                                }
                                 return AppValidator().phoneValidator(value);
                               },
+                              hintText: '05********',
                               title: AppWord.phoneNumber,
                               keyboardType: TextInputType.phone,
                               suffix: Icon(Icons.phone,color: controller.phoneController.text.isEmpty?CustomColors.black:CustomColors.gold,),
@@ -119,6 +123,7 @@ class LoginScreen extends GetView<LoginController> {
                             AppTextField(
                               controller: controller.passwordController,
                               title: AppWord.password,
+                              hintText: AppWord.atLeast9Characters,
                               maxLines: 1,
                               keyboardType: TextInputType.visiblePassword,
                               validator: (value) {

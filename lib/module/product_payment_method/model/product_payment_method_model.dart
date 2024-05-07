@@ -59,3 +59,13 @@ class StoresModel {
     );
   }
 }
+
+
+class CitiesModel{
+  final int addressId;
+  final String city;
+  CitiesModel({required this.addressId,required this.city});
+  factory CitiesModel.fromJson({required Map<String,dynamic>json}){
+    return CitiesModel(addressId: json['id'], city: json['city']);
+  }
+}

@@ -37,18 +37,16 @@ class CategoryADVSModel {
 
   final String image;
 
-  final String createdAt;
+  final String background;
 
-  final String updatedAt;
-
-  CategoryADVSModel(
-      {required this.id,
-      required this.categoryId,
-        this.subcategoryId,
-      required this.paragraph,
-      required this.image,
-      required this.createdAt,
-      required this.updatedAt});
+  CategoryADVSModel({
+    required this.id,
+    required this.categoryId,
+    this.subcategoryId,
+    required this.paragraph,
+    required this.image,
+    required this.background,
+  });
 
   factory CategoryADVSModel.fromJson({required Map<String, dynamic> json}) {
     return CategoryADVSModel(
@@ -57,9 +55,6 @@ class CategoryADVSModel {
         subcategoryId: json['subcategory_id'],
         paragraph: json['paragraph'],
         image: json['image'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at']);
+        background: json['background']);
   }
 }
-
-

@@ -2,35 +2,35 @@ class ProductDetailsModel {
   final int id;
   final dynamic code;
   final int userId;
+  final int addressId;
   final String description;
-  final dynamic age;
+  final String productType;
   final dynamic weight;
-  final dynamic carat;
+  final String carat;
   final int subcategoryId;
   final dynamic currentGoldPrice;
   final dynamic profit;
-  final dynamic? addition;
-  final dynamic? details;
-  final String manufacturer;
-  final String manufacturerType;
+  final dynamic addition;
+  final dynamic details;
   final bool toggle;
   final String deliveryType;
-  final String? phoneNumber;
   final int views;
   final String productStatus;
-  final String createdAt;
-  final String updatedAt;
   final dynamic price;
-  final dynamic? priceAfterDiscount;
   final dynamic horror;
-  List<dynamic> images;
+  final dynamic marketValue;
+  final List<dynamic> images;
+  final String phoneNumber;
+  final String country;
+  final String city;
 
   ProductDetailsModel({
     required this.id,
     required this.code,
     required this.userId,
+    required this.addressId,
     required this.description,
-    required this.age,
+    required this.productType,
     required this.weight,
     required this.carat,
     required this.subcategoryId,
@@ -38,19 +38,17 @@ class ProductDetailsModel {
     required this.profit,
     this.addition,
     this.details,
-    required this.manufacturer,
-    required this.manufacturerType,
     required this.toggle,
     required this.deliveryType,
-    this.phoneNumber,
+    required this.phoneNumber,
     required this.views,
     required this.productStatus,
-    required this.createdAt,
-    required this.updatedAt,
     required this.price,
-    this.priceAfterDiscount,
+    required this.marketValue,
     required this.horror,
     required this.images,
+    required this.country,
+    required this.city,
   });
 
   factory ProductDetailsModel.fromJson({required Map<String, dynamic> json}) {
@@ -64,38 +62,37 @@ class ProductDetailsModel {
       id: json['id'],
       code: json['code'],
       userId: json['user_id'],
+      addressId: json['address_id'],
       description: json['description'],
-      age: json['age'],
+      productType: json['product_type'],
       weight: json['wight'],
       carat: json['carat'],
       subcategoryId: json['subcategory_id'],
       currentGoldPrice: json['current_gold_price'],
       profit: json['profit'],
       addition: json['addition'],
-      details: json[''],
-      manufacturer: json['manufacture'],
-      manufacturerType: json['manufacture_type'],
+      details: json['detail'],
       toggle: json['toggle'],
       deliveryType: json['delivery_type'],
-      phoneNumber: json['phone_number'],
+      phoneNumber: json['phone_numbers'][0]['phone_number'],
       views: json['views'],
       productStatus: json['product_status'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
       price: json['price'],
-      priceAfterDiscount: json['price_after_discount'],
+      marketValue: json['market_value'],
       horror: json['horror'],
       images: tmp,
+      country: json['address']['country'],
+      city: json['address']['city'],
     );
   }
 }
 
 class PutAsideModel {
-  final double price;
+  final dynamic price;
   final int orderId;
-  final double gramPrice;
+  final dynamic gramPrice;
 
-  final double? totalAmount;
+  final dynamic? totalAmount;
 
   PutAsideModel({
     required this.price,

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/components/maps.dart';
+import 'package:gold_shop/core/validator/app_validator.dart';
 import '../../../core/images/images.dart';
 import '../../../core/texts/words.dart';
 import '../../../core/utils/app_fonts.dart';
@@ -90,8 +91,8 @@ class EditProfile extends GetView<EditProfileController> {
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),
                     AppTextField(
-                      title: AppWord.userName,
-                      controller: controller.userNameController,
+                      title: AppWord.profileDescription,
+                      controller: controller.descriptionController,
                       keyboardType: TextInputType.name,
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
@@ -117,7 +118,7 @@ class EditProfile extends GetView<EditProfileController> {
                           height: ScreenDimensions.heightPercentage(context, 2),
                         ),
                         Container(
-                          alignment: AlignmentDirectional.centerEnd,
+                          alignment: Alignment.center,
                           width: ScreenDimensions.screenWidth(context),
                           height: ScreenDimensions.heightPercentage(context, 6),
                           padding: EdgeInsetsDirectional.all(
@@ -160,64 +161,6 @@ class EditProfile extends GetView<EditProfileController> {
                           ],
                         ),
                       ],
-                    ).paddingSymmetric(
-                        horizontal: ScreenDimensions.widthPercentage(context, 5),
-                        vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      children: [
-                        Text(
-                          AppWord.fullAddress,
-                          style: TextStyle(
-                              fontSize: AppFonts.smallTitleFont(context),
-                              fontWeight: FontWeight.bold),
-                        ),
-                        AppGoogleMap(
-                          markers: controller.markers,
-                          onTap: controller.zoomed?controller.onGoogleMapTapped:(latLng){
-                            controller.update();
-                            Get.snackbar(AppWord.warning,AppWord.pleaseZoomIn);
-                          },
-                          onCameraMoved: (cameraPosition){
-                            if (cameraPosition.zoom==19.0){
-                              controller.zoomed = true;
-                              controller.update();
-                            }if(cameraPosition.zoom ==18.9){
-                              controller.zoomed = false;
-                              controller.update();
-                            }
-                          },
-                        ),
-                      ],
-                    ).paddingSymmetric(
-                        vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    EditProfileCard(
-                      title: AppWord.area,
-                      subtitle: controller.country,
-                    ).paddingSymmetric(
-                        horizontal: ScreenDimensions.widthPercentage(context, 5),
-                        vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    EditProfileCard(
-                      title: AppWord.state,
-                      subtitle: controller.state,
-                    ).paddingSymmetric(
-                        horizontal: ScreenDimensions.widthPercentage(context, 5),
-                        vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    EditProfileCard(
-                      title: AppWord.city,
-                      subtitle: controller.city,
-                    ).paddingSymmetric(
-                        horizontal: ScreenDimensions.widthPercentage(context, 5),
-                        vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    EditProfileCard(
-                      title: AppWord.neighborhood,
-                      subtitle: controller.neighborhood,
-                    ).paddingSymmetric(
-                        horizontal: ScreenDimensions.widthPercentage(context, 5),
-                        vertical: ScreenDimensions.heightPercentage(context, 2)),
-                    EditProfileCard(
-                      title: AppWord.street,
-                      subtitle: controller.street,
                     ).paddingSymmetric(
                         horizontal: ScreenDimensions.widthPercentage(context, 5),
                         vertical: ScreenDimensions.heightPercentage(context, 2)),

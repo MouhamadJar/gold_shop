@@ -417,126 +417,126 @@ class MainScreen extends GetView<MainScreenController> {
                     return;
                   }
                 }
-                if(currentIndex == 3 && StorageHandler().hasToken){
-                  if(StorageHandler().verified == '0'){
-                    {
-                      Get.dialog(
-                          barrierDismissible: false,
-                          Material(
-                            color: Colors.transparent,
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                              child: WillPopScope(
-                                onWillPop: () async {
-                                  return false;
-                                },
-                                child: Container(
-                                  width: ScreenDimensions.screenWidth(context),
-                                  height: ScreenDimensions.screenHeight(context),
-                                  padding: EdgeInsetsDirectional.all(
-                                      ScreenDimensions.widthPercentage(context, 5)),
-                                  margin: EdgeInsetsDirectional.symmetric(
-                                      horizontal:
-                                      ScreenDimensions.widthPercentage(
-                                          context, 5),
-                                      vertical: ScreenDimensions.heightPercentage(
-                                          context, 30)),
-                                  decoration: BoxDecoration(
-                                      color: CustomColors.gold,
-                                      borderRadius: BorderRadius.circular(
-                                          ScreenDimensions.radius(context, 1))),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      SvgPicture.asset(
-                                        AppImages.verified,
-                                        width: ScreenDimensions.widthPercentage(
-                                          context,
-                                          10,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          AppWord.youMustVerify,
-                                          maxLines: 3,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize:
-                                            AppFonts.subTitleFont(context),
-                                            color: CustomColors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.to(const VerifyUserAccount(),
-                                              transition: Transition.rightToLeft,
-                                              duration: const Duration(
-                                                  milliseconds: 700));
-                                        },
-                                        child: Container(
-                                          height: ScreenDimensions.heightPercentage(
-                                              context, 5),
-                                          width: ScreenDimensions.heightPercentage(
-                                              context, 20),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: CustomColors.white,
-                                              border: Border.all(),
-                                              borderRadius: BorderRadius.circular(
-                                                  ScreenDimensions
-                                                      .heightPercentage(
-                                                      context, 1))),
-                                          child: Text(
-                                              AppWord.verify,
-                                              style: TextStyle(
-                                                  color: CustomColors.black,
-                                                  fontSize:
-                                                  AppFonts.smallTitleFont(
-                                                      context))),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.offAll(const MainScreen(),
-                                              transition: Transition.fadeIn,
-                                              duration: const Duration(
-                                                  milliseconds: 700));
-                                        },
-                                        child: Container(
-                                          height:
-                                          ScreenDimensions.heightPercentage(
-                                              context, 5),
-                                          width:
-                                          ScreenDimensions.heightPercentage(
-                                              context, 20),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: CustomColors.white,
-                                              border: Border.all(),
-                                              borderRadius: BorderRadius.circular(
-                                                  ScreenDimensions
-                                                      .heightPercentage(
-                                                      context, 1))),
-                                          child: Text(AppWord.goBack,
-                                              style: TextStyle(
-                                                  color: CustomColors.black,
-                                                  fontSize:
-                                                  AppFonts.smallTitleFont(
-                                                      context))),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ));
-                      return;
-                    }
-                  }
-                }
+                // if(currentIndex == 3 && StorageHandler().hasToken){
+                //   if(StorageHandler().verified == '0'){
+                //     {
+                //       Get.dialog(
+                //           barrierDismissible: false,
+                //           Material(
+                //             color: Colors.transparent,
+                //             child: BackdropFilter(
+                //               filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                //               child: WillPopScope(
+                //                 onWillPop: () async {
+                //                   return false;
+                //                 },
+                //                 child: Container(
+                //                   width: ScreenDimensions.screenWidth(context),
+                //                   height: ScreenDimensions.screenHeight(context),
+                //                   padding: EdgeInsetsDirectional.all(
+                //                       ScreenDimensions.widthPercentage(context, 5)),
+                //                   margin: EdgeInsetsDirectional.symmetric(
+                //                       horizontal:
+                //                       ScreenDimensions.widthPercentage(
+                //                           context, 5),
+                //                       vertical: ScreenDimensions.heightPercentage(
+                //                           context, 30)),
+                //                   decoration: BoxDecoration(
+                //                       color: CustomColors.gold,
+                //                       borderRadius: BorderRadius.circular(
+                //                           ScreenDimensions.radius(context, 1))),
+                //                   child: Column(
+                //                     mainAxisAlignment:
+                //                     MainAxisAlignment.spaceEvenly,
+                //                     children: [
+                //                       SvgPicture.asset(
+                //                         AppImages.verified,
+                //                         width: ScreenDimensions.widthPercentage(
+                //                           context,
+                //                           10,
+                //                         ),
+                //                       ),
+                //                       SizedBox(
+                //                         child: Text(
+                //                           AppWord.youMustVerify,
+                //                           maxLines: 3,
+                //                           textAlign: TextAlign.center,
+                //                           style: TextStyle(
+                //                             fontSize:
+                //                             AppFonts.subTitleFont(context),
+                //                             color: CustomColors.white,
+                //                           ),
+                //                         ),
+                //                       ),
+                //                       GestureDetector(
+                //                         onTap: () {
+                //                           Get.to(const VerifyUserAccount(),
+                //                               transition: Transition.rightToLeft,
+                //                               duration: const Duration(
+                //                                   milliseconds: 700));
+                //                         },
+                //                         child: Container(
+                //                           height: ScreenDimensions.heightPercentage(
+                //                               context, 5),
+                //                           width: ScreenDimensions.heightPercentage(
+                //                               context, 20),
+                //                           alignment: Alignment.center,
+                //                           decoration: BoxDecoration(
+                //                               color: CustomColors.white,
+                //                               border: Border.all(),
+                //                               borderRadius: BorderRadius.circular(
+                //                                   ScreenDimensions
+                //                                       .heightPercentage(
+                //                                       context, 1))),
+                //                           child: Text(
+                //                               AppWord.verify,
+                //                               style: TextStyle(
+                //                                   color: CustomColors.black,
+                //                                   fontSize:
+                //                                   AppFonts.smallTitleFont(
+                //                                       context))),
+                //                         ),
+                //                       ),
+                //                       GestureDetector(
+                //                         onTap: () {
+                //                           Get.offAll(const MainScreen(),
+                //                               transition: Transition.fadeIn,
+                //                               duration: const Duration(
+                //                                   milliseconds: 700));
+                //                         },
+                //                         child: Container(
+                //                           height:
+                //                           ScreenDimensions.heightPercentage(
+                //                               context, 5),
+                //                           width:
+                //                           ScreenDimensions.heightPercentage(
+                //                               context, 20),
+                //                           alignment: Alignment.center,
+                //                           decoration: BoxDecoration(
+                //                               color: CustomColors.white,
+                //                               border: Border.all(),
+                //                               borderRadius: BorderRadius.circular(
+                //                                   ScreenDimensions
+                //                                       .heightPercentage(
+                //                                       context, 1))),
+                //                           child: Text(AppWord.goBack,
+                //                               style: TextStyle(
+                //                                   color: CustomColors.black,
+                //                                   fontSize:
+                //                                   AppFonts.smallTitleFont(
+                //                                       context))),
+                //                         ),
+                //                       )
+                //                     ],
+                //                   ),
+                //                 ),
+                //               ),
+                //             ),
+                //           ));
+                //       return;
+                //     }
+                //   }
+                // }
                 controller.currentIndex = currentIndex;
                 controller.update();
               },

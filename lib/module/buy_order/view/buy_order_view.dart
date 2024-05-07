@@ -130,27 +130,27 @@ class BuyOrder extends GetView<BuyOrderController> {
                               fontWeight: FontWeight.bold),
                         ).paddingSymmetric(
                             vertical: ScreenDimensions.heightPercentage(context, 3)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              width: ScreenDimensions.widthPercentage(context, 80),
-                              child: Text(
-                                '${controller.buyOrderModel!.country} , ${controller.buyOrderModel!.state} , ${controller.buyOrderModel!.city} , ${controller.buyOrderModel!.neighborhood} , ${controller.buyOrderModel!.street}',
-                                maxLines: 3,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: AppFonts.smallTitleFont(context)),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: ScreenDimensions.heightPercentage(context, 3)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding:  EdgeInsets.symmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                                child: Text(
+                                  '${controller.buyOrderModel!.country} ,  ${controller.buyOrderModel!.city}',
+                                  maxLines: 3,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: AppFonts.smallTitleFont(context)),
+                                ),
                               ),
-                            ),
-                            SvgPicture.asset(
-                              AppImages.location,
-                            ),
-                          ],
+                              SvgPicture.asset(
+                                AppImages.location,
+                              ),
+                            ],
+                          ),
                         ),
-                        AppGoogleMap(markers: {controller.marker!},cameraPosition: controller.position).paddingSymmetric(
-                            vertical: ScreenDimensions.heightPercentage(
-                                context, 2)),
                         SizedBox(
                           width: ScreenDimensions.widthPercentage(context, 50),
                           child: Row(
@@ -204,27 +204,22 @@ class BuyOrder extends GetView<BuyOrderController> {
                                         width: ScreenDimensions.widthPercentage(context, 35),
                                         child: Column(
                                           children: [
-                                            RichText(
-                                              textAlign: TextAlign.center,
-                                              text: TextSpan(
-                                                style: TextStyle(
-                                                    color: CustomColors.black,
-                                                    fontSize: AppFonts.smallTitleFont(context)),
-                                                children: [
-                                                  TextSpan(
-                                                      text: ' ${AppWord.productCalibre}',
-                                                      style: const TextStyle(
-                                                          fontWeight: FontWeight.bold)),
-                                                  TextSpan(
-                                                      text: controller.buyOrderModel!.carat.toString(),
-                                                      style: TextStyle(
-                                                          fontWeight: FontWeight.bold)),
-                                                ],
-                                              ),
-                                            ),
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                              Text(controller.buyOrderModel!.carat,style: TextStyle(
+                                                  color: CustomColors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: AppFonts.smallTitleFont(context))),
+                                              Text(AppWord.productCalibre,style: TextStyle(
+                                                  color: CustomColors.black,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: AppFonts.smallTitleFont(context))),
+                                            ],),
                                             Text(
                                                  controller.buyOrderModel!.description,
                                                 maxLines: 6,
+                                                textAlign: TextAlign.center,
                                                 style:  TextStyle(
                                                   color: CustomColors.black,
                                                   fontSize: AppFonts.smallTitleFont(context),
@@ -235,7 +230,7 @@ class BuyOrder extends GetView<BuyOrderController> {
                                       ),
                                       AppNetworkImage(
                                         baseUrlImages + controller.buyOrderModel!.images[0]['image'],
-                                      width: ScreenDimensions.widthPercentage(context, 20 ),
+                                      width: ScreenDimensions.widthPercentage(context, 30 ),
                                       height: ScreenDimensions.heightPercentage(context, 15 ),
                                       ),
                                     ],

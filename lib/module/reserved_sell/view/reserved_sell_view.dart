@@ -179,12 +179,8 @@ final int productId;
                                         fontSize: AppFonts.subTitleFont(context),
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Details(
-                                      details: controller.model!.manufacturer!,
-                                      title: AppWord.manufacturer,
-                                      picPath: AppImages.building),
-                                  Details(details: controller.model!.age.toString(),
-                                      title: AppWord.age, picPath: AppImages.age),
+                                  Details(details: controller.productType.toString(),
+                                      title: AppWord.productType, picPath: AppImages.age),
                                   Details(details: controller.model!.weight.toString(),
                                       title: AppWord.weight,
                                       picPath: AppImages.weightScale),
@@ -234,11 +230,11 @@ final int productId;
                                       amount: controller.appCommission.toString()),
                                   ReservedSellProcessDetails(
                                     title: AppWord.buyerName,
-                                    subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
+                                    subtitle: '${controller.model!.buyerFirstName} ${controller.model!.buyerLastName}',
                                   ),
                                   ReservedSellProcessDetails(
                                     title: AppWord.buyerNumber,
-                                    subtitle: controller.model!.phoneNumber,
+                                    subtitle: controller.model!.buyerPhoneNumber!,
                                   ),
                                 ],
                               ).paddingSymmetric(
@@ -254,10 +250,7 @@ final int productId;
                                     TextSpan(
                                       children: [
                                         TextSpan(text: ' ${controller.model!.country} '),
-                                        TextSpan(text: ' ${controller.model!.state} '),
                                         TextSpan(text: ' ${controller.model!.city} '),
-                                        TextSpan(text: ' ${controller.model!.neighborhood} '),
-                                        TextSpan(text: ' ${controller.model!.street} '),
                                       ],),
                                     maxLines: 2,textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -270,7 +263,7 @@ final int productId;
                                 ),
                               ],
                             ),
-                            AppGoogleMap(markers: {controller.marker!},cameraPosition: controller.position),
+                            controller.model!.deliveryType=='2'?controller.isMapExisted?AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}):const SizedBox.shrink():const SizedBox.shrink(),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

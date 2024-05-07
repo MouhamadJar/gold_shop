@@ -51,4 +51,7 @@ class AppImages {
   static String edit2 = '${basePath}edit2.svg';
   static String profileIcon = '${basePath}profile_icon.svg';
   static String store = '${basePath}store.svg';
+  static String shop = '${basePath}shop.svg';
+  static String adds = '${basePath}adds.svg';
+  static String sells = '${basePath}sells.svg';
 }

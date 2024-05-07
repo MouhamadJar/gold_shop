@@ -15,16 +15,17 @@ class SoldProductController extends GetxController{
   ProfileProductSellsModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS=[];
   List <int> subcategoryId = [];
-  dynamic appCommission;
+  dynamic appCommission = 0;
 
   TextEditingController buyerMessageController = TextEditingController();
   TextEditingController serviceMessageController = TextEditingController();
   int? buyerStars;
   int? serviceStars;
-
   CameraPosition? position;
-  GoogleMapController? mapController;
   MarkerEntity? marker;
+  GoogleMapController? mapController;
+  String productType = '';
+  bool isMapExisted = false;
 
   void subcategoryADVS({required int subcategoryId}) async {
     Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
@@ -36,11 +37,32 @@ class SoldProductController extends GetxController{
   void getProductDetails({required int productId})async{
     isLoading= true;
     update();
-    getAppCommission();
     Map<String,dynamic> data = await DioHelper.profileListsShowProduct(productId: productId);
-    model = ProfileProductSellsModel.fromJson(json: data['data']);
-    position = CameraPosition(target:model!.location.toLatLng  , zoom: 10);
-    marker = MarkerEntity.fromMarkerInfo(info: MarkerInfo(markerId: model!.id.toString(), title: '',location: model!.location,subTitle: ''));
+    model = ProfileProductSellsModel.fromJson(json: data['data'],deliveryType: data['data']['product']['delivery_type']);
+    if (model!.productType=='1'){
+      productType = AppWord.news;
+    }if(model!.productType == '2'){
+      productType = AppWord.used;
+    }else{
+      productType = AppWord.likeNew;
+    }
+    if (model!.deliveryType == '2'){
+      if(data['data']['receiving_location']!=null){
+        isMapExisted =true ;
+        position = CameraPosition(target: model!.selectedLocation!.toLatLng, zoom: 10);
+        marker = MarkerEntity.fromMarkerInfo(
+            info: MarkerInfo(
+                location: model!.selectedLocation!,
+                markerId: model!.id.toString(),
+                title: '',
+                subTitle: ''));
+        update();
+      }else{
+        isMapExisted = isMapExisted = false;
+        ControllerSnackBar(errorMessage: AppWord.checkInternet);
+        update();
+      }
+    }
     subcategoryADVS(subcategoryId: model!.subcategoryId);
     isLoading = false;
     update();

@@ -31,7 +31,6 @@ class ClassificationController extends GetxController {
 
   void categoryADVS({required int categoryId}) async {
     Map<String, dynamic> data = await DioHelper.categoryADVS(categoryId: categoryId);
-    print(data);
     data['data'].forEach((element) {
       categoriesADVS.add(CategoryADVSModel.fromJson(json: element));
     });

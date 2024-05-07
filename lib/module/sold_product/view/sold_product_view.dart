@@ -197,13 +197,8 @@ class SoldProduct extends GetView<SoldProductController> {
                                       ),
                                       Details(
                                           withIcon: true,
-                                          details: controller.model!.manufacturer!.toString(),
-                                          title: AppWord.manufacturer,
-                                          picPath: AppImages.building),
-                                      Details(
-                                          withIcon: true,
-                                          details: controller.model!.age.toString(),
-                                          title: AppWord.age,
+                                          details: controller.productType.toString(),
+                                          title: AppWord.productType,
                                           picPath: AppImages.age),
                                       Details(
                                           withIcon: true,
@@ -249,26 +244,26 @@ class SoldProduct extends GetView<SoldProductController> {
                                       SoldProcessDetails(
                                           title: AppWord.amountPaid,
                                           subtitle: AppWord.sad,
-                                          amount: (controller.model!.price + controller.appCommission).toString()),
+                                          amount: (controller.model!.price).toInt().toString()),
+                                      SoldProcessDetails(
+                                          title: AppWord.marketValue,
+                                          subtitle: AppWord.sad,
+                                          amount: (controller.model!.marketValue.toInt()).toString()),
                                       SoldProcessDetails(
                                           title: AppWord.productPrice,
                                           subtitle: AppWord.sad,
-                                          amount: controller.model!.price.toString()),
+                                          amount: controller.model!.price.toInt().toString()),
                                       SoldProcessDetails(
                                           title: AppWord.gramPrice,
                                           subtitle: AppWord.sad,
-                                          amount: controller.model!.currentGoldPrice.toString()),
-                                      SoldProcessDetails(
-                                          title: AppWord.appServiceCost,
-                                          subtitle: AppWord.sad,
-                                          amount: controller.appCommission.toString()),
+                                          amount: controller.model!.currentGoldPrice.toInt().toString()),
                                       SoldProcessDetails(
                                         title: AppWord.buyerName,
-                                        subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
+                                        subtitle: '${controller.model!.buyerFirstName} ${controller.model!.buyerLastName}',
                                       ),
                                       SoldProcessDetails(
                                         title: AppWord.buyerNumber,
-                                        subtitle: controller.model!.phoneNumber,
+                                        subtitle: controller.model!.buyerPhoneNumber!,
                                       ),
                                     ],
                                   ).paddingSymmetric(
@@ -284,10 +279,7 @@ class SoldProduct extends GetView<SoldProductController> {
                                         TextSpan(
                                           children: [
                                             TextSpan(text: ' ${controller.model!.country} '),
-                                            TextSpan(text: ' ${controller.model!.state} '),
                                             TextSpan(text: ' ${controller.model!.city} '),
-                                            TextSpan(text: ' ${controller.model!.neighborhood} '),
-                                            TextSpan(text: ' ${controller.model!.street} '),
                                           ],),
                                         maxLines: 2,textAlign: TextAlign.center,
                                         style: TextStyle(
@@ -300,9 +292,7 @@ class SoldProduct extends GetView<SoldProductController> {
                                     ),
                                   ],
                                 ),
-                                AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}).paddingSymmetric(
-                                    vertical: ScreenDimensions.heightPercentage(
-                                        context, 2)),
+                                controller.model!.deliveryType=='2'?controller.isMapExisted?AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}):const SizedBox.shrink():const SizedBox.shrink(),
                                 Directions(
                                   child: Row(
                                     mainAxisAlignment:

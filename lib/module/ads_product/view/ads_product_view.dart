@@ -59,7 +59,10 @@ class AdsProduct extends GetView<AdsProductController> {
                         SizedBox(
                           height: ScreenDimensions.heightPercentage(context, 3),
                         ),
-                        controller.isSubcategoryLoading?Center(child: CircularProgressIndicator(color: CustomColors.gold,),):controller.isBannersEmpty ?const SizedBox.shrink():AdvertisementBanner(
+                        controller.isSubcategoryLoading
+                            ? Center(child: CircularProgressIndicator(color: CustomColors.gold,),):controller.isBannersEmpty
+                            ? const SizedBox.shrink()
+                            : AdvertisementBanner(
                           itemBuilder: (context, index, realIndex) => Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -70,13 +73,23 @@ class AdsProduct extends GetView<AdsProductController> {
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  controller.subcategoriesADVS[index].paragraph,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize:
-                                          AppFonts.smallTitleFont(context)),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      controller.subcategoriesADVS[index].paragraph,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              AppFonts.smallTitleFont(context)),
+                                    ),
+                                    AppNetworkImage(
+                                      baseUrlImages + controller.subcategoriesADVS[index].image,
+                                      fit: BoxFit.contain,
+                                      height: ScreenDimensions.heightPercentage(context, 5),
+                                      width: ScreenDimensions.widthPercentage(context, 25),
+                                    ),
+                                  ],
                                 ),
                               ),
                             ],
@@ -192,14 +205,9 @@ class AdsProduct extends GetView<AdsProductController> {
                                             ]),
                                       ),
                                       Details(
-                                        withIcon: true,
-                                          details: controller.model!.manufacturer!,
-                                          title: AppWord.manufacturer,
-                                          picPath: AppImages.building),
-                                      Details(
                                           withIcon: true,
-                                          details: controller.model!.age.toString(),
-                                          title: AppWord.age,
+                                          details: controller.productType!,
+                                          title: AppWord.productType,
                                           picPath: AppImages.age),
                                       Details(
                                           withIcon: true,
@@ -213,7 +221,7 @@ class AdsProduct extends GetView<AdsProductController> {
                                           picPath: AppImages.priceTag),
                                       Details(
                                           withIcon: true,
-                                          details: controller.model!.price.toString(),
+                                          details: controller.model!.price.toInt().toString(),
                                           title: AppWord.productPrice,
                                           picPath: AppImages.priceTag),
                                       Details(
@@ -242,21 +250,17 @@ class AdsProduct extends GetView<AdsProductController> {
                                             ]),
                                       ),
                                       AdsProcessDetails(
-                                          title: AppWord.amountPaid,
-                                          subtitle: AppWord.sad,
-                                          amount: (controller.model!.price+controller.appCommission).toString()),
-                                      AdsProcessDetails(
                                           title: AppWord.productPrice,
                                           subtitle: AppWord.sad,
-                                          amount: controller.model!.price.toString()),
+                                          amount: controller.model!.price.toInt().toString()),
+                                      AdsProcessDetails(
+                                          title: AppWord.marketValue,
+                                          subtitle: AppWord.sad,
+                                          amount: controller.model!.marketValue!.toInt().toString()),
                                       AdsProcessDetails(
                                           title: AppWord.gramPrice,
                                           subtitle: AppWord.sad,
-                                          amount: controller.model!.currentGoldPrice.toString()),
-                                      AdsProcessDetails(
-                                          title: AppWord.appServiceCost,
-                                          subtitle: AppWord.sad,
-                                          amount: controller.appCommission.toString()),
+                                          amount: controller.model!.currentGoldPrice.toInt().toString()),
                                       const PhoneNumbersFields()
                                     ],
                                   ).paddingSymmetric(
@@ -265,38 +269,29 @@ class AdsProduct extends GetView<AdsProductController> {
                                       horizontal:
                                           ScreenDimensions.widthPercentage(context, 5)),
                                 ),
-                                // Row(
-                                //   mainAxisAlignment: MainAxisAlignment.end,
-                                //   children: [
-                                //     SizedBox(
-                                //       width: ScreenDimensions.widthPercentage(context, 90),
-                                //       child: Text.rich(
-                                //         TextSpan(
-                                //           children: [
-                                //             TextSpan(text: ' ${controller.model!.country} '),
-                                //             TextSpan(text: ' ${controller.model!.state} '),
-                                //             TextSpan(text: ' ${controller.model!.city} '),
-                                //             TextSpan(text: ' ${controller.model!.neighborhood} '),
-                                //             TextSpan(text: ' ${controller.model!.street} '),
-                                //           ],),
-                                //         maxLines: 2,textAlign: TextAlign.center,
-                                //         style: TextStyle(
-                                //             fontWeight: FontWeight.bold,
-                                //             fontSize: AppFonts.smallTitleFont(context)),
-                                //       ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
-                                //     ),
-                                //     SvgPicture.asset(
-                                //       AppImages.location,
-                                //     ),
-                                //   ],
-                                // ),
-                                // Container(
-                                //   width: ScreenDimensions.screenWidth(context),
-                                //   height: ScreenDimensions.heightPercentage(
-                                //       context, 15),
-                                //   decoration:
-                                //       BoxDecoration(border: Border.all()),
-                                // ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    SizedBox(
+                                      width: ScreenDimensions.widthPercentage(context, 90),
+                                      child: Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            TextSpan(text: ' ${controller.model!.country} '),
+                                            TextSpan(text: ' ${controller.model!.city} '),
+                                          ],),
+                                        maxLines: 2,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: AppFonts.smallTitleFont(context)),
+                                      ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                                    ),
+                                    SvgPicture.asset(
+                                      AppImages.location,
+                                    ),
+                                  ],
+                                ),
                                 Directions(
                                   child: Row(
                                     mainAxisAlignment:
@@ -326,8 +321,7 @@ class AdsProduct extends GetView<AdsProductController> {
                                                         end: ScreenDimensions
                                                             .widthPercentage(
                                                                 context, 5)),
-                                                    padding: EdgeInsetsDirectional
-                                                        .all(ScreenDimensions
+                                                    padding: EdgeInsetsDirectional.all(ScreenDimensions
                                                             .widthPercentage(
                                                                 context, 3)),
                                                     color: CustomColors.white,
@@ -391,10 +385,7 @@ class AdsProduct extends GetView<AdsProductController> {
                                                                     .asset(AppImages
                                                                         .whatsApp)),
                                                           ],
-                                                        ).paddingSymmetric(
-                                                            vertical:
-                                                                ScreenDimensions
-                                                                    .heightPercentage(
+                                                        ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(
                                                                         context,
                                                                         5)),
                                                       ],

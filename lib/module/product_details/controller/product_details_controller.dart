@@ -10,17 +10,26 @@ import '../../category_products/model/category_products_model.dart';
 import '../../invoice/view/invoice_view.dart';
 
 class ProductDetailsController extends GetxController {
+
   bool isChecked = false;
+
   String buttonBackground = AppImages.buttonDarkBackground;
+
   ProductDetailsModel? model;
+
   bool isLoading = true;
+
   List<SubCategoryADVSModel> subcategoriesADVS = [];
+
   bool isBannersEmpty = true;
+
   bool putAsideLoading = true;
+
   PutAsideModel? putAsideModel;
+
   late AllCaratPrices allCaratPrices;
 
-
+  String productType = '';
 
   bool contactUsLoading = false;
 
@@ -42,6 +51,13 @@ class ProductDetailsController extends GetxController {
   void getProductDetails({required int productId}) async {
     Map<String, dynamic> data = await DioHelper.show(productId: productId);
     model = ProductDetailsModel.fromJson(json: data['data']);
+    if (model!.productType=='1'){
+      productType = AppWord.news;
+    }if(model!.productType == '2'){
+      productType = AppWord.used;
+    }else{
+      productType = AppWord.likeNew;
+    }
     Get.lazyPut(() => AllCaratPrices());
     allCaratPrices = Get.find();
     allCaratPrices.carat = model!.carat;
@@ -85,18 +101,18 @@ class ProductDetailsController extends GetxController {
     update();
     await DioHelper.contactUsStore(description: contactUsController.text
     ).then((value) {
-      Get.log(value.toString());
       if (value) {
         Get.back();
         contactUsController.clear();
         isLoading = false;
         update();
-        Get.snackbar(AppWord.done, '');
+        ControllerSnackBar(errorMessage: AppWord.done);
       } else {
         isLoading = false;
         update();
-        Get.snackbar(AppWord.warning, 'check your connection');
+        ControllerSnackBar(errorTitle: AppWord.warning,errorMessage: AppWord.checkInternet);
       }
     });
   }
+
 }

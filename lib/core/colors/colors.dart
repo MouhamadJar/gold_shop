@@ -5,6 +5,7 @@ class CustomColors {
  static Color yellow = const Color(0xffFFCC00);
  static Color gold = const Color(0xffE6B800);
  static Color orange = const Color(0xffCC6600);
+ static Color silver = const Color(0xffC0C0C0);
  static Color white = const Color(0xffFFFFFF);
  static Color grey = const Color(0xff545454);
  static Color grey1 = const Color(0xff8C8888);

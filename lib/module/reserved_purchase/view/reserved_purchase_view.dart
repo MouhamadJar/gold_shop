@@ -144,23 +144,18 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                           color: CustomColors.black,
                                         ),
                                       ),
-                                      RichText(
-                                          text: TextSpan(
-                                              children: [
-                                            TextSpan(
-                                              text: '${AppWord.productName} ',
-                                            ),
-                                            TextSpan(
-                                              text: '${AppWord.caliber} ',
-                                            ),
-                                            TextSpan(
-                                              text: '${controller.model!.carat}',
-                                            ),
-                                          ],
-                                              style: TextStyle(
-                                                  color: CustomColors.black,
-                                                  fontSize: AppFonts.subTitleFont(
-                                                      context)))),
+                                      Row(
+                                        children: [
+                                          Text(controller.model!.carat,style: TextStyle(
+                                              color: CustomColors.black,
+                                              fontSize: AppFonts.subTitleFont(
+                                                  context))).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                                          Text(AppWord.caliber,style: TextStyle(
+                                              color: CustomColors.black,
+                                              fontSize: AppFonts.subTitleFont(
+                                                  context))),
+                                        ],
+                                      ),
                                     ],
                                   ),
                                   Text(
@@ -182,13 +177,8 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                   ),
                                   Details(
                                       withIcon: true,
-                                      details: controller.model!.manufacturer!,
-                                      title: AppWord.manufacturer,
-                                      picPath: AppImages.building),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.age.toString(),
-                                      title: AppWord.age, picPath: AppImages.age),
+                                      details: controller.productType,
+                                      title: AppWord.productType, picPath: AppImages.age),
                                   Details(
                                       withIcon: true,
                                       details: controller.model!.weight.toString(),
@@ -196,17 +186,17 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                       picPath: AppImages.weightScale),
                                   Details(
                                       withIcon: true,
-                                      details: controller.model!.currentGoldPrice.toString(),
+                                      details: controller.model!.currentGoldPrice.toInt().toString(),
                                       title: AppWord.gramPrice,
                                       picPath: AppImages.priceTag),
                                   Details(
                                       withIcon: true,
-                                      details: controller.model!.price.toString(),
+                                      details: controller.model!.price.toInt().toString(),
                                       title: AppWord.productPrice,
                                       picPath: AppImages.priceTag),
                                   Details(
                                       withIcon: true,
-                                      details: controller.model!.carat.toString(),
+                                      details: controller.model!.carat,
                                       title: AppWord.productCalibre,
                                       picPath: AppImages.scale),
                                 ],
@@ -228,28 +218,28 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                         fontWeight: FontWeight.bold),
                                   ),
                                   ReservedPurchaseProcessDetails(
+                                      title: AppWord.marketValue,
+                                      subtitle: AppWord.sad,
+                                      amount: controller.model!.marketValue.toInt().toString()),
+                                  ReservedPurchaseProcessDetails(
                                       title: AppWord.amountPaid,
                                       subtitle: AppWord.sad,
-                                      amount: (controller.model!.price+controller.appCommission).toString()),
+                                      amount: (controller.model!.price).toInt().toString()),
                                   ReservedPurchaseProcessDetails(
                                       title: AppWord.productPrice,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.price.toString()),
+                                      amount: controller.model!.price.toInt().toString()),
                                   ReservedPurchaseProcessDetails(
                                       title: AppWord.gramPrice,
                                       subtitle: AppWord.sad,
-                                      amount: controller.model!.currentGoldPrice.toString()),
-                                  ReservedPurchaseProcessDetails(
-                                      title: AppWord.appServiceCost,
-                                      subtitle: AppWord.sad,
-                                      amount: controller.appCommission.toString()),
+                                      amount: controller.model!.currentGoldPrice.toInt().toString()),
                                   ReservedPurchaseProcessDetails(
                                     title: AppWord.vendorName,
-                                    subtitle: '${controller.model!.firstName}  ${controller.model!.lastName}',
+                                    subtitle: '${controller.model!.sellerFirstName}  ${controller.model!.sellerLastName}',
                                   ),
                                   ReservedPurchaseProcessDetails(
                                     title: AppWord.vendorNumber,
-                                    subtitle: controller.model!.phoneNumber,
+                                    subtitle: controller.model!.sellerPhoneNumber!,
                                   ),
                                 ],
                               ).paddingSymmetric(
@@ -267,10 +257,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                     TextSpan(
                                     children: [
                                       TextSpan(text: ' ${controller.model!.country} '),
-                                      TextSpan(text: ' ${controller.model!.state} '),
                                       TextSpan(text: ' ${controller.model!.city} '),
-                                      TextSpan(text: ' ${controller.model!.neighborhood} '),
-                                      TextSpan(text: ' ${controller.model!.street} '),
                                     ],),
                                     maxLines: 2,textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -283,7 +270,7 @@ class ReservedPurchase extends GetView<ReservedPurchaseController> {
                                 ),
                               ],
                             ),
-                            AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}),
+                            controller.model!.deliveryType=='2'?controller.isMapExisted?AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}):const SizedBox.shrink():const SizedBox.shrink(),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

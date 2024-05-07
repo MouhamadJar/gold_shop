@@ -3,10 +3,8 @@ import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/module/authentication/view/mediator_shop/mediator_login.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/components/maps.dart';
-import '../../../../core/validtor/app_validator.dart';
+import '../../../../core/validator/app_validator.dart';
 import '../../../privacy/view/privacy_view.dart';
 import '../../controller/mediator_shop/register_controller.dart';
 import '../../../../core/components/components.dart';
@@ -18,8 +16,7 @@ import '../../../../core/utils/dimensions.dart';
 import '../../../edit_profile/components/edit_profile_components.dart';
 
 class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
-   MediatorSignupScreen({super.key});
-  List<String> numbers =[];
+   const MediatorSignupScreen({super.key});
   @override
   Widget build(BuildContext context) {
     Get.put(RegisterMediatorShopController());
@@ -114,6 +111,7 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                 AppTextField(
                                   controller: controller.nameController,
                                   title: AppWord.mediatorName,
+                                  hintText: AppWord.atLeast6Characters,
                                   suffix:  Icon(Icons.person,color: controller.nameController.text.isEmpty?Colors.black:CustomColors.gold,),
                                   onChanged: (value){
                                     controller.update();
@@ -139,21 +137,35 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                 AppTextField(
                                   controller: controller.phoneController,
                                   title: AppWord.phoneNumber,
-                                  keyboardType: TextInputType.phone,
+                                  hintText: '05********',
+                                  keyboardType: TextInputType.number,
                                   suffix:  Icon(Icons.call,color: controller.phoneController.text.isEmpty?Colors.black:CustomColors.gold,),
                                   onChanged: (value){
                                     controller.update();
                                   },
                                   validator: (value)
                                   {
-                                    return AppValidator().phoneValidator(value);
-                                  },
+                                    if(value==null||value.toString().isEmpty){
+                                      return AppValidator().phoneValidator(value);
+                                    }
+                                    if (value!=null||value.toString().isNotEmpty){
+                                      controller.phoneNumber = value.toString().characters.toList();
+                                    if (controller.phoneNumber[0] != '0' ||
+                                        controller.phoneNumber[1] != '5') {
+                                      return AppWord.mustStartWith05;
+                                    }else{
+                                      return AppValidator().phoneValidator(value);
+                                    }
+                                  }
+                                    return '';
+                                    },
                                 )
                                     .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5))
                                     .marginOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
                                 AppTextField(
                                   controller: controller.descriptionController,
-                                  title: AppWord.description,
+                                  title: AppWord.mediatorDescription,
+                                  hintText: AppWord.atLeast9Characters,
                                   suffix:  Icon(Icons.description,color: controller.descriptionController.text.isEmpty?Colors.black:CustomColors.gold,),
                                   onChanged: (value){
                                     controller.update();
@@ -161,36 +173,16 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                   keyboardType: TextInputType.name,
                                   validator: (value) {
                                     if (value== null || value.toString().isEmpty){
-                                      return AppWord.empty;
+                                      ControllerSnackBar(errorMessage: AppWord.emptyDescription);
+                                      return AppWord.emptyDescription;
                                     }
                                     if(value.toString().isNum){
-                                      return AppWord.notNumber;
+                                      ControllerSnackBar(errorMessage: AppWord.descriptionShouldNotBeOnlyNumbers);
+                                      return AppWord.descriptionShouldNotBeOnlyNumbers;
                                     }
                                     if(value.toString().length < 9){
-                                      return AppWord.atLeast9Characters;
-                                    }
-                                    return null;
-                                  },
-                                )
-                                    .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5))
-                                    .marginOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
-                                AppTextField(
-                                  controller: controller.costController,
-                                  title: AppWord.serviceValue,
-                                  suffix:  Icon(Icons.shopping_cart_checkout,color: controller.costController.text.isEmpty?Colors.black:CustomColors.gold,),
-                                  onChanged: (value){
-                                    controller.update();
-                                  },
-                                  keyboardType: TextInputType.number,
-                                  validator: (value) {
-                                    if (value== null || value.toString().isEmpty){
-                                      return AppWord.empty;
-                                    }
-                                    if(!value.toString().isNum){
-                                      return AppWord.notNumber;
-                                    }
-                                    if(double.parse(value) <= 0){
-                                      return AppWord.atLeast1;
+                                      ControllerSnackBar(errorMessage: AppWord.descriptionMustBeAtLeast9);
+                                      return AppWord.descriptionMustBeAtLeast9;
                                     }
                                     return null;
                                   },
@@ -205,23 +197,25 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                   onChanged: (value){
                                     controller.update();
                                   },
-                                  keyboardType: TextInputType.name,
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
-                                    numbers = value.toString().characters.toList();
+                                    controller.numbers = value.toString().characters.toList();
                                     if (value== null || value.toString().isEmpty){
-                                      return AppWord.empty;
+                                      ControllerSnackBar(errorMessage: AppWord.emptyIdentifierNumber);
+                                      return AppWord.emptyIdentifierNumber;
                                     }
                                     if(!value.toString().isNum){
                                       return AppWord.onlyNumbers;
                                     }
                                     if(value.toString().length != 10){
-                                      return AppWord.only10Characters;
+                                      return AppWord.identifierMustBe10;
                                     }
-                                    if (numbers.first != '1'){
-                                      numbers.clear();
+                                    if (controller.numbers.first != '1'){
+                                      controller.numbers.clear();
                                       controller.nationalNumberController.text = '';
                                       controller.update();
-                                      return AppWord.firstNumberMustBe1;
+                                      ControllerSnackBar(errorMessage: AppWord.identifierMustStartWith1);
+                                      return AppWord.identifierMustStartWith1;
                                     }
                                     return null;
                                   },
@@ -231,20 +225,23 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                 AppTextField(
                                   controller: controller.commercialRegisterController,
                                   title: AppWord.commercialRegisterNumber,
+                                  hintText:AppWord.only10Characters,
                                   suffix:  Icon(Icons.app_registration,color: controller.commercialRegisterController.text.isEmpty?Colors.black:CustomColors.gold,),
                                   onChanged: (value){
                                     controller.update();
                                   },
-                                  keyboardType: TextInputType.name,
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value== null || value.toString().isEmpty){
-                                      return AppWord.empty;
+                                      ControllerSnackBar(errorMessage: AppWord.emptyCommercialRegister);
+                                      return AppWord.emptyCommercialRegister;
                                     }
                                     if(!value.toString().isNum){
                                       return AppWord.onlyNumbers;
                                     }
-                                    if(value.toString().length < 5){
-                                      return AppWord.atLeast5Characters;
+                                    if(!(value.toString().length == 10)){
+                                      ControllerSnackBar(errorMessage: AppWord.commercialRegisterMustBe10);
+                                      return AppWord.commercialRegisterMustBe10;
                                     }
                                     return null;
                                   },
@@ -254,17 +251,23 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                 AppTextField(
                                   controller: controller.licenseController,
                                   title: AppWord.license,
+                                  hintText:AppWord.only10Characters,
                                   suffix:  Icon(Icons.done,color: controller.licenseController.text.isEmpty?Colors.black:CustomColors.gold,),
                                   onChanged: (value){
                                     controller.update();
                                   },
-                                  keyboardType: TextInputType.name,
+                                  keyboardType: TextInputType.number,
                                   validator: (value) {
                                     if (value== null || value.toString().isEmpty){
-                                      return AppWord.empty;
+                                      ControllerSnackBar(errorMessage: AppWord.emptyLicense);
+                                      return AppWord.emptyLicense;
                                     }
-                                    if(value.toString().length < 5 ){
-                                      return AppWord.atLeast5Characters;
+                                    if(!value.toString().isNum){
+                                      return AppWord.onlyNumbers;
+                                    }
+                                    if(!(value.toString().length ==10) ){
+                                      ControllerSnackBar(errorMessage: AppWord.licenseMustBe10);
+                                      return AppWord.licenseMustBe10;
                                     }
                                     return null;
                                   },
@@ -361,18 +364,135 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                   ],)
                                     .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5),vertical: ScreenDimensions.heightPercentage(context, 2))
                                     .marginOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
+                                AppTextField(
+                                  controller: controller.taxCertificateController,
+                                  title: AppWord.taxNumber,
+                                  suffix:  Icon(Icons.monetization_on_outlined,color: controller.licenseController.text.isEmpty?Colors.black:CustomColors.gold,),
+                                  hintText: AppWord.only15Characters,
+                                  onChanged: (value){
+                                    controller.update();
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  validator: (value) {
+                                    if (value == null || value.toString().isEmpty){
+                                      ControllerSnackBar(errorMessage: AppWord.emptyTaxNumber);
+                                      return AppWord.emptyTaxNumber;
+                                    }
+                                    if(!value.toString().isNum){
+                                      return AppWord.onlyNumbers;
+                                    }
+                                    if(!(value.toString().length ==15) ){
+                                      ControllerSnackBar(errorMessage: AppWord.taxNumberMustBe15);
+                                      return AppWord.taxNumberMustBe15;
+                                    }
+                                    return null;
+                                  },
+                                )
+                                    .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5))
+                                    .marginOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: controller.pickTaxCertificate,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: ScreenDimensions.widthPercentage(context, 30),
+                                            height: ScreenDimensions.heightPercentage(context, 15),
+                                            padding: EdgeInsets.all(ScreenDimensions.widthPercentage(context, 2)),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 2)),
+                                              boxShadow: [
+                                                BoxShadow(blurRadius: 10  ,blurStyle:BlurStyle.outer ,color: CustomColors.shadow
+                                                ),],
+                                            ),
+                                            child:  Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Icon(Icons.cloud_upload_outlined,size: ScreenDimensions.widthPercentage(context, 8)),
+                                                Text(
+                                                  AppWord.taxAssignmentCertificate,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 3,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: AppFonts.smallTitleFont(context)),),
+                                              ],
+                                            ),),
+                                        ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                                        AnimatedContainer(
+                                          duration: const Duration(milliseconds: 2000),
+                                          width: ScreenDimensions.widthPercentage(context, 10),
+                                          height: ScreenDimensions.heightPercentage(context, 5),
+                                          decoration: BoxDecoration(
+                                              color: controller.isTaxCertificateUploaded?CustomColors.gold:CustomColors.white,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: controller.isTaxCertificateUploaded?CustomColors.gold:CustomColors.black)
+                                          ),
+                                          child: Icon(controller.isTaxCertificateUploaded?Icons.done_all:Icons.remove_done,color: controller.isCommercialUploaded?CustomColors.white:CustomColors.black,),
+                                        ),
+                                      ],
+                                    ),
+                                    Column(
+                                      children: [
+                                        GestureDetector(
+                                          onTap: controller.pickShopImage,
+                                          child: Container(
+                                            alignment: Alignment.center,
+                                            width: ScreenDimensions.widthPercentage(context, 30),
+                                            height: ScreenDimensions.heightPercentage(context, 15),
+                                            padding: EdgeInsets.all(ScreenDimensions.widthPercentage(context, 2)),
+                                            decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 2)),
+                                              boxShadow: [
+                                                BoxShadow(blurRadius: 10  ,blurStyle:BlurStyle.outer ,color: CustomColors.shadow
+                                                ),],
+                                            ),
+                                            child:  Column(
+                                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                              children: [
+                                                Icon(Icons.cloud_upload_outlined,size: ScreenDimensions.widthPercentage(context, 8)),
+                                                Text(
+                                                  AppWord.uploadShopImage,
+                                                  textAlign: TextAlign.center,
+                                                  maxLines: 3,
+                                                  style: TextStyle(
+                                                      fontWeight: FontWeight.bold,
+                                                      fontSize: AppFonts.smallTitleFont(context)),),
+                                              ],
+                                            ),),
+                                        ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                                        AnimatedContainer(
+                                          duration: const Duration(milliseconds: 2000),
+                                          width: ScreenDimensions.widthPercentage(context, 10),
+                                          height: ScreenDimensions.heightPercentage(context, 5),
+                                          decoration: BoxDecoration(
+                                              color: controller.isShopImageUploaded?CustomColors.gold:CustomColors.white,
+                                              shape: BoxShape.circle,
+                                              border: Border.all(color: controller.isShopImageUploaded?CustomColors.gold:CustomColors.black)
+                                          ),
+                                          child: Icon(controller.isShopImageUploaded?Icons.done_all:Icons.remove_done,color: controller.isShopImageUploaded?CustomColors.white:CustomColors.black,),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                )
+                                .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5),vertical: ScreenDimensions.heightPercentage(context, 2))
+                                .marginOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
                                 AppGoogleMap(
                                   markers: controller.markers,
                                   cameraPosition: controller.position,
-                                  onTap: controller.zoomed?controller.onGoogleMapTapped:(latLng){
+                                  onTap: controller.zoomed ? controller.onGoogleMapTapped:(latLng){
                                     controller.update();
-                                    Get.snackbar(AppWord.warning,AppWord.pleaseZoomIn);
+                                    ControllerSnackBar(errorMessage: AppWord.pleaseZoomIn,errorTitle: AppWord.warning);
                                     },
                                   onCameraMoved: (cameraPosition){
-                                    if (cameraPosition.zoom==19.0){
+                                    if (cameraPosition.zoom>=17.0&&cameraPosition.zoom<17.5){
                                      controller.zoomed = true;
                                      controller.update();
-                                    }if(cameraPosition.zoom==18.9){
+                                    }if(cameraPosition.zoom<=16.9&&cameraPosition.zoom>16.5){
                                      controller.zoomed = false;
                                      controller.update();
                                     }
@@ -423,6 +543,7 @@ class MediatorSignupScreen extends GetView<RegisterMediatorShopController> {
                                         controller.isChecked = value!;
                                         controller.update();
                                       },
+                                      fillColor: controller.isChecked?MaterialStatePropertyAll(CustomColors.gold):MaterialStatePropertyAll(CustomColors.silver),
                                       activeColor: CustomColors.gold,).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                     Text( AppWord.acceptTerms,
                                       style: TextStyle(

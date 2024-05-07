@@ -26,19 +26,17 @@ class CategoriesModel {
 
 class HomeADVSModel {
   final int id;
-
   final int categoryId;
-
-
   final String paragraph;
-
   final String image;
+  final String background;
 
   HomeADVSModel(
       {required this.id,
         required this.categoryId,
         required this.paragraph,
         required this.image,
+        required this.background,
       });
 
   factory HomeADVSModel.fromJson({required Map<String, dynamic> json}) {
@@ -46,7 +44,10 @@ class HomeADVSModel {
         id: json['id'],
         categoryId: json['category_id'],
         paragraph: json['paragraph'],
-        image: json['image'],);
+        image: json['image'],
+      background: json['background']
+    );
   }
 }
+
 

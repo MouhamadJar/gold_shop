@@ -17,9 +17,11 @@ class PutAsideSellController extends GetxController {
   ProfilePutAsideSellsModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS = [];
   dynamic appCommission = 0;
-CameraPosition? position ;
-MarkerEntity? marker;
-GoogleMapController? mapController;
+  CameraPosition? position;
+  MarkerEntity? marker;
+  GoogleMapController? mapController;
+  String productType = '';
+  bool isMapExisted = false;
 
 
 
@@ -37,11 +39,34 @@ GoogleMapController? mapController;
     isLoading= true;
     update();
     Map<String,dynamic> data = await DioHelper.profileListsShowProduct(productId: productId);
-    model = ProfilePutAsideSellsModel.fromJson(json: data['data']);
+    print(data['data']);
+    model = ProfilePutAsideSellsModel.fromJson(json: data['data'],deliveryType: data['data']['product']['delivery_type']);
     subcategoryADVS(subcategoryId: model!.subcategoryId);
     getAppCommission();
-    position = CameraPosition(target:  model!.location.toLatLng,zoom: 10);
-    marker = MarkerEntity.fromMarkerInfo(info: MarkerInfo(markerId: model!.id.toString(),location: model!.location,subTitle: '',title: ''));
+    if (model!.productType=='1'){
+      productType = AppWord.news;
+    }if(model!.productType == '2'){
+      productType = AppWord.used;
+    }else{
+      productType = AppWord.likeNew;
+    }
+    if (model!.deliveryType == '2'){
+      if(data['data']['receiving_location']!=null){
+        isMapExisted =true ;
+        position = CameraPosition(target: model!.selectedLocation!.toLatLng, zoom: 10);
+        marker = MarkerEntity.fromMarkerInfo(
+            info: MarkerInfo(
+                location: model!.selectedLocation!,
+                markerId: model!.id.toString(),
+                title: '',
+                subTitle: ''));
+        update();
+      }else{
+        isMapExisted = isMapExisted = false;
+        ControllerSnackBar(errorMessage: AppWord.checkInternet);
+        update();
+      }
+    }
     isLoading = false;
     update();
   }

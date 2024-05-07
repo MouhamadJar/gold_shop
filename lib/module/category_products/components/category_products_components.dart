@@ -29,387 +29,391 @@ class ProductsCard extends GetView<SubcategoryProductsController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(SubcategoryProductsController());
-    return GetBuilder<SubcategoryProductsController>(initState: (state) {
-      controller.getAllProducts(subcategoryId: subcategoryId);
-    }, builder: (_) {
-      return GridView.builder(
-        padding: EdgeInsetsDirectional.symmetric(
-          horizontal: ScreenDimensions.widthPercentage(context, 5),
-          vertical: ScreenDimensions.heightPercentage(context, 2),
-        ),
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisSpacing: ScreenDimensions.heightPercentage(context, 4),
-          mainAxisSpacing: ScreenDimensions.widthPercentage(context, 2),
-          mainAxisExtent: ScreenDimensions.heightPercentage(context, 25),
-          crossAxisCount: 2,
-        ),
-        itemCount: controller.product.length,
-        itemBuilder: (context, index) {
-          return DelayedDisplay(
-            slidingBeginOffset: const Offset(-2, 0),
-            delay: Duration(milliseconds: (index * 10) + 10),
-            child: GestureDetector(
-              onTap: () {
-                if (!(StorageHandler().hasToken)) {
-                  Get.dialog(
-                      barrierDismissible: false,
-                      Material(
-                        color: Colors.transparent,
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                          child: WillPopScope(
-                            onWillPop: () async {
-                              return false;
-                            },
-                            child: Container(
-                              width: ScreenDimensions.screenWidth(context),
-                              height: ScreenDimensions.screenHeight(context),
-                              padding: EdgeInsetsDirectional.all(
-                                  ScreenDimensions.widthPercentage(
-                                      context, 5)),
-                              margin: EdgeInsetsDirectional.symmetric(
-                                  horizontal:
-                                  ScreenDimensions.widthPercentage(
-                                      context, 5),
-                                  vertical: ScreenDimensions.heightPercentage(
-                                      context, 30)),
-                              decoration: BoxDecoration(
-                                  color: CustomColors.gold,
-                                  borderRadius: BorderRadius.circular(
-                                      ScreenDimensions.radius(context, 1))),
-                              child: Column(
-                                mainAxisAlignment:
-                                MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  SvgPicture.asset(
-                                    AppImages.login,
-                                    width: ScreenDimensions.widthPercentage(
-                                      context,
-                                      10,
-                                    ),
+    return ListView.builder(
+      padding: EdgeInsetsDirectional.symmetric(
+        horizontal: ScreenDimensions.widthPercentage(context, 3),
+      ),
+      itemCount: controller.product.length,
+      itemBuilder: (context, index) {
+        return DelayedDisplay(
+          slidingBeginOffset: const Offset(-2, 0),
+          delay: Duration(milliseconds: (index * 10) + 10),
+          child: GestureDetector(
+            onTap: () {
+              if (!(StorageHandler().hasToken)) {
+                Get.dialog(
+                    barrierDismissible: false,
+                    Material(
+                      color: Colors.transparent,
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                        child: WillPopScope(
+                          onWillPop: () async {
+                            return false;
+                          },
+                          child: Container(
+                            width: ScreenDimensions.screenWidth(context),
+                            height: ScreenDimensions.screenHeight(context),
+                            padding: EdgeInsetsDirectional.all(
+                                ScreenDimensions.widthPercentage(
+                                    context, 5)),
+                            margin: EdgeInsetsDirectional.symmetric(
+                                horizontal:
+                                ScreenDimensions.widthPercentage(
+                                    context, 5),
+                                vertical: ScreenDimensions.heightPercentage(
+                                    context, 30)),
+                            decoration: BoxDecoration(
+                                color: CustomColors.gold,
+                                borderRadius: BorderRadius.circular(
+                                    ScreenDimensions.radius(context, 1))),
+                            child: Column(
+                              mainAxisAlignment:
+                              MainAxisAlignment.spaceEvenly,
+                              children: [
+                                SvgPicture.asset(
+                                  AppImages.login,
+                                  width: ScreenDimensions.widthPercentage(
+                                    context,
+                                    10,
                                   ),
-                                  Text(
-                                    AppWord.youHaveToLoginOrSignup,
-                                    style: TextStyle(
-                                      fontSize:
-                                      AppFonts.subTitleFont(context),
-                                      color: CustomColors.white,
-                                    ),
+                                ),
+                                Text(
+                                  AppWord.youHaveToLoginOrSignup,
+                                  style: TextStyle(
+                                    fontSize:
+                                    AppFonts.subTitleFont(context),
+                                    color: CustomColors.white,
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.to(const LoginScreen(),
-                                          transition: Transition.rightToLeft,
-                                          duration: const Duration(
-                                              milliseconds: 700));
-                                    },
-                                    child: Container(
-                                      height:
-                                      ScreenDimensions.heightPercentage(
-                                          context, 5),
-                                      width:
-                                      ScreenDimensions.heightPercentage(
-                                          context, 20),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: CustomColors.white,
-                                          border: Border.all(),
-                                          borderRadius: BorderRadius.circular(
-                                              ScreenDimensions
-                                                  .heightPercentage(
-                                                  context, 1))),
-                                      child: Text(AppWord.login,
-                                          style: TextStyle(
-                                              color: CustomColors.black,
-                                              fontSize:
-                                              AppFonts.smallTitleFont(
-                                                  context))),
-                                    ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.to(const LoginScreen(),
+                                        transition: Transition.rightToLeft,
+                                        duration: const Duration(
+                                            milliseconds: 700));
+                                  },
+                                  child: Container(
+                                    height:
+                                    ScreenDimensions.heightPercentage(
+                                        context, 5),
+                                    width:
+                                    ScreenDimensions.heightPercentage(
+                                        context, 20),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: CustomColors.white,
+                                        border: Border.all(),
+                                        borderRadius: BorderRadius.circular(
+                                            ScreenDimensions
+                                                .heightPercentage(
+                                                context, 1))),
+                                    child: Text(AppWord.login,
+                                        style: TextStyle(
+                                            color: CustomColors.black,
+                                            fontSize:
+                                            AppFonts.smallTitleFont(
+                                                context))),
                                   ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      Get.offAll(const MainScreen(),
-                                          transition: Transition.rightToLeft,
-                                          duration: const Duration(
-                                              milliseconds: 700));
-                                    },
-                                    child: Container(
-                                      height:
-                                      ScreenDimensions.heightPercentage(
-                                          context, 5),
-                                      width:
-                                      ScreenDimensions.heightPercentage(
-                                          context, 20),
-                                      alignment: Alignment.center,
-                                      decoration: BoxDecoration(
-                                          color: CustomColors.white,
-                                          border: Border.all(),
-                                          borderRadius: BorderRadius.circular(
-                                              ScreenDimensions
-                                                  .heightPercentage(
-                                                  context, 1))),
-                                      child: Text(AppWord.later,
-                                          style: TextStyle(
-                                              color: CustomColors.black,
-                                              fontSize:
-                                              AppFonts.smallTitleFont(
-                                                  context))),
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Get.offAll(const MainScreen(),
+                                        transition: Transition.rightToLeft,
+                                        duration: const Duration(
+                                            milliseconds: 700));
+                                  },
+                                  child: Container(
+                                    height:
+                                    ScreenDimensions.heightPercentage(
+                                        context, 5),
+                                    width:
+                                    ScreenDimensions.heightPercentage(
+                                        context, 20),
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        color: CustomColors.white,
+                                        border: Border.all(),
+                                        borderRadius: BorderRadius.circular(
+                                            ScreenDimensions
+                                                .heightPercentage(
+                                                context, 1))),
+                                    child: Text(AppWord.later,
+                                        style: TextStyle(
+                                            color: CustomColors.black,
+                                            fontSize:
+                                            AppFonts.smallTitleFont(
+                                                context))),
+                                  ),
+                                )
+                              ],
                             ),
                           ),
                         ),
-                      ));
-                  return;
-                }else{
-                  if(StorageHandler().verified == '0'){
-                      Get.dialog(
-                          barrierDismissible: false,
-                          Material(
-                            color: Colors.transparent,
-                            child: BackdropFilter(
-                              filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                              child: WillPopScope(
-                                onWillPop: () async {
-                                  return false;
-                                },
-                                child: Container(
-                                  width: ScreenDimensions.screenWidth(context),
-                                  height: ScreenDimensions.screenHeight(context),
-                                  padding: EdgeInsetsDirectional.all(
-                                      ScreenDimensions.widthPercentage(context, 5)),
-                                  margin: EdgeInsetsDirectional.symmetric(
-                                      horizontal:
-                                      ScreenDimensions.widthPercentage(
-                                          context, 5),
-                                      vertical: ScreenDimensions.heightPercentage(
-                                          context, 30)),
-                                  decoration: BoxDecoration(
-                                      color: CustomColors.gold,
-                                      borderRadius: BorderRadius.circular(
-                                          ScreenDimensions.radius(context, 1))),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                    children: [
-                                      SvgPicture.asset(
-                                        AppImages.verified,
-                                        width: ScreenDimensions.widthPercentage(
-                                          context,
-                                          10,
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        child: Text(
-                                          AppWord.youMustVerify,
-                                          maxLines: 3,
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                            fontSize:
-                                            AppFonts.subTitleFont(context),
-                                            color: CustomColors.white,
-                                          ),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.to(const VerifyUserAccount(),
-                                              transition: Transition.rightToLeft,
-                                              duration: const Duration(
-                                                  milliseconds: 700));
-                                        },
-                                        child: Container(
-                                          height: ScreenDimensions.heightPercentage(
-                                              context, 5),
-                                          width: ScreenDimensions.heightPercentage(
-                                              context, 20),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: CustomColors.white,
-                                              border: Border.all(),
-                                              borderRadius: BorderRadius.circular(
-                                                  ScreenDimensions
-                                                      .heightPercentage(
-                                                      context, 1))),
-                                          child: Text(
-                                              AppWord.verify,
-                                              style: TextStyle(
-                                                  color: CustomColors.black,
-                                                  fontSize:
-                                                  AppFonts.smallTitleFont(
-                                                      context))),
-                                        ),
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Get.back();
-                                        },
-                                        child: Container(
-                                          height:
-                                          ScreenDimensions.heightPercentage(
-                                              context, 5),
-                                          width:
-                                          ScreenDimensions.heightPercentage(
-                                              context, 20),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: CustomColors.white,
-                                              border: Border.all(),
-                                              borderRadius: BorderRadius.circular(
-                                                  ScreenDimensions
-                                                      .heightPercentage(
-                                                      context, 1))),
-                                          child: Text(AppWord.goBack,
-                                              style: TextStyle(
-                                                  color: CustomColors.black,
-                                                  fontSize:
-                                                  AppFonts.smallTitleFont(
-                                                      context))),
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ));
-                      return;
-                  }else{
-                  Get.to(ProductDetails(productId: controller.product[index].id,),
-                    duration: const Duration(milliseconds: 700),
-                    transition: Transition.rightToLeft);}
-                }
-              },
-              child: Stack(
-                alignment: AlignmentDirectional.center,
-                children: [
-                  Positioned(
-                    top: ScreenDimensions.heightPercentage(context, 5),
-                    child: Directions(
-                      child: Container(
-                        width: ScreenDimensions.widthPercentage(context, 40),
-                        height: ScreenDimensions.heightPercentage(context, 20),
-                        padding: EdgeInsetsDirectional.symmetric(
-                          horizontal:
-                          ScreenDimensions.widthPercentage(context, 3),
-                        ),
-                        alignment: AlignmentDirectional.centerEnd,
-                        decoration: BoxDecoration(
-                            color: CustomColors.white1,
-                            borderRadius: BorderRadiusDirectional.only(
-                                topStart: Radius.circular(
-                                  ScreenDimensions.widthPercentage(context, 2),
-                                ),
-                                topEnd: Radius.circular(
-                                  ScreenDimensions.widthPercentage(context, 2),
-                                )),
-                            border: Border.all()),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Text(
-                              controller.product[index].description,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: AppFonts.smallTitleFont(context),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              maxLines: 2,
-                            ),
-                            SizedBox(
-                              height: ScreenDimensions.heightPercentage(context, 1),
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  '${AppWord.caliber} ${controller.product[index].carat}',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: AppFonts.smallTitleFont(context),
-                                  ),
-                                ),
-                                const Spacer(),
-                                Text(
-                                  '${AppWord.grams} ${controller.product[index].weight}',
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    overflow: TextOverflow.ellipsis,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: AppFonts.smallTitleFont(context),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                const Icon(Icons.visibility_outlined),
-                                Text(
-                                  controller.product[index].views == null ||
-                                      controller.product[index].views == 0
-                                      ? '0'
-                                      : controller.product[index].views.toString(),
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: AppFonts.smallTitleFont(context),
-                                  ),
-                                ),
-                                const Spacer(),
-                                Container(
-                                  alignment: AlignmentDirectional.centerEnd,
-                                  width: ScreenDimensions.widthPercentage(context, 20),
-                                  child: Text(
-                                    '${AppWord.sad} ${controller.product[index].price.toInt()}',
-                                    style: TextStyle(
-                                      overflow: TextOverflow.ellipsis,
-                                      color: CustomColors.gold,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: AppFonts.smallTitleFont(context),
-                                    ),
-                                    maxLines: 1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
                       ),
+                    ));
+                return;
+              }else{
+                // if(StorageHandler().verified == '0'){
+                //     Get.dialog(
+                //         barrierDismissible: false,
+                //         Material(
+                //           color: Colors.transparent,
+                //           child: BackdropFilter(
+                //             filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                //             child: WillPopScope(
+                //               onWillPop: () async {
+                //                 return false;
+                //               },
+                //               child: Container(
+                //                 width: ScreenDimensions.screenWidth(context),
+                //                 height: ScreenDimensions.screenHeight(context),
+                //                 padding: EdgeInsetsDirectional.all(
+                //                     ScreenDimensions.widthPercentage(context, 5)),
+                //                 margin: EdgeInsetsDirectional.symmetric(
+                //                     horizontal:
+                //                     ScreenDimensions.widthPercentage(
+                //                         context, 5),
+                //                     vertical: ScreenDimensions.heightPercentage(
+                //                         context, 30)),
+                //                 decoration: BoxDecoration(
+                //                     color: CustomColors.gold,
+                //                     borderRadius: BorderRadius.circular(
+                //                         ScreenDimensions.radius(context, 1))),
+                //                 child: Column(
+                //                   mainAxisAlignment:
+                //                   MainAxisAlignment.spaceEvenly,
+                //                   children: [
+                //                     SvgPicture.asset(
+                //                       AppImages.verified,
+                //                       width: ScreenDimensions.widthPercentage(
+                //                         context,
+                //                         10,
+                //                       ),
+                //                     ),
+                //                     SizedBox(
+                //                       child: Text(
+                //                         AppWord.youMustVerify,
+                //                         maxLines: 3,
+                //                         textAlign: TextAlign.center,
+                //                         style: TextStyle(
+                //                           fontSize:
+                //                           AppFonts.subTitleFont(context),
+                //                           color: CustomColors.white,
+                //                         ),
+                //                       ),
+                //                     ),
+                //                     GestureDetector(
+                //                       onTap: () {
+                //                         Get.to(const VerifyUserAccount(),
+                //                             transition: Transition.rightToLeft,
+                //                             duration: const Duration(
+                //                                 milliseconds: 700));
+                //                       },
+                //                       child: Container(
+                //                         height: ScreenDimensions.heightPercentage(
+                //                             context, 5),
+                //                         width: ScreenDimensions.heightPercentage(
+                //                             context, 20),
+                //                         alignment: Alignment.center,
+                //                         decoration: BoxDecoration(
+                //                             color: CustomColors.white,
+                //                             border: Border.all(),
+                //                             borderRadius: BorderRadius.circular(
+                //                                 ScreenDimensions
+                //                                     .heightPercentage(
+                //                                     context, 1))),
+                //                         child: Text(
+                //                             AppWord.verify,
+                //                             style: TextStyle(
+                //                                 color: CustomColors.black,
+                //                                 fontSize:
+                //                                 AppFonts.smallTitleFont(
+                //                                     context))),
+                //                       ),
+                //                     ),
+                //                     GestureDetector(
+                //                       onTap: () {
+                //                         Get.back();
+                //                       },
+                //                       child: Container(
+                //                         height:
+                //                         ScreenDimensions.heightPercentage(
+                //                             context, 5),
+                //                         width:
+                //                         ScreenDimensions.heightPercentage(
+                //                             context, 20),
+                //                         alignment: Alignment.center,
+                //                         decoration: BoxDecoration(
+                //                             color: CustomColors.white,
+                //                             border: Border.all(),
+                //                             borderRadius: BorderRadius.circular(
+                //                                 ScreenDimensions
+                //                                     .heightPercentage(
+                //                                     context, 1))),
+                //                         child: Text(AppWord.goBack,
+                //                             style: TextStyle(
+                //                                 color: CustomColors.black,
+                //                                 fontSize:
+                //                                 AppFonts.smallTitleFont(
+                //                                     context))),
+                //                       ),
+                //                     )
+                //                   ],
+                //                 ),
+                //               ),
+                //             ),
+                //           ),
+                //         ));
+                //     return;
+                // }else{}
+                Get.to(ProductDetails(productId: controller.product[index].id,),
+                  duration: const Duration(milliseconds: 700),
+                  transition: Transition.rightToLeft);
+              }
+            },
+            child: Padding(
+              padding:  EdgeInsets.symmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+              child: Stack(
+                children: [
+                  Container(
+                    height: ScreenDimensions.heightPercentage(context, 20),
+                    padding: EdgeInsetsDirectional.symmetric(
+                      horizontal: ScreenDimensions.widthPercentage(context, 3),
+                      vertical: ScreenDimensions.heightPercentage(context, 1)
+                    ),
+                    alignment: AlignmentDirectional.centerEnd,
+                    decoration: BoxDecoration(
+                        color: CustomColors.white1,
+                        borderRadius: BorderRadiusDirectional.only(
+                            topStart: Radius.circular(
+                              ScreenDimensions.widthPercentage(context, 2),
+                            ),
+                            topEnd: Radius.circular(
+                              ScreenDimensions.widthPercentage(context, 2),
+                            )),
+                        border: Border.all()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Directions(
+                          child: SizedBox(
+                            width: ScreenDimensions.widthPercentage(context, 40),
+                            height: ScreenDimensions.heightPercentage(context, 20),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(
+                                  controller.product[index].description,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    fontSize: AppFonts.smallTitleFont(context),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  maxLines: 2,
+                                ),
+                                SizedBox(
+                                  height: ScreenDimensions.heightPercentage(context, 1),
+                                ),
+                                Row(
+                                  children: [
+                                    Text(
+                                      '${AppWord.caliber} ${controller.product[index].carat}',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppFonts.smallTitleFont(context),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Text(
+                                      '${AppWord.grams} ${controller.product[index].weight}',
+                                      maxLines: 1,
+                                      style: TextStyle(
+                                        overflow: TextOverflow.ellipsis,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppFonts.smallTitleFont(context),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.visibility_outlined),
+                                    Text(
+                                      controller.product[index].views == null ||
+                                          controller.product[index].views == 0
+                                          ? '0'
+                                          : controller.product[index].views.toString(),
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppFonts.smallTitleFont(context),
+                                      ),
+                                    ),
+                                    const Spacer(),
+                                    Container(
+                                      alignment: AlignmentDirectional.centerEnd,
+                                      width: ScreenDimensions.widthPercentage(context, 20),
+                                      child: Text(
+                                        '${AppWord.sad} ${controller.product[index].price.toInt()}',
+                                        style: TextStyle(
+                                          overflow: TextOverflow.ellipsis,
+                                          color: CustomColors.gold,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: AppFonts.smallTitleFont(context),
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        AppNetworkImage(
+                          baseUrlImages + controller.product[index].images.first['image'],
+                          width: ScreenDimensions.widthPercentage(context, 30),
+                          height: ScreenDimensions.heightPercentage(context, 25),
+                        ),
+                      ],
                     ),
                   ),
                   Positioned(
-                    left: -ScreenDimensions.widthPercentage(context, 3),
-                    top: ScreenDimensions.heightPercentage(context, 6),
+                    top: ScreenDimensions.heightPercentage(context, 2),
+                    right: ScreenDimensions.widthPercentage(context, 75),
+
                     child: Transform.rotate(
                       angle: 5.5,
+                      filterQuality: FilterQuality.high,
                       child: Container(
                         alignment: AlignmentDirectional.center,
-                        color: CustomColors.red,
-                        width: ScreenDimensions.widthPercentage(context, 17),
-                        height: ScreenDimensions.heightPercentage(context, 1.5),
-                        child: Text(
-                          controller.getProductState(controller.product[index].productStatus),
-                          textAlign: TextAlign.center,
-                          style: TextStyle(color: CustomColors.white, fontSize: 10),
+                        color: controller.getProductStateColor(controller.product[index].productStatus),
+                        width: ScreenDimensions.widthPercentage(context, 25),
+                        height: ScreenDimensions.heightPercentage(context, 2.5),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            controller.getProductState(controller.product[index].productStatus),
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                                color: controller.product[index].productStatus=='1'
+                                    ||controller.product[index].productStatus=='2'
+                                    ? CustomColors.black
+                                    : CustomColors.white,
+                                fontSize: AppFonts.smallTitleFont(context),
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                  Positioned(
-                    top: ScreenDimensions.heightPercentage(context, 0),
-                    child: AppNetworkImage(
-                      baseUrlImages + controller.product[index].images.first['image'],
-                      width: ScreenDimensions.widthPercentage(context, 20),
-                      height: ScreenDimensions.heightPercentage(context, 14),
                     ),
                   ),
                 ],
               ),
             ),
-          );
-        },
-      );
-    });
+          ),
+        );
+      },
+    );
   }
 }

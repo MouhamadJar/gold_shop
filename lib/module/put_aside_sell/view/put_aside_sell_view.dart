@@ -185,13 +185,8 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                   ),
                                   Details(
                                       withIcon: true,
-                                      details: controller.model!.manufacturer!,
-                                      title: AppWord.manufacturer,
-                                      picPath: AppImages.building),
-                                  Details(
-                                      withIcon: true,
-                                      details: controller.model!.age.toString(),
-                                      title: AppWord.age, picPath: AppImages.age),
+                                      details: controller.productType,
+                                      title: AppWord.productType, picPath: AppImages.age),
                                   Details(
                                       withIcon: true,
                                       details:controller.model!.weight.toString(),
@@ -264,10 +259,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                     TextSpan(
                                       children: [
                                         TextSpan(text: ' ${controller.model!.country} '),
-                                        TextSpan(text: ' ${controller.model!.state} '),
                                         TextSpan(text: ' ${controller.model!.city} '),
-                                        TextSpan(text: ' ${controller.model!.neighborhood} '),
-                                        TextSpan(text: ' ${controller.model!.street} '),
                                       ],),
                                     maxLines: 2,textAlign: TextAlign.center,
                                     style: TextStyle(
@@ -280,7 +272,7 @@ class PutAsideSell extends GetView<PutAsideSellController> {
                                 ),
                               ],
                             ),
-                            AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}),
+                            controller.model!.deliveryType=='2'?controller.isMapExisted?AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}):const SizedBox.shrink():const SizedBox.shrink(),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

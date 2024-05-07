@@ -73,8 +73,7 @@ class VerifyUserAccount extends StatelessWidget {
                       ),
                     ),
                     onTap: () {},
-                    buttonBackground: AppImages.buttonLiteBackground)
-                .marginOnly(
+                    buttonBackground: AppImages.buttonLiteBackground).marginOnly(
               top: ScreenDimensions.heightPercentage(context, 50),
             ),
           ],

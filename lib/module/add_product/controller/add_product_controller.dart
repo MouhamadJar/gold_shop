@@ -22,6 +22,10 @@ class AddProductController extends GetxController {
   bool isPinned = false;
   bool isLoading = true;
   bool checkSubId = false;
+  bool newProduct = false;
+  bool likeNewProduct = false;
+  bool usedProduct = false;
+  int? productType;
   String categoriesTitle = AppWord.productCategory;
   String subcategoriesTitle = AppWord.productClassification;
   String calibers = AppWord.caliber;
@@ -92,7 +96,6 @@ class AddProductController extends GetxController {
     categoriesModel.clear();
     update();
     Map<String, dynamic> categories = await DioHelper.getAllCategories();
-    getAppCommission();
     categories['data']['data'].forEach((element) {
       categoriesModel.add(CategoriesModel.frmJson(json: element));
     });
@@ -130,6 +133,26 @@ class AddProductController extends GetxController {
     });
 
   }
+  void addMoreImages() async {
+    await photo.pickMultiImage().then((value) {
+      if (value.isEmpty) {
+        Get.snackbar('fail', 'no image selected',
+            snackPosition: SnackPosition.TOP);
+        update();
+      } else {
+        images = value;
+        for (XFile file in images!) {
+          listImagePath!.add(File(file.path));
+        }
+        listImagePath!.forEach((element) async {
+              tmp.add(await DIO.MultipartFile.fromFile(element.path));
+            });
+        Get.snackbar(AppWord.done, '');
+        update();
+      }
+    });
+
+  }
 
   void getAllCaratPrices()async{
     await DioHelper.getAllCaratPrices().then((value) {
@@ -139,13 +162,14 @@ class AddProductController extends GetxController {
     update();
   }
 
-  void getAppCommission()async {
-    isLoading = true;
-    update();
-    Map<String,dynamic> data = await DioHelper.appCommission();
-    appCommission = data['data']['commission'];
-    update();
-  }
+  // void getAppCommission()async {
+  //   isLoading = true;
+  //   update();
+  //   Map<String,dynamic> data = await DioHelper.appCommission();
+  //   print(data.toString());
+  //   appCommission = data['data']['commission'];
+  //   update();
+  // }
 
   @override
   void onInit() {

@@ -541,9 +541,7 @@ class AppWord {
 
   static String get addToPutAside => 'إضافة إلى قيد الحجز'.tr;
 
-  static String get pleaseConfirmYourPurchase =>
-      'الرجاء تأكيد عملية الشراء بأقل من ساعتين لكي لا يتم إلغاء عملية الشراء'
-          .tr;
+  static String get pleaseConfirmYourReservation => 'الرجاء تأكيد عملية الحجز بأقل من ساعتين لكي لا يتم إلغاء عملية الشراء'.tr;
 
   static String get youMustPayADeposit => 'يجب عليك دفع رعبون مقداره'.tr;
 
@@ -553,24 +551,19 @@ class AppWord {
 
   static String get codeNotCorrect => 'الرجاء التأكد من صحة الرمز'.tr;
 
-  static String get checkAllRequiredFields =>
-      'الرجاء التحقق من ملئ كافة المعلومات الضرورية'.tr;
+  static String get checkAllRequiredFields => 'الرجاء التحقق من ملئ كافة المعلومات الضرورية'.tr;
 
   static String get checkProduct => 'فحص منتج'.tr;
 
-  static String get notificationUploadedSuccessfully =>
-      'تم رفع صورة الإشعار بنجاح'.tr;
+  static String get notificationUploadedSuccessfully => 'تم رفع صورة الإشعار بنجاح'.tr;
 
-  static String get theFieldShouldNotBeEmpty =>
-      'تأكد من كتابة رمز تأكيد عملية البيع'.tr;
+  static String get theFieldShouldNotBeEmpty => 'تأكد من كتابة رمز تأكيد عملية البيع'.tr;
 
   static String get productSoldSuccessfully => 'تم بيع المنتج بنجاح'.tr;
 
-  static String get youCanFindTheCodeInBuyOrder =>
-      'يمكنك إيجاد رمز التأكيد في سند القبض'.tr;
+  static String get youCanFindTheCodeInBuyOrder => 'يمكنك إيجاد رمز التأكيد في سند القبض'.tr;
 
-  static String get chooseTheMediatorCarefully =>
-      'الرجاء اختيار المتجر الوسيط بعناية'.tr;
+  static String get chooseTheMediatorCarefully => 'الرجاء اختيار المتجر الوسيط بعناية'.tr;
 
   static String get choose => 'اختيار'.tr;
 
@@ -581,7 +574,7 @@ class AppWord {
   static String get updateAllInformation => 'الرجاء إعادة تعبئة كامل المعلومات'.tr;
 
   static String get areYouSureYouWantToResell => 'هل أنت متأكد من أنك تريد طلب إعادة بيع هذا المنتج'.tr;
-  static String get editManufacturer => 'تعديل الشركة المصنعة'.tr;
+
   static String get editWeight => 'تعديل الوزن'.tr;
   static String get editCarat => 'تعديل العيار'.tr;
   static String get areYouSureFromThisData => 'هل أنت متأكد من هذه المعلومات'.tr;
@@ -603,6 +596,8 @@ class AppWord {
   static String get youMustVerify => 'يجب عليك توثيق حسابك لتسطيع القيام بعمليات الشراء والإضافة'.tr;
   static String get verify => 'توثيق'.tr;
   static String get goBack => 'رجوع'.tr;
+
+
   static String get selectYourLocation => 'الرجاء تحديد موقعك بدقة'.tr;
   static String get commercialRegisterNumber => 'رقم السجل التجاري'.tr;
   static String get license => 'الرخصة'.tr;
@@ -613,23 +608,97 @@ class AppWord {
   static String get invalidLicense => 'رخصة غير صالحة'.tr;
   static String get uploadLicensePicture => 'تحميل صورة الرخصة'.tr;
   static String get uploadCommercialRegisterPicture => 'تحميل صورة السجل التجاري'.tr;
-  static String get uploadCommercialRegisterAndLicensePics => 'الرجاء تحميل صورة السجل التجاري والرخصة'.tr;
+  static String get uploadCommercialRegisterAndLicensePics => 'الرجاء تحميل صورة السجل التجاري والرخصة والرقم الضريبي وصورة المتجر )('.tr;
   static String get takenNumberAndEmail => 'الرقم والبريد الالكتروني مأخوذين مسبقا '.tr;
   static String get pleaseZoomIn => 'الرجاء التكبير اكثر للحصول على الموقع بدقة'.tr;
   static String get noOffers => 'لا يوجد عروض'.tr;
-  static String get atLeast9Characters => 'تسعة رموز عالأقل'.tr;
+  static String get atLeast9Characters => 'تسعة أحرف عالأقل'.tr;
   static String get only10Characters => 'عشرة أرقام حصرا'.tr;
-  static String get atLeast5Characters => 'خمسة رموز على الأقل'.tr;
-  static String get atLeast6Characters => 'ستة رموز على الأقل'.tr;
+  static String get only15Characters => 'خمسة عشر رقم حصرا'.tr;
+  static String get atLeast5Characters => 'خمسة أحرف على الأقل'.tr;
+  static String get atLeast6Characters => 'ستة أحرف على الأقل'.tr;
   static String get atLeast1 => ' واحد على الأقل'.tr;
   static String get firstNumberMustBe1 => 'الرقم الأول يجب ان يكون واحد'.tr;
   static String get emailHasToBeLike => 'يجب ان يكون البريد الإلكتروني من الشكل المعروض'.tr;
   static String get notNumbersOnly => 'ليس أرقام فقط'.tr;
   static String get onlyNumbers => 'أرقام فقط'.tr;
   static String get notOnlyAlphabetic => 'ليس احرف فقط'.tr;
+  static String get mustStartWith05 => 'يجب أن يبدأ الرقم ب 05'.tr;
   static String get createUserAccount => 'إنشاء حساب مستخدم'.tr;
   static String get createMediatorAccountRequest => 'طلب إنشاء حساب متجر وسيط'.tr;
   static String get sendRequest => 'إرسال الطلب'.tr;
   static String get years => 'سنوات'.tr;
   static String get additions => 'إضافات'.tr;
+  static String get taxNumber => 'الرقم الضريبي'.tr;
+  static String get taxAssignmentCertificate => 'الرجاء تحميل شهادة التكليف الضريبي'.tr;
+  static String get mediatorDescription => 'وصف المتجر'.tr;
+  static String get uploadShopImage => 'الرجاء تحميل صورة المحل (متضمنا اللوحة)'.tr;
+  static String get used => 'مستعمل'.tr;
+  static String get likeNew => 'شبه جديد'.tr;
+  static String get news => 'جديد'.tr;
+  static String get atLeastOnePhoto => 'اختر صورة واحدة على الأقل'.tr;
+  static String get descriptionIsRequired => 'الوصف مطلوب'.tr;
+  static String get weightIsRequired => 'الوزن مطلوب'.tr;
+  static String get caliberIsRequired => 'العيار مطلوب'.tr;
+  static String get profitIsRequired => 'القيمة الربحية مطلوبة'.tr;
+  static String get manufacturerIsRequired => 'المصنّع مطلوب'.tr;
+  static String get productTypeIsRequired => 'نوع المنتج مطلوب'.tr;
+  static String get subcategoryIsRequired => 'التصنيف الفرعي   مطلوب'.tr;
+  static String get emptyDescription => 'يجب أن لايكون الوصف فارغ'.tr;
+  static String get descriptionMustBeAtLeast9 => 'يجب ان يتكون الوصف على الأقل من 9 أحرف'.tr;
+  static String get descriptionShouldNotBeOnlyNumbers => 'يجب أن لا يكون الوصف مكون من أرقام فقط'.tr;
+  static String get emptyWeight => 'يجب أن لا يكون الوزن فارغ'.tr;
+  static String get weightShouldBeANumber => 'يجب أن يكون الوزن مكون من أرقام فقط'.tr;
+  static String get weightShouldBeMoreThan0 => 'يجب أن يكون الوزن أكبر من الصفر'.tr;
+  static String get emptyProfit => 'يجب أن لا تكون القيمة الربحية فارغة'.tr;
+  static String get profitShouldBeANumber => 'يجب أن تكون القيمة الربحية مكونة من أرقام فقط'.tr;
+  static String get profitShouldBeMoreThan0 => 'يجب أن تكون القيمة الربحية أكبر من الصفر'.tr;
+  static String get emptyAddition => 'يجب أن لا يكون مبلغ الإضافات فارغ'.tr;
+  static String get additionShouldBeANumber => 'يجب أن يكون مبلغ الإضافات مكون من أرقام فقط'.tr;
+  static String get additionShouldBeMoreThan0 => 'يجب أن يكون مبلغ الإضافات أكبر من الصفر'.tr;
+  static String get emptyAdditionDescription => 'يجب أن لا يكون وصف الإضافة فارغ'.tr;
+  static String get additionDescriptionShouldNotBeOnlyNumbers => 'يجب أن يكون وصف الإضافة مكون من أرقام فقط'.tr;
+  static String get additionDescriptionShouldBeAtLeast9 => 'يجب أن يكون وصف الإضافة على الأقل 9 أحرف'.tr;
+  static String get emptyManufacturer => 'يجب أن لا يكون المصنّع فارغ'.tr;
+  static String get manufacturerShouldNotBeOnlyNumbers => 'يجب أن لا يكون المصنّع مكون من أرقام فقط'.tr;
+  static String get manufacturerShouldBeAtLeast5 => 'يجب أن يكون المصنّع على الأقل 5 أحرف'.tr;
+  static String get emptyOfferDescription => 'يجب أن لا يكون نص العرض فارغ'.tr;
+  static String get offerDescriptionShouldNotBeOnlyNumbers => 'يجب أن لا يكون نص العرض مكون من أرقام فقط'.tr;
+  static String get offerDescriptionShouldBeAtLeast5 => 'يجب أن يكون نص العرض على الأقل 5 أحرف'.tr;
+  static String get emptyOffer => 'يجب أن لا يكون العرض فارغ'.tr;
+  static String get offerShouldBeOnlyNumbers => 'يجب أن يكون العرض مكون من أرقام فقط'.tr;
+  static String get offerShouldBeMoreThan0 => 'يجب أن يكون العرض أكبر من الصفر'.tr;
+  static String get chooseYourLocation => 'اختر مكان التواجد'.tr;
+  static String get chooseCountry => 'اختر الدولة'.tr;
+  static String get profileDescription => 'الوصف'.tr;
+  static String get marketValue => 'القيمة السوقية'.tr;
+  static String get noStoresInThisPlace => 'لا يوجد متاجر في هذه المنطقة'.tr;
+  static String get emptyUserName => 'يجب أن لا يكون اسم المستخدم فارغ'.tr;
+  static String get userNameMustBeAtLeast5 => 'يجب أن يتكون اسم المستخدم على الأقل من 5 احرف'.tr;
+  static String get emptyEmail => 'يجب أن لا يكون البريد الإلكتروني فارغ'.tr;
+  static String get emailShouldBeAtLeast10 => 'يجب أن يتكون البريد الإلكتروني من 10 احرف على الأقل'.tr;
+  static String get emptyPhone => 'يجب أن لا يكون الرقم فارغ'.tr;
+  static String get phoneMustBeAtOnly10 => 'يجب أن يتكون الرقم من عشرة أرقام'.tr;
+  static String get emptyName => 'يجب أن لا يكون الاسم فارغ'.tr;
+  static String get nameShouldBeAtLeast3 => 'يجب أن يتكون الاسم من ثلاثة احرف على الأقل'.tr;
+  static String get nameShouldNotBeOnlyNumbers => 'يجب أن لا يكون الاسم عبارة عن رقم فقط'.tr;
+  static String get emptyPassword => 'يجب أن لا تكون كلمة المرور فارغة'.tr;
+  static String get passwordShouldBeAtLeast9 => 'يجب أن تتكون كلمة المرور من تسع رموز على الأقل'.tr;
+  static String get emptyIdentifierNumber => 'يجب أن لا يكون الرقم الوطني فارغ'.tr;
+  static String get identifierMustStartWith1 => 'يجب أن يبدأ الرقم الوطني بالواحد'.tr;
+  static String get identifierMustBe10 => 'يجب ان يتكون الرقم الوطني من عشرة أرقام'.tr;
+  static String get emptyCommercialRegister => 'يجب أن لا يكون السجل التجاري فارغ'.tr;
+  static String get commercialRegisterMustBe10 => 'يجب أن يتكون السجل التجاري من عشرة أرقام'.tr;
+  static String get emptyLicense => 'يجب أن لا تكون الرخصة فارغة'.tr;
+  static String get licenseMustBe10 => 'يجب أن تتكون الرخصة من عشرة أرقام'.tr;
+  static String get emptyTaxNumber => 'يجب أن لا يكون الرقم الضريبي فارغة'.tr;
+  static String get taxNumberMustBe15 => 'يجب أن يتكون الرقم الضريبي من خمسة عشر أرقام'.tr;
+  static String get pricesShouldNotBeEmpty => 'يجب أن لا تكون الأسعار فارغة'.tr;
+  static String get weightsShouldNotBeEmpty => 'يجب أن لا تكون الأوزان فارغة'.tr;
+  static String get choosePriceOrWeight => 'اختر الفلترة بالوزن أو السعر'.tr;
+  static String get emailVerification => 'التحقق من البريد الإلكتروني'.tr;
+  static String get weHaveSentTheCode => 'تم إرسال رمز التحقق على البريد الإلكتروني الخاص بك'.tr;
+  static String get emptyOTP => 'رمز تحقق فارغ'.tr;
+  static String get otpMustBe6 => 'يجب أن يتكون رمز التحقق من ستة أرقام'.tr;
+  static String get pleaseMakeSureYouEnteredTheSameEmailOrOTP => 'الرجاء التحقق من تطابق البريد الإلكتروني الحالي مع البريد الذي أدخلته مسبقا أو صحة رمز التحقق'.tr;
 }

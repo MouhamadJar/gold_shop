@@ -70,13 +70,23 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                 ),
                               ),
                               Expanded(
-                                child: Text(
-                                  controller.subcategoriesADVS[index].paragraph,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize:
-                                          AppFonts.smallTitleFont(context)),
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      controller.subcategoriesADVS[index].paragraph,
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize:
+                                              AppFonts.smallTitleFont(context)),
+                                    ),
+                                    AppNetworkImage(
+                                      baseUrlImages + controller.subcategoriesADVS[index].image,
+                                      fit: BoxFit.contain,
+                                      height: ScreenDimensions.heightPercentage(context, 5),
+                                      width: ScreenDimensions.widthPercentage(context, 25),
+                                    )
+                                  ],
                                 ),
                               ),
                             ],
@@ -197,13 +207,8 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                     ),
                                     Details(
                                         withIcon: true,
-                                        details: '${controller.model!.manufacturer}' ?? '',
-                                        title: AppWord.manufacturer,
-                                        picPath: AppImages.building),
-                                    Details(
-                                        withIcon: true,
-                                        details: controller.model!.age,
-                                        title: AppWord.age,
+                                        details: controller.productType,
+                                        title: AppWord.productType,
                                         picPath: AppImages.age),
                                     Details(
                                         withIcon: true,
@@ -260,11 +265,11 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                           amount: controller.appCommission.toString()),
                                       PurchaseProcessDetails(
                                         title: AppWord.vendorName,
-                                        subtitle: '${controller.model!.firstName}  ${controller.model!.lastName}',
+                                        subtitle: '${controller.model!.sellerFirstName}  ${controller.model!.sellerLastName}',
                                       ),
                                       PurchaseProcessDetails(
                                         title: AppWord.vendorNumber,
-                                        subtitle: controller.model!.phoneNumber,
+                                        subtitle: controller.model!.sellerPhoneNumber!,
                                       ),
                                     ],
                                   ).paddingSymmetric(
@@ -284,10 +289,7 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                         TextSpan(
                                           children: [
                                             TextSpan(text: ' ${controller.model!.country} '),
-                                            TextSpan(text: ' ${controller.model!.state} '),
                                             TextSpan(text: ' ${controller.model!.city} '),
-                                            TextSpan(text: ' ${controller.model!.neighborhood} '),
-                                            TextSpan(text: ' ${controller.model!.street} '),
                                           ],),
                                         maxLines: 2,textAlign: TextAlign.center,
                                         style: TextStyle(
@@ -300,16 +302,7 @@ class PurchasedProduct extends GetView<PurchasedProductController> {
                                     ),
                                   ],
                                 ),
-                                AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}),
-                                // Container(
-                                //   width: ScreenDimensions.screenWidth(context),
-                                //   height: ScreenDimensions.heightPercentage(
-                                //       context, 15),
-                                //   decoration:
-                                //       BoxDecoration(border: Border.all()),
-                                // ).paddingSymmetric(
-                                //     vertical: ScreenDimensions.heightPercentage(
-                                //         context, 2)),
+                                controller.model!.deliveryType=='2'?controller.isMapExisted?AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}):const SizedBox.shrink():const SizedBox.shrink(),
                                 Directions(
                                   child: Row(
                                     mainAxisAlignment:

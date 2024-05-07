@@ -26,7 +26,7 @@ class SoldProcessDetails extends StatelessWidget {
         children: [
           Container(
             alignment: AlignmentDirectional.centerEnd,
-            width: ScreenDimensions.widthPercentage(context, 20),
+            width: amount== null ? ScreenDimensions.widthPercentage(context, 50):ScreenDimensions.widthPercentage(context, 20),
             child: Text(
               subtitle,
               style: TextStyle(
@@ -52,6 +52,7 @@ class SoldProcessDetails extends StatelessWidget {
             width: ScreenDimensions.widthPercentage(context, 40),
             child: Text(
               title,
+              textAlign: TextAlign.center,
               style: TextStyle(
                 fontSize: AppFonts.smallTitleFont(context),
               ),

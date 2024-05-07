@@ -138,7 +138,7 @@ void updateProduct({
 }
 
 void getStores()async{
-   Map <String,dynamic> data = await DioHelper.storeIndex();
+   Map <String,dynamic> data = await DioHelper.getStores();
    data['data']['data'].forEach((element){storesModel.add(StoresModel.fromJson(json: element));});
    update();
 }

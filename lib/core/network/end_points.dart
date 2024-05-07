@@ -3,6 +3,9 @@ import '../storage_handler/storage_handler.dart';
 class EndPoints {
   // visitor
   static String aboutUs = '/api/policy/about';
+  static String getCountry = '/api/address/country';
+  static String getCities (String country)=> '/api/address/country/city?country=$country';
+  static String getStoresForProduct (int productId)=> '/api/stores/list/$productId';
   static String privacy = '/api/policy/privacy';
   static String getAllCategories = '/api/categories';
   static String getAllSubCategories = '/api/categories/sub/';
@@ -12,6 +15,7 @@ class EndPoints {
   static String allProducts = '/api/products/all/';
   static String productByCity = '/api/products/city/';
   static String sort = '/api/products/search/sort';
+  static String getStores = '/api/stores';
   static String sorts({int? carat,int?price,int? weight})  {
     //all not null
     if (carat!=null&& price!= null && weight != null){
@@ -44,10 +48,19 @@ class EndPoints {
     return '';
   }
   static String filter = '/api/products/search/filter';
+  static String filterProducts(String carat,int productType,int byPrice,int byWeight,double? fromPrice,double? toPrice,double? fromWeight,double? toWeight) {
+    if (byPrice == 1){
+      return '/api/products/search/filter?carat=$carat&price=$byPrice&from_price=$fromPrice&to_price=$toPrice&product_type=$productType';
+    }if(byWeight ==1){
+      return '/api/products/search/filter?carat=$carat&wight=$byWeight&from_wight=$fromWeight&to_wight=$toWeight&product_type=$productType';
+    }
+    return '';
+  }
   static String getCity = '/api/address/city';
   static String getCaratPrices = '/api/bursa/gold/carat';
   static String getAllCaratPrices = '/api/bursa/gold/all/carat';
   static String oneCaratPrice = '/api/bursa/gold/one/carat?carat=18k';
+  static String getAllCarats = '/api/bursa/get/gold/carat';
 
   //---------------------------------------------------------------------------------------------------
   //app user
@@ -56,6 +69,7 @@ class EndPoints {
   static String login = '/api/user/login';
   static String loginMediatorShop = '/api/store/login';
   static String register = '/api/user/register';
+  static String verifyEmail = '/api/user/verify';
   static String registerStore = '/api/store/order';
   static String logout = '/api/user/logout';
 
@@ -193,4 +207,7 @@ class EndPoints {
 
   static String sendCode(String code) => '/api/app/store/product/show?code=$code';
 
+
+  // payment
+static String payment(int orderId) => '/api/app/orders/payment/$orderId';
 }

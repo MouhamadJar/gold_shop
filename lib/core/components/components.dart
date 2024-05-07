@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/location_service/location_entity.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
+import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 
 import '../colors/colors.dart';
@@ -23,8 +24,7 @@ class AdvertisementBanner extends StatelessWidget {
   });
 
   final int itemCount;
-  final Widget Function(BuildContext context, int index, int realIndex)?
-      itemBuilder;
+  final Widget Function(BuildContext context, int index, int realIndex)?itemBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -43,8 +43,9 @@ class AdvertisementBanner extends StatelessWidget {
         ),
         child: CarouselSlider.builder(
           options: CarouselOptions(
+            scrollPhysics:  itemCount ==1? const NeverScrollableScrollPhysics():const AlwaysScrollableScrollPhysics(),
             viewportFraction: 1,
-            autoPlay: true,
+            autoPlay: itemCount==1?false:true,
             autoPlayInterval: const Duration(seconds: 8),
           ),
           itemCount: itemCount,
@@ -91,12 +92,16 @@ class AppPopUpMenu extends StatelessWidget {
           children: [
             Icon(Icons.keyboard_arrow_down_rounded,
                 size: ScreenDimensions.heightPercentage(context, 3)),
-            Text(
-              title,
-              maxLines: 1,
-              style: TextStyle(
-                fontSize: AppFonts.smallTitleFont(context) - 3,
-                overflow: TextOverflow.ellipsis,
+            SizedBox(
+              width: ScreenDimensions.widthPercentage(context, 28),
+              child: Text(
+                title,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: AppFonts.smallTitleFont(context) - 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
           ],
@@ -142,21 +147,24 @@ class AppButton extends StatelessWidget {
 }
 
 class Details extends StatelessWidget {
-  Details(
-      {super.key,
+  const Details({super.key,
       required this.title,
       this.picPath,
-      this.isRequired,
+      this.isRequired = false,
       this.onTap,
+      this.withSubtitle = false,
+      this.subtitle,
       required this.details,
-      this.withIcon});
+      this.withIcon= true,
+      });
 
   final String title;
   final String? picPath;
   final String details;
-
-  bool? isRequired = false;
-  bool? withIcon = true;
+  final String? subtitle;
+  final bool? withSubtitle;
+  final bool? isRequired ;
+  final bool? withIcon ;
   final GestureTapCallback? onTap;
 
   @override
@@ -170,10 +178,26 @@ class Details extends StatelessWidget {
                   onTap: onTap, child: SvgPicture.asset(AppImages.edit2))
               : const SizedBox.shrink(),
           const Spacer(),
-          Text(
-            details,
-            style: TextStyle(
-              fontSize: AppFonts.smallTitleFont(context),
+          SizedBox(
+            width: ScreenDimensions.widthPercentage(context, 40),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                withSubtitle!?Text(
+                  subtitle!,
+                  textAlign: TextAlign.center ,
+                  style: TextStyle(
+                    fontSize: AppFonts.smallTitleFont(context),
+                  ),
+                ):const SizedBox.shrink(),
+                Text(
+                  details,
+                  textAlign: TextAlign.center ,
+                  style: TextStyle(
+                    fontSize: AppFonts.smallTitleFont(context),
+                  ),
+                ),
+              ],
             ),
           ),
           SizedBox(
@@ -603,12 +627,12 @@ class PricesBar extends GetView<PricesBarController> {
                         child: Row(
                           children: [
                             Text(
-                              '${AppWord.sad} ${controller.model!.carat24.toInt()}',
+                              AppWord.sad,
                               style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenDimensions.widthPercentage(context, 3),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 0.5)),
+                            Text(
+                              '${controller.model!.carat24.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             Text(
                               '${AppWord.goldCaliber} 24',
@@ -616,24 +640,24 @@ class PricesBar extends GetView<PricesBarController> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: AppFonts.smallTitleFont(context),
                                   color: CustomColors.white),
-                            ),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                           ],
                         ),
                       ),
                     ),
                     Positioned(
-                      right: ScreenDimensions.widthPercentage(context, 13),
+                      right: StorageHandler().lang=='en'?ScreenDimensions.widthPercentage(context, 3):ScreenDimensions.widthPercentage(context, 13),
                       top: ScreenDimensions.heightPercentage(context, 4),
                       child: DelayedDisplay(
                         child: Row(
                           children: [
                             Text(
-                              '${AppWord.sad} ${controller.model!.carat21.toInt()}',
+                              AppWord.sad,
                               style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenDimensions.widthPercentage(context, 3),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 0.5)),
+                            Text(
+                              '${controller.model!.carat21.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             Text(
                               '${AppWord.goldCaliber} 21',
@@ -641,7 +665,7 @@ class PricesBar extends GetView<PricesBarController> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: AppFonts.smallTitleFont(context),
                                   color: CustomColors.white),
-                            ),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                           ],
                         ),
                       ),
@@ -653,12 +677,12 @@ class PricesBar extends GetView<PricesBarController> {
                         child: Row(
                           children: [
                             Text(
-                              '${AppWord.sad} ${controller.model!.carat22.toInt()}',
+                              AppWord.sad,
                               style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenDimensions.widthPercentage(context, 3),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, .5)),
+                            Text(
+                              '${controller.model!.carat22.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             Text(
                               '${AppWord.goldCaliber} 22',
@@ -666,24 +690,24 @@ class PricesBar extends GetView<PricesBarController> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: AppFonts.smallTitleFont(context),
                                   color: CustomColors.white),
-                            ),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                           ],
                         ),
                       ),
                     ),
                     Positioned(
-                      left: ScreenDimensions.widthPercentage(context, 13),
+                      left: StorageHandler().lang=='en'?ScreenDimensions.widthPercentage(context, 3):ScreenDimensions.widthPercentage(context, 13),
                       top: ScreenDimensions.heightPercentage(context, 4),
                       child: DelayedDisplay(
                         child: Row(
                           children: [
                             Text(
-                              '${AppWord.sad} ${controller.model!.carat18.toInt()}',
+                              AppWord.sad,
                               style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
-                            ),
-                            SizedBox(
-                              width:
-                                  ScreenDimensions.widthPercentage(context, 3),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, .5)),
+                            Text(
+                              '${controller.model!.carat18.toInt()}',
+                              style: TextStyle(fontSize: AppFonts.smallTitleFont(context)),
                             ),
                             Text(
                               '${AppWord.goldCaliber} 18',
@@ -691,7 +715,7 @@ class PricesBar extends GetView<PricesBarController> {
                                   fontWeight: FontWeight.bold,
                                   fontSize: AppFonts.smallTitleFont(context),
                                   color: CustomColors.white),
-                            ),
+                            ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
                           ],
                         ),
                       ),
@@ -725,9 +749,7 @@ class AllCaratPrices extends GetxController {
 
   void getCaratPrices() async {
     Map<String, dynamic> data = await DioHelper.getAllCaratPrices();
-    caratPrice = data['data']['data'][carat];
-    // allCaratPricesModel = AllCaratPricesModel.fromJson(json: data['data']['data']);
-    print(data.toString());
+    caratPrice = data['data'][carat];
     isLoading = false;
     update();
   }
@@ -815,8 +837,9 @@ class ProfileProductPurchasesModel {
   final int id;
   final String? code;
   final int userId;
+  final int addressId;
   final String description;
-  final String age;
+  final String productType;
   final dynamic weight;
   final dynamic carat;
   final int subcategoryId;
@@ -824,104 +847,140 @@ class ProfileProductPurchasesModel {
   final dynamic profit;
   final dynamic addition;
   final String? details;
-  final String? manufacturer;
   final String deliveryType;
-  final String? offerDescription;
-  final dynamic discountValue;
   final String productStatus;
   final dynamic price;
-  final dynamic priceAfterDiscount;
+  final dynamic horror;
+  final dynamic marketValue;
   final List<dynamic> images;
-  final String firstName;
-  final String lastName;
-  final String phoneNumber;
   final int orderId;
-  final dynamic longitude;
-  final dynamic latitude;
-  final String country;
-  final String state;
-  final String city;
-  final String neighborhood;
-  final String street;
-  final LocationEntity? location;
+  final List<dynamic>? selectedStoreName;
+  final List<dynamic>? selectedStorePhoneNumber;
+  final LocationEntity? selectedLocation;
+  final String? country;
+  final String? state;
+  final String? city;
+  final String? neighborhood;
+  final String? street;
+  final String? sellerFirstName;
+  final String? sellerLastName;
+  final String? sellerPhoneNumber;
 
   ProfileProductPurchasesModel({
     required this.id,
     this.code,
     required this.userId,
+    required this.addressId,
     required this.description,
-    required this.age,
+    required this.productType,
     required this.weight,
     required this.carat,
     required this.subcategoryId,
     required this.currentGoldPrice,
     required this.profit,
     required this.addition,
+    this.marketValue,
     this.details,
-    this.manufacturer,
     required this.deliveryType,
-    this.offerDescription,
-    this.discountValue,
     required this.productStatus,
     required this.price,
-    required this.priceAfterDiscount,
+    this.horror,
     required this.images,
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
     required this.orderId,
-    required this.longitude,
-    required this.latitude,
     required this.country,
-    required this.state,
     required this.city,
-    required this.neighborhood,
-    required this.street,
-    required this.location,
+    this.selectedLocation,
+    this.selectedStoreName,
+    this.selectedStorePhoneNumber,
+    this.sellerLastName,
+    this.sellerPhoneNumber,
+    this.sellerFirstName,
+    this.state,
+    this.neighborhood,
+    this.street,
   });
 
-  factory ProfileProductPurchasesModel.fromJson({required Map<String, dynamic> json}) {
-    return ProfileProductPurchasesModel(
-      id: json['product']['id'],
-      code: json['product']['code'],
-      userId: json['product']['user_id'],
-      description: json['product']['description'],
-      age: json['product']['age'],
-      weight: json['product']['wight'],
-      carat: json['product']['carat'],
-      subcategoryId: json['product']['subcategory_id'],
-      currentGoldPrice: json['product']['current_gold_price'],
-      profit: json['product']['profit'],
-      addition: json['product']['addition'],
-      details: json['product']['details'],
-      manufacturer: json['product']['manufacture'],
-      deliveryType: json['product']['delivery_type'],
-      offerDescription: json['product']['offer_description'],
-      productStatus: json['product']['product_status'],
-      price: json['product']['price'],
-      priceAfterDiscount: json['product']['price_after_discount'],
-      images: json['product']['images'],
-      firstName: json['seller']['first_name'],
-      lastName: json['seller']['last_name'],
-      phoneNumber: json['seller']['phone_number'],
-      orderId: json['order_id'],
-      longitude: json['receiving_location']['longitude'],
-      latitude: json['receiving_location']['latitude'] ,
-      country: json['receiving_location']['country'] ,
-      state: json['receiving_location']['state'] ,
-      city: json['receiving_location']['city'] ,
-      neighborhood: json['receiving_location']['neighborhood'] ,
-      street: json['receiving_location']['street'] ,
-      location: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude']),
-    );
+  factory ProfileProductPurchasesModel.fromJson({required Map<String, dynamic> json,required String deliveryType}) {
+    List<Map<String,dynamic>> storeNames=[];
+    List<Map<String,dynamic>> storePhones=[];
+    json['product']['stores'].forEach((element){
+      storeNames.add(element);
+      storePhones.add(element);
+    });
+    if(deliveryType=='2'){
+      return ProfileProductPurchasesModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        street: json['receiving_location']['street'],
+        country: json['receiving_location']['country'],
+        neighborhood: json['receiving_location']['neighborhood'],
+        city: json['receiving_location']['city'],
+        state: json['receiving_location']['state'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        selectedLocation: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude'] ),
+        sellerFirstName: json['seller']['first_name'],
+        sellerLastName: json['seller']['last_name'],
+        sellerPhoneNumber: json['seller']['phone_number'],
+      );
+    }else{
+      return ProfileProductPurchasesModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        country: json['product']['address']['country'],
+        city:  json['product']['address']['city'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        sellerFirstName: json['seller']['first_name'],
+        sellerLastName: json['seller']['last_name'],
+        sellerPhoneNumber: json['seller']['phone_number'],
+      );
+    }
   }
 }
 class ProfileProductPutAsidePurchasesModel {
   final int id;
   final String? code;
   final int userId;
+  final int addressId;
   final String description;
-  final String age;
+  final String productType;
   final dynamic weight;
   final dynamic carat;
   final int subcategoryId;
@@ -929,21 +988,31 @@ class ProfileProductPutAsidePurchasesModel {
   final dynamic profit;
   final dynamic addition;
   final String? details;
-  final String? manufacturer;
   final String deliveryType;
-  final String? offerDescription;
-  final dynamic discountValue;
   final String productStatus;
   final dynamic price;
-  final dynamic priceAfterDiscount;
+  final dynamic horror;
+  final dynamic marketValue;
   final List<dynamic> images;
   final int orderId;
+  final List<dynamic>? selectedStoreName;
+  final List<dynamic>? selectedStorePhoneNumber;
+  final LocationEntity? selectedLocation;
+  final String? country;
+  final String? state;
+  final String? city;
+  final String? neighborhood;
+  final String? street;
+  final String? sellerFirstName;
+  final String? sellerLastName;
+  final String? sellerPhoneNumber;
   ProfileProductPutAsidePurchasesModel({
     required this.id,
     this.code,
     required this.userId,
+    required this.addressId,
+    required this.productType,
     required this.description,
-    required this.age,
     required this.weight,
     required this.carat,
     required this.subcategoryId,
@@ -951,49 +1020,107 @@ class ProfileProductPutAsidePurchasesModel {
     required this.profit,
     required this.addition,
     this.details,
-    this.manufacturer,
     required this.deliveryType,
-    this.offerDescription,
-    this.discountValue,
     required this.productStatus,
     required this.price,
-    required this.priceAfterDiscount,
     required this.images,
     required this.orderId,
+    this.country,
+    this.city,
+    this.state,
+    this.neighborhood,
+    this.street,
+    this.horror,
+    this.marketValue,
+    this.selectedLocation,
+    this.selectedStoreName,
+    this.selectedStorePhoneNumber,
+    this.sellerLastName,
+    this.sellerPhoneNumber,
+    this.sellerFirstName,
   });
 
-  factory ProfileProductPutAsidePurchasesModel.fromJson({required Map<String, dynamic> json}) {
-    return ProfileProductPutAsidePurchasesModel(
-      id: json['product']['id'],
-      code: json['product']['code'],
-      userId: json['product']['user_id'],
-      description: json['product']['description'],
-      age: json['product']['age'],
-      weight: json['product']['wight'],
-      carat: json['product']['carat'],
-      subcategoryId: json['product']['subcategory_id'],
-      currentGoldPrice: json['product']['current_gold_price'],
-      profit: json['product']['profit'],
-      addition: json['product']['addition'],
-      details: json['product']['details'],
-      manufacturer: json['product']['manufacture'],
-      deliveryType: json['product']['delivery_type'],
-      offerDescription: json['product']['offer_description'],
-      productStatus: json['product']['product_status'],
-      price: json['product']['price'],
-      priceAfterDiscount: json['product']['price_after_discount'],
-      images: json['product']['images'],
-      orderId: json['order_id'],
-    );
+  factory ProfileProductPutAsidePurchasesModel.fromJson({required Map<String, dynamic> json,required String deliveryType}) {
+    List<Map<String,dynamic>> storeNames=[];
+    List<Map<String,dynamic>> storePhones=[];
+    json['product']['stores'].forEach((element){
+      storeNames.add(element);
+      storePhones.add(element);
+    });
+    if(deliveryType=='2'){
+      return ProfileProductPutAsidePurchasesModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        street: json['receiving_location']['street'],
+        country: json['receiving_location']['country'],
+        neighborhood: json['receiving_location']['neighborhood'],
+        city: json['receiving_location']['city'],
+        state: json['receiving_location']['state'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        selectedLocation: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude'] ),
+        sellerFirstName: json['seller']['first_name'],
+        sellerLastName: json['seller']['last_name'],
+        sellerPhoneNumber: json['seller']['phone_number'],
+      );
+    }else{
+      return ProfileProductPutAsidePurchasesModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        country: json['product']['address']['country'],
+        city:  json['product']['address']['city'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        sellerFirstName: json['seller']['first_name'],
+        sellerLastName: json['seller']['last_name'],
+        sellerPhoneNumber: json['seller']['phone_number'],
+      );
+    }
   }
 }
-class ProfileProductSellsModel {
-  final LocationEntity location;
+class ReservedPurchaseModel {
   final int id;
   final String? code;
   final int userId;
+  final int addressId;
   final String description;
-  final String age;
+  final String productType;
   final dynamic weight;
   final dynamic carat;
   final int subcategoryId;
@@ -1001,32 +1128,279 @@ class ProfileProductSellsModel {
   final dynamic profit;
   final dynamic addition;
   final String? details;
-  final String? manufacturer;
   final String deliveryType;
-  final String? offerDescription;
-  final dynamic discountValue;
   final String productStatus;
   final dynamic price;
-  final dynamic priceAfterDiscount;
+  final dynamic horror;
+  final dynamic marketValue;
   final List<dynamic> images;
-  final String firstName;
-  final String lastName;
-  final String phoneNumber;
   final int orderId;
-  final double longitude;
-  final double latitude;
-  final String country;
-  final String state;
-  final String city;
-  final String neighborhood;
-  final String street;
+  final List<dynamic>? selectedStoreName;
+  final List<dynamic>? selectedStorePhoneNumber;
+  final LocationEntity? selectedLocation;
+  final String? country;
+  final String? state;
+  final String? city;
+  final String? neighborhood;
+  final String? street;
+  final String? sellerFirstName;
+  final String? sellerLastName;
+  final String? sellerPhoneNumber;
+  ReservedPurchaseModel({
+    required this.id,
+    this.code,
+    required this.userId,
+    required this.addressId,
+    required this.productType,
+    required this.description,
+    required this.weight,
+    required this.carat,
+    required this.subcategoryId,
+    required this.currentGoldPrice,
+    required this.profit,
+    required this.addition,
+    this.details,
+    required this.deliveryType,
+    required this.productStatus,
+    required this.price,
+    required this.images,
+    required this.orderId,
+     this.country,
+     this.city,
+     this.state,
+     this.neighborhood,
+     this.street,
+     this.horror,
+     this.marketValue,
+     this.selectedLocation,
+     this.selectedStoreName,
+     this.selectedStorePhoneNumber,
+     this.sellerLastName,
+     this.sellerPhoneNumber,
+     this.sellerFirstName,
+  });
 
+  factory ReservedPurchaseModel.fromJson({required Map<String, dynamic> json,required String deliveryType}) {
+    List<Map<String,dynamic>> storeNames=[];
+    List<Map<String,dynamic>> storePhones=[];
+    json['product']['stores'].forEach((element){
+        storeNames.add(element);
+        storePhones.add(element);
+    });
+    if(deliveryType=='2'){
+    return ReservedPurchaseModel(
+      id: json['product']['id'],
+      code: json['product']['code'],
+      userId: json['product']['user_id'],
+      addressId: json['product']['address_id'],
+      description: json['product']['description'],
+      productType: json['product']['product_type'],
+      weight: json['product']['wight'],
+      carat: json['product']['carat'],
+      subcategoryId: json['product']['subcategory_id'],
+      currentGoldPrice: json['product']['current_gold_price'],
+      profit: json['product']['profit'],
+      addition: json['product']['addition'],
+      details: json['product']['details'],
+      deliveryType: json['product']['delivery_type'],
+      productStatus: json['product']['product_status'],
+      price: json['product']['price'],
+      images: json['product']['images'],
+      orderId: json['order_id'],
+      marketValue: json['product']['market_value'],
+      horror: json['product']['horror'],
+      street: json['receiving_location']['street'],
+      country: json['receiving_location']['country'],
+      neighborhood: json['receiving_location']['neighborhood'],
+      city: json['receiving_location']['city'],
+      state: json['receiving_location']['state'],
+      selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+      selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+      selectedLocation: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude'] ),
+      sellerFirstName: json['seller']['first_name'],
+      sellerLastName: json['seller']['last_name'],
+      sellerPhoneNumber: json['seller']['phone_number'],
+    );
+    }else{
+      return ReservedPurchaseModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        country: json['product']['address']['country'],
+        city:  json['product']['address']['city'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        sellerFirstName: json['seller']['first_name'],
+        sellerLastName: json['seller']['last_name'],
+        sellerPhoneNumber: json['seller']['phone_number'],
+      );
+    }
+  }
+}
+
+
+// class ProfileProductSellsModel {
+//   final LocationEntity location;
+//   final int id;
+//   final String? code;
+//   final int userId;
+//   final String description;
+//   final String age;
+//   final dynamic weight;
+//   final dynamic carat;
+//   final int subcategoryId;
+//   final dynamic currentGoldPrice;
+//   final dynamic profit;
+//   final dynamic addition;
+//   final String? details;
+//   final String? manufacturer;
+//   final String deliveryType;
+//   final String? offerDescription;
+//   final dynamic discountValue;
+//   final String productStatus;
+//   final dynamic price;
+//   final dynamic priceAfterDiscount;
+//   final List<dynamic> images;
+//   final String firstName;
+//   final String lastName;
+//   final String phoneNumber;
+//   final int orderId;
+//   final double longitude;
+//   final double latitude;
+//   final String country;
+//   final String state;
+//   final String city;
+//   final String neighborhood;
+//   final String street;
+//
+//   ProfileProductSellsModel({
+//     required this.id,
+//     this.code,
+//     required this.userId,
+//     required this.description,
+//     required this.age,
+//     required this.weight,
+//     required this.carat,
+//     required this.subcategoryId,
+//     required this.currentGoldPrice,
+//     required this.profit,
+//     required this.addition,
+//     this.details,
+//     this.manufacturer,
+//     required this.deliveryType,
+//     this.offerDescription,
+//     this.discountValue,
+//     required this.productStatus,
+//     required this.price,
+//     required this.priceAfterDiscount,
+//     required this.images,
+//     required this.firstName,
+//     required this.lastName,
+//     required this.phoneNumber,
+//     required this.orderId,
+//     required this.longitude,
+//     required this.latitude,
+//     required this.country,
+//     required this.state,
+//     required this.city,
+//     required this.neighborhood,
+//     required this.street,
+//     required this.location,
+//   });
+//
+//   factory ProfileProductSellsModel.fromJson({required Map<String, dynamic> json}) {
+//     return ProfileProductSellsModel(
+//       id: json['product']['id'],
+//       code: json['product']['code'],
+//       userId: json['product']['user_id'],
+//       description: json['product']['description'],
+//       age: json['product']['age'],
+//       weight: json['product']['wight'],
+//       carat: json['product']['carat'],
+//       subcategoryId: json['product']['subcategory_id'],
+//       currentGoldPrice: json['product']['current_gold_price'],
+//       profit: json['product']['profit'],
+//       addition: json['product']['addition'],
+//       details: json['product']['details'],
+//       manufacturer: json['product']['manufacture'],
+//       deliveryType: json['product']['delivery_type'],
+//       offerDescription: json['product']['offer_description'],
+//       productStatus: json['product']['product_status'],
+//       price: json['product']['price'],
+//       priceAfterDiscount: json['product']['price_after_discount'],
+//       images: json['product']['images'],
+//       firstName: json['buyer']['user']['first_name'].toString(),
+//       lastName: json['buyer']['user']['last_name'].toString(),
+//       phoneNumber: json['buyer']['user']['phone_number'].toString(),
+//       orderId: json['order_id'],
+//       longitude: json['receiving_location']['longitude'],
+//       latitude: json['receiving_location']['latitude'] ,
+//       country: json['receiving_location']['country'] ,
+//       state: json['receiving_location']['state'] ,
+//       city: json['receiving_location']['city'] ,
+//       neighborhood: json['receiving_location']['neighborhood'] ,
+//       street: json['receiving_location']['street'] ,
+//       location: LocationEntity(lon: json['receiving_location']['longitude'], lat: json['receiving_location']['latitude'])
+//     );
+//   }
+// }
+
+class ProfileProductSellsModel {
+  final int id;
+  final String? code;
+  final int userId;
+  final int addressId;
+  final String description;
+  final String productType;
+  final dynamic weight;
+  final dynamic carat;
+  final int subcategoryId;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
+  final dynamic addition;
+  final String? details;
+  final String deliveryType;
+  final String productStatus;
+  final dynamic price;
+  final dynamic horror;
+  final dynamic marketValue;
+  final List<dynamic> images;
+  final int orderId;
+  final List<dynamic>? selectedStoreName;
+  final List<dynamic>? selectedStorePhoneNumber;
+  final LocationEntity? selectedLocation;
+  final String? country;
+  final String? state;
+  final String? city;
+  final String? neighborhood;
+  final String? street;
+  final String? buyerFirstName;
+  final String? buyerLastName;
+  final String? buyerPhoneNumber;
   ProfileProductSellsModel({
     required this.id,
     this.code,
     required this.userId,
+    required this.addressId,
+    required this.productType,
     required this.description,
-    required this.age,
     required this.weight,
     required this.carat,
     required this.subcategoryId,
@@ -1034,71 +1408,107 @@ class ProfileProductSellsModel {
     required this.profit,
     required this.addition,
     this.details,
-    this.manufacturer,
     required this.deliveryType,
-    this.offerDescription,
-    this.discountValue,
     required this.productStatus,
     required this.price,
-    required this.priceAfterDiscount,
     required this.images,
-    required this.firstName,
-    required this.lastName,
-    required this.phoneNumber,
     required this.orderId,
-    required this.longitude,
-    required this.latitude,
-    required this.country,
-    required this.state,
-    required this.city,
-    required this.neighborhood,
-    required this.street,
-    required this.location,
+    this.country,
+    this.city,
+    this.state,
+    this.neighborhood,
+    this.street,
+    this.horror,
+    this.marketValue,
+    this.selectedLocation,
+    this.selectedStoreName,
+    this.selectedStorePhoneNumber,
+    this.buyerLastName,
+    this.buyerPhoneNumber,
+    this.buyerFirstName,
   });
 
-  factory ProfileProductSellsModel.fromJson({required Map<String, dynamic> json}) {
-    return ProfileProductSellsModel(
-      id: json['product']['id'],
-      code: json['product']['code'],
-      userId: json['product']['user_id'],
-      description: json['product']['description'],
-      age: json['product']['age'],
-      weight: json['product']['wight'],
-      carat: json['product']['carat'],
-      subcategoryId: json['product']['subcategory_id'],
-      currentGoldPrice: json['product']['current_gold_price'],
-      profit: json['product']['profit'],
-      addition: json['product']['addition'],
-      details: json['product']['details'],
-      manufacturer: json['product']['manufacture'],
-      deliveryType: json['product']['delivery_type'],
-      offerDescription: json['product']['offer_description'],
-      productStatus: json['product']['product_status'],
-      price: json['product']['price'],
-      priceAfterDiscount: json['product']['price_after_discount'],
-      images: json['product']['images'],
-      firstName: json['buyer']['user']['first_name'].toString(),
-      lastName: json['buyer']['user']['last_name'].toString(),
-      phoneNumber: json['buyer']['user']['phone_number'].toString(),
-      orderId: json['order_id'],
-      longitude: json['receiving_location']['longitude'],
-      latitude: json['receiving_location']['latitude'] ,
-      country: json['receiving_location']['country'] ,
-      state: json['receiving_location']['state'] ,
-      city: json['receiving_location']['city'] ,
-      neighborhood: json['receiving_location']['neighborhood'] ,
-      street: json['receiving_location']['street'] ,
-      location: LocationEntity(lon: json['receiving_location']['longitude'], lat: json['receiving_location']['latitude'])
-    );
+  factory ProfileProductSellsModel.fromJson({required Map<String, dynamic> json,required String deliveryType}) {
+    List<Map<String,dynamic>> storeNames=[];
+    List<Map<String,dynamic>> storePhones=[];
+    json['product']['stores'].forEach((element){
+      storeNames.add(element);
+      storePhones.add(element);
+    });
+    if(deliveryType=='2'){
+      return ProfileProductSellsModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        street: json['receiving_location']['street'],
+        country: json['receiving_location']['country'],
+        neighborhood: json['receiving_location']['neighborhood'],
+        city: json['receiving_location']['city'],
+        state: json['receiving_location']['state'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        selectedLocation: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude'] ),
+        buyerFirstName: json['buyer']['user']['first_name'],
+        buyerLastName: json['buyer']['user']['last_name'],
+        buyerPhoneNumber: json['buyer']['user']['phone_number'],
+      );
+    }else{
+      return ProfileProductSellsModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        country: json['product']['address']['country'],
+        city:  json['product']['address']['city'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        buyerFirstName: json['buyer']['user']['first_name'],
+        buyerLastName: json['buyer']['user']['last_name'],
+        buyerPhoneNumber: json['buyer']['user']['phone_number'],
+      );
+    }
   }
 }
-class ProfilePutAsideSellsModel {
-  final LocationEntity location;
+class ReservedSellModel {
   final int id;
   final String? code;
   final int userId;
+  final int addressId;
   final String description;
-  final String age;
+  final String productType;
   final dynamic weight;
   final dynamic carat;
   final int subcategoryId;
@@ -1106,29 +1516,31 @@ class ProfilePutAsideSellsModel {
   final dynamic profit;
   final dynamic addition;
   final String? details;
-  final String? manufacturer;
   final String deliveryType;
-  final String? offerDescription;
-  final dynamic discountValue;
   final String productStatus;
   final dynamic price;
-  final dynamic priceAfterDiscount;
+  final dynamic horror;
+  final dynamic marketValue;
   final List<dynamic> images;
   final int orderId;
-  final double longitude;
-  final double latitude;
-  final String country;
-  final String state;
-  final String city;
-  final String neighborhood;
-  final String street;
-
-  ProfilePutAsideSellsModel({
+  final List<dynamic>? selectedStoreName;
+  final List<dynamic>? selectedStorePhoneNumber;
+  final LocationEntity? selectedLocation;
+  final String? country;
+  final String? state;
+  final String? city;
+  final String? neighborhood;
+  final String? street;
+  final String? buyerFirstName;
+  final String? buyerLastName;
+  final String? buyerPhoneNumber;
+  ReservedSellModel({
     required this.id,
     this.code,
     required this.userId,
+    required this.addressId,
+    required this.productType,
     required this.description,
-    required this.age,
     required this.weight,
     required this.carat,
     required this.subcategoryId,
@@ -1136,87 +1548,265 @@ class ProfilePutAsideSellsModel {
     required this.profit,
     required this.addition,
     this.details,
-    this.manufacturer,
     required this.deliveryType,
-    this.offerDescription,
-    this.discountValue,
     required this.productStatus,
     required this.price,
-    required this.priceAfterDiscount,
     required this.images,
     required this.orderId,
-    required this.longitude,
-    required this.latitude,
-    required this.country,
-    required this.state,
-    required this.city,
-    required this.neighborhood,
-    required this.street,
-    required this.location,
+    this.country,
+    this.city,
+    this.state,
+    this.neighborhood,
+    this.street,
+    this.horror,
+    this.marketValue,
+    this.selectedLocation,
+    this.selectedStoreName,
+    this.selectedStorePhoneNumber,
+    this.buyerLastName,
+    this.buyerPhoneNumber,
+    this.buyerFirstName,
   });
 
-  factory ProfilePutAsideSellsModel.fromJson({required Map<String, dynamic> json}) {
-    return ProfilePutAsideSellsModel(
-      id: json['product']['id'],
-      code: json['product']['code'],
-      userId: json['product']['user_id'],
-      description: json['product']['description'],
-      age: json['product']['age'],
-      weight: json['product']['wight'],
-      carat: json['product']['carat'],
-      subcategoryId: json['product']['subcategory_id'],
-      currentGoldPrice: json['product']['current_gold_price'],
-      profit: json['product']['profit'],
-      addition: json['product']['addition'],
-      details: json['product']['details'],
-      manufacturer: json['product']['manufacture'],
-      deliveryType: json['product']['delivery_type'],
-      offerDescription: json['product']['offer_description'],
-      productStatus: json['product']['product_status'],
-      price: json['product']['price'],
-      priceAfterDiscount: json['product']['price_after_discount'],
-      images: json['product']['images'],
-      orderId: json['order_id'],
-      longitude: json['receiving_location']['longitude'],
-      latitude: json['receiving_location']['latitude'] ,
-      country: json['receiving_location']['country'] ,
-      state: json['receiving_location']['state'] ,
-      city: json['receiving_location']['city'] ,
-      neighborhood: json['receiving_location']['neighborhood'] ,
-      street: json['receiving_location']['street'] ,
-      location: LocationEntity(lon: json['receiving_location']['longitude'], lat: json['receiving_location']['latitude'])
-    );
+  factory ReservedSellModel.fromJson({required Map<String, dynamic> json,required String deliveryType}) {
+    List<Map<String,dynamic>> storeNames=[];
+    List<Map<String,dynamic>> storePhones=[];
+    json['product']['stores'].forEach((element){
+      storeNames.add(element);
+      storePhones.add(element);
+    });
+    if(deliveryType=='2'){
+      return ReservedSellModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        street: json['receiving_location']['street'],
+        country: json['receiving_location']['country'],
+        neighborhood: json['receiving_location']['neighborhood'],
+        city: json['receiving_location']['city'],
+        state: json['receiving_location']['state'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        selectedLocation: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude'] ),
+        buyerFirstName: json['buyer']['user']['first_name'],
+        buyerLastName: json['buyer']['user']['last_name'],
+        buyerPhoneNumber: json['buyer']['user']['phone_number'],
+      );
+    }else{
+      return ReservedSellModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        country: json['product']['address']['country'],
+        city:  json['product']['address']['city'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        buyerFirstName: json['buyer']['user']['first_name'],
+        buyerLastName: json['buyer']['user']['last_name'],
+        buyerPhoneNumber: json['buyer']['user']['phone_number'],
+      );
+    }
   }
 }
+class ProfilePutAsideSellsModel {
+  final int id;
+  final String? code;
+  final int userId;
+  final int addressId;
+  final String description;
+  final String productType;
+  final dynamic weight;
+  final dynamic carat;
+  final int subcategoryId;
+  final dynamic currentGoldPrice;
+  final dynamic profit;
+  final dynamic addition;
+  final String? details;
+  final String deliveryType;
+  final String productStatus;
+  final dynamic price;
+  final dynamic horror;
+  final dynamic marketValue;
+  final List<dynamic> images;
+  final int orderId;
+  final List<dynamic>? selectedStoreName;
+  final List<dynamic>? selectedStorePhoneNumber;
+  final LocationEntity? selectedLocation;
+  final String? country;
+  final String? state;
+  final String? city;
+  final String? neighborhood;
+  final String? street;
+  final String? buyerFirstName;
+  final String? buyerLastName;
+  final String? buyerPhoneNumber;
+  ProfilePutAsideSellsModel({
+    required this.id,
+    this.code,
+    required this.userId,
+    required this.addressId,
+    required this.productType,
+    required this.description,
+    required this.weight,
+    required this.carat,
+    required this.subcategoryId,
+    required this.currentGoldPrice,
+    required this.profit,
+    required this.addition,
+    this.details,
+    required this.deliveryType,
+    required this.productStatus,
+    required this.price,
+    required this.images,
+    required this.orderId,
+    this.country,
+    this.city,
+    this.state,
+    this.neighborhood,
+    this.street,
+    this.horror,
+    this.marketValue,
+    this.selectedLocation,
+    this.selectedStoreName,
+    this.selectedStorePhoneNumber,
+    this.buyerLastName,
+    this.buyerPhoneNumber,
+    this.buyerFirstName,
+  });
+
+  factory ProfilePutAsideSellsModel.fromJson({required Map<String, dynamic> json,required String deliveryType}) {
+    List<Map<String,dynamic>> storeNames=[];
+    List<Map<String,dynamic>> storePhones=[];
+    json['product']['stores'].forEach((element){
+      storeNames.add(element);
+      storePhones.add(element);
+    });
+    if(deliveryType=='2'){
+      return ProfilePutAsideSellsModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        street: json['receiving_location']['street'],
+        country: json['receiving_location']['country'],
+        neighborhood: json['receiving_location']['neighborhood'],
+        city: json['receiving_location']['city'],
+        state: json['receiving_location']['state'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+        selectedLocation: LocationEntity(lat: json['receiving_location']['latitude'],lon: json['receiving_location']['longitude'] ),
+      );
+    }else{
+      return ProfilePutAsideSellsModel(
+        id: json['product']['id'],
+        code: json['product']['code'],
+        userId: json['product']['user_id'],
+        addressId: json['product']['address_id'],
+        description: json['product']['description'],
+        productType: json['product']['product_type'],
+        weight: json['product']['wight'],
+        carat: json['product']['carat'],
+        subcategoryId: json['product']['subcategory_id'],
+        currentGoldPrice: json['product']['current_gold_price'],
+        profit: json['product']['profit'],
+        addition: json['product']['addition'],
+        details: json['product']['details'],
+        deliveryType: json['product']['delivery_type'],
+        productStatus: json['product']['product_status'],
+        price: json['product']['price'],
+        images: json['product']['images'],
+        orderId: json['order_id'],
+        marketValue: json['product']['market_value'],
+        horror: json['product']['horror'],
+        country: json['product']['address']['country'],
+        city:  json['product']['address']['city'],
+        selectedStorePhoneNumber: storePhones.map((e) => e['store']['phone_number']).toList(),
+        selectedStoreName: storeNames.map((e) => e['store']['name']).toList(),
+      );
+    }
+  }
+}
+
+
 class ProfileMyProductsModel {
   final int id;
   final String? code;
   final int userId;
   final String description;
-  final String age;
+  final dynamic productType;
   final dynamic weight;
   final dynamic carat;
   final int subcategoryId;
   final dynamic currentGoldPrice;
   final dynamic profit;
+  final dynamic marketValue;
   final dynamic addition;
   final String? details;
-  final String? manufacturer;
   final String deliveryType;
-  final String? offerDescription;
-  final dynamic discountValue;
   final String productStatus;
   final dynamic price;
-  final dynamic priceAfterDiscount;
+  final dynamic horror;
   final List<dynamic> images;
   final List<String> phoneNumbers;
+  final String country;
+  final String city;
 
   ProfileMyProductsModel({
     required this.id,
     this.code,
     required this.userId,
     required this.description,
-    required this.age,
+    required this.productType,
     required this.weight,
     required this.carat,
     required this.subcategoryId,
@@ -1224,15 +1814,15 @@ class ProfileMyProductsModel {
     required this.profit,
     required this.addition,
     this.details,
-    this.manufacturer,
     required this.deliveryType,
-    this.offerDescription,
-    this.discountValue,
     required this.productStatus,
     required this.price,
-    required this.priceAfterDiscount,
     required this.images,
     required this.phoneNumbers,
+    this.horror,
+    this.marketValue,
+    required this.country,
+    required this.city,
   });
 
   factory ProfileMyProductsModel.fromJson({required Map<String, dynamic> json}) {
@@ -1243,7 +1833,7 @@ class ProfileMyProductsModel {
       code: json['product']['code'],
       userId: json['product']['user_id'],
       description: json['product']['description'],
-      age: json['product']['age'],
+      productType: json['product']['product_type'],
       weight: json['product']['wight'],
       carat: json['product']['carat'],
       subcategoryId: json['product']['subcategory_id'],
@@ -1251,15 +1841,73 @@ class ProfileMyProductsModel {
       profit: json['product']['profit'],
       addition: json['product']['addition'],
       details: json['product']['details'],
-      manufacturer: json['product']['manufacture'],
       deliveryType: json['product']['delivery_type'],
-      offerDescription: json['product']['offer_description'],
       productStatus: json['product']['product_status'],
       price: json['product']['price'],
-      priceAfterDiscount: json['product']['price_after_discount'],
       images: json['product']['images'],
       phoneNumbers: myPhoneNumbers,
+      marketValue: json['product']['market_value'],
+      horror: json['product']['horror'],
+      country: json['product']['address']['country'],
+      city: json['product']['address']['city']
     );
   }
 }
 
+
+
+class ControllerSnackBar {
+  ControllerSnackBar({required this.errorMessage, this.errorTitle}){
+    controllerSnackBar();
+    print('a;dkadlkadlasjdlasdjalskdjaslkjasd');
+  }
+
+  String errorMessage;
+  String? errorTitle;
+
+  void controllerSnackBar() {
+    Get.snackbar(
+      '',
+      '',
+      snackPosition: SnackPosition.BOTTOM,
+      backgroundColor: CustomColors.greyDark,
+      colorText: CustomColors.white,
+      margin: EdgeInsets.only(bottom: Get.height*.15,right: Get.width*.1,left: Get.width*.1),
+      messageText: Text(
+        errorMessage,
+        textAlign: TextAlign.center,
+        maxLines: 3,
+        style: TextStyle(color: CustomColors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: Get.height * .014),),
+      titleText: Text(
+        errorTitle ?? '',
+        textAlign: TextAlign.right,
+        style: TextStyle(color: CustomColors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: Get.height * .015),),
+      duration: const Duration(milliseconds: 2000),
+      animationDuration: const Duration(milliseconds: 300),
+    );
+  }
+}
+class WarningSnackBar{
+  static warningSnackBar(BuildContext context,String errorMessage){
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(
+          errorMessage,
+          textAlign: TextAlign.center,
+          maxLines: 4,
+          style:TextStyle(
+            color: CustomColors.white,
+            fontSize: AppFonts.smallTitleFont(context),
+          ) ),
+      shape: const OutlineInputBorder(),
+      duration: const Duration(milliseconds: 2000),
+      // width: ScreenDimensions.widthPercentage(context, 50),
+      margin: EdgeInsets.all(ScreenDimensions.widthPercentage(context, 20)),
+      behavior: SnackBarBehavior.floating,
+
+    ));
+  }
+}

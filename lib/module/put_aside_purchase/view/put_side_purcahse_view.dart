@@ -13,6 +13,7 @@ import '../../../../core/images/images.dart';
 import '../../../../core/texts/words.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/dimensions.dart';
+import '../../../core/components/maps.dart';
 import '../../../core/utils/app_network_image.dart';
 import '../../invoice/view/invoice_view.dart';
 
@@ -184,13 +185,8 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   ),
                                   Details(
                                     withIcon:true,
-                                      details: controller.model!.manufacturer!,
-                                      title: AppWord.manufacturer,
-                                      picPath: AppImages.building),
-                                  Details(
-                                    withIcon:true,
-                                      details: controller.model!.age.toString(),
-                                      title: AppWord.age, picPath: AppImages.age),
+                                      details: controller.productType,
+                                      title: AppWord.productType, picPath: AppImages.age),
                                   Details(
                                     withIcon:true,
                                       details: controller.model!.weight.toString(),
@@ -247,14 +243,14 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                       title: AppWord.appServiceCost,
                                       subtitle: AppWord.sad,
                                       amount: controller.appCommission.toString()),
-                                  // PutAsidePurchaseProcessDetails(
-                                  //   title: AppWord.vendorName,
-                                  //   subtitle: '${controller.model!.firstName} ${controller.model!.lastName}',
-                                  // ),
-                                  // PutAsidePurchaseProcessDetails(
-                                  //   title: AppWord.vendorNumber,
-                                  //   subtitle: controller.model!.phoneNumber,
-                                  // ),
+                                  PutAsidePurchaseProcessDetails(
+                                    title: AppWord.vendorName,
+                                    subtitle: '${controller.model!.sellerFirstName} ${controller.model!.sellerLastName}',
+                                  ),
+                                  PutAsidePurchaseProcessDetails(
+                                    title: AppWord.vendorNumber,
+                                    subtitle: controller.model!.sellerPhoneNumber!,
+                                  ),
                                 ],
                               ).paddingSymmetric(
                                   vertical:
@@ -262,39 +258,29 @@ class PutAsidePurchase extends GetView<PutAsidePurchaseController> {
                                   horizontal:
                                       ScreenDimensions.widthPercentage(context, 5)),
                             ),
-                            // Row(
-                            //   mainAxisAlignment: MainAxisAlignment.end,
-                            //   children: [
-                            //     // SizedBox(
-                            //     //   width: ScreenDimensions.widthPercentage(context, 90),
-                            //     //   child: Text.rich(
-                            //     //     TextSpan(
-                            //     //       children: [
-                            //     //         TextSpan(text: ' ${controller.model!.country} '),
-                            //     //         TextSpan(text: ' ${controller.model!.state} '),
-                            //     //         TextSpan(text: ' ${controller.model!.city} '),
-                            //     //         TextSpan(text: ' ${controller.model!.neighborhood} '),
-                            //     //         TextSpan(text: ' ${controller.model!.street} '),
-                            //     //       ],),
-                            //     //     maxLines: 2,textAlign: TextAlign.center,
-                            //     //     style: TextStyle(
-                            //     //         fontWeight: FontWeight.bold,
-                            //     //         fontSize: AppFonts.smallTitleFont(context)),
-                            //     //   ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
-                            //     // ),
-                            //     SvgPicture.asset(
-                            //       AppImages.location,
-                            //     ),
-                            //   ],
-                            // ),
-                            // Container(
-                            //   width: ScreenDimensions.screenWidth(context),
-                            //   height:
-                            //       ScreenDimensions.heightPercentage(context, 15),
-                            //   decoration: BoxDecoration(border: Border.all()),
-                            // ).paddingSymmetric(
-                            //     vertical:
-                            //         ScreenDimensions.heightPercentage(context, 2)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                SizedBox(
+                                  width: ScreenDimensions.widthPercentage(context, 90),
+                                  child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        TextSpan(text: ' ${controller.model!.country} '),
+                                        TextSpan(text: ' ${controller.model!.city} '),
+                                      ],),
+                                    maxLines: 2,textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: AppFonts.smallTitleFont(context)),
+                                  ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                                ),
+                                SvgPicture.asset(
+                                  AppImages.location,
+                                ),
+                              ],
+                            ),
+                            controller.model!.deliveryType=='2'?controller.isMapExisted?AppGoogleMap(cameraPosition: controller.position,markers: {controller.marker!}):const SizedBox.shrink():const SizedBox.shrink(),
                             Directions(
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,

@@ -81,12 +81,25 @@ class HomeScreen extends GetView<HomeController> {
                   ),
                 ),
                 Expanded(
-                  child: Text(
-                    controller.ads[index].paragraph,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: AppFonts.smallTitleFont(context)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Text(
+                        controller.ads[index].paragraph,
+                        maxLines: 2,
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: AppFonts.smallTitleFont(context)),
+                      ),
+                      AppNetworkImage(
+                        baseUrlImages + controller.ads[index].background,
+                        fit: BoxFit.contain,
+                        height: ScreenDimensions.heightPercentage(context, 5),
+                        width: ScreenDimensions.widthPercentage(context, 25),
+                      ),
+                    ],
                   ),
                 ),
               ],

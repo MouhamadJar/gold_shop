@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:gold_shop/core/texts/words.dart';
+import '../../../../core/components/components.dart';
 import '../../../../core/network/dio_helper.dart';
 import '../../../../core/storage_handler/storage_handler.dart';
 import '../../../main/mediator_shop/signature/view/mediator_shop_view.dart';
@@ -37,11 +38,11 @@ class LoginMediatorShopController extends GetxController {
             update();
           }else if (result['message'] == 'Unauthorised.'){
             Get.back();
-            Get.snackbar(AppWord.warning,AppWord.wrongUserNameOrPassword);
+            ControllerSnackBar(errorTitle: AppWord.warning,errorMessage: AppWord.wrongUserNameOrPassword,);
             update();
           }else{
             Get.back();
-            Get.snackbar(AppWord.warning, AppWord.checkInternet);
+            ControllerSnackBar(errorTitle: AppWord.warning,errorMessage: AppWord.checkInternet,);
             update();
           }
     });

@@ -22,6 +22,33 @@ class DioHelper {
 
   // visitor
 
+  static Future <Map<String,dynamic>> getCountry()async{
+    late Response response ;
+    try {
+      response = await _dio.get(EndPoints.getCountry,);
+      return response.data;
+    }on DioException catch(error){
+      return error.response!.data;
+    }
+  }
+  static Future <Map<String,dynamic>> getCities({required String country})async{
+    late Response response ;
+    try {
+      response = await _dio.get(EndPoints.getCities(country),options: Options(headers: AppHeadersUser.header));
+      return response.data;
+    }on DioException catch(error){
+      return error.response!.data;
+    }
+  }
+  static Future <Map<String,dynamic>> getStoresForProduct({required int productId})async{
+    late Response response ;
+    try {
+      response = await _dio.get(EndPoints.getStoresForProduct(productId),options: Options(headers: AppHeadersUser.header));
+      return response.data;
+    }on DioException catch(error){
+      return error.response!.data;
+    }
+  }
   static Future<Map<String, dynamic>> getAllCategories() async {
     late Response response;
     try {
@@ -35,9 +62,7 @@ class DioHelper {
       return error.response!.data;
     }
   }
-
-  static Future<Map<String, dynamic>> getAllSubCategories(
-      {required int categoryId}) async {
+  static Future<Map<String, dynamic>> getAllSubCategories({required int categoryId}) async {
     late Response response;
     try {
       response = await _dio.get('${EndPoints.getAllSubCategories}$categoryId',options: Options(
@@ -48,7 +73,6 @@ class DioHelper {
       return error.response!.data;
     }
   }
-
   static Future<Map<String, dynamic>> aboutUs() async {
     late Response response;
     try {
@@ -60,7 +84,6 @@ class DioHelper {
       return error.response!.data;
     }
   }
-
   static Future<Map<String, dynamic>> privacy() async {
     late Response response;
     try {
@@ -72,7 +95,6 @@ class DioHelper {
       return error.response!.data;
     }
   }
-
   static Future<Map<String, dynamic>> homeADVS() async {
     late Response response;
     try {
@@ -84,7 +106,6 @@ class DioHelper {
       return error.response!.data;
     }
   }
-
   static Future<Map<String, dynamic>> categoryADVS(
       {required int categoryId}) async {
     late Response response;
@@ -139,6 +160,37 @@ class DioHelper {
     late Response response;
     try {
       response = await _dio.get(EndPoints.oneCaratPrice,options: Options(
+        headers: AppHeadersUser.header,
+      ));
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> getAllCarats() async {
+    late Response response;
+    try {
+      response = await _dio.get(EndPoints.getAllCarats,options: Options(
+        headers: AppHeadersUser.header,
+      ));
+      return response.data;
+    } on DioException catch (error) {
+      return error.response!.data;
+    }
+  }
+  static Future<Map<String, dynamic>> filterProducts({
+   required String carat,
+   required int productType,
+   required int byPrice,
+   required int byWeight,
+    double? fromPrice,
+    double? toPrice,
+    double? fromWeight,
+    double? toWeight,
+  }) async {
+    late Response response;
+    try {
+      response = await _dio.get(EndPoints.filterProducts(carat, productType, byPrice, byWeight, fromPrice, toPrice, fromWeight, toWeight),options: Options(
         headers: AppHeadersUser.header,
       ));
       return response.data;
@@ -301,13 +353,8 @@ class DioHelper {
     required String email,
     required String phoneNumber,
     required String password,
-    required double latitude,
-    required double longitude,
-    required String country,
-    required String state,
-    required String city,
-    required String neighborhood,
-    required String street,
+    required int addressId,
+    required String description,
   }) async {
     late Response response;
     try {
@@ -321,18 +368,30 @@ class DioHelper {
           //'photo': MultipartFile.fromFile('filePath'),
           'phone_number': phoneNumber,
           'password': password,
-          'latitude': latitude,
-          'longitude': longitude,
-          'country': country,
-          'state': state,
-          'city': city,
-          'neighborhood': neighborhood,
-          'street': street,
+          'address_id': addressId,
+          'description' : description,
         }),
       );
       return response.data;
     } on DioException catch (error) {
       log('error : ${error.response!.data}');
+      return error.response!.data;
+    }
+  }
+
+  static Future<Map<String,dynamic>> verifyEmail({required String email,required String code})async{
+    late Response response ;
+    FormData body = FormData.fromMap({
+      'email': email,
+      'code' : code,
+    });
+    try{
+       response = await _dio.post(
+           EndPoints.verifyEmail,
+           data: body,
+           options: Options(headers: AppHeadersUser.header));
+      return response.data;
+    }on DioException catch(error){
       return error.response!.data;
     }
   }
@@ -348,13 +407,15 @@ class DioHelper {
     required String city,
     required String neighborhood,
     required String street,
-    required String cost,
     required String description,
     required String nationalNumber,
     required String commercialRegister,
     required String commercialRegisterImage,
     required String license,
     required String licenseImage,
+    required String taxNumber,
+    required String taxAssignmentCertificateImage,
+    required String shopImage,
   }) async {
     late Response response;
     try {
@@ -370,13 +431,15 @@ class DioHelper {
         'city': city,
         'neighborhood': neighborhood,
         'street': street,
-        'cost': cost,
         'description': description,
         'national_number': nationalNumber,
         'commercial_register': commercialRegister,
         'commercial_register_image': await MultipartFile.fromFile(commercialRegisterImage),
         'license': license,
         'license_image': await MultipartFile.fromFile(licenseImage),
+        'tax_number': taxNumber ,
+        'tax_assignment_certificate_image': await MultipartFile.fromFile(licenseImage),
+        'store_image': await MultipartFile.fromFile(licenseImage),
       });
       response = await _dio.post(
         EndPoints.registerStore,
@@ -453,11 +516,11 @@ class DioHelper {
   }
 
 //stores
-  static Future<Map<String, dynamic>> storeIndex() async {
+  static Future<Map<String, dynamic>> getStores() async {
     late Response response;
     try {
       response = await _dio.get(
-        EndPoints.storesIndex,options: Options(
+        EndPoints.getStores,options: Options(
         headers: AppHeadersUser.header,
       ),
       );
@@ -484,7 +547,6 @@ class DioHelper {
   static Future<Map<String, dynamic>> store({
     required List<File> images,
     required String description,
-    required String age,
     required double weight,
     required String carat,
     required int subcategoryId,
@@ -492,43 +554,38 @@ class DioHelper {
     required double profit,
     double? addition,
     String? details,
-    required String manufacturer,
-    required String manufacturerType,
+    required int productType,
     required int toggle,
-    required int deliveryType,
+     int? deliveryType,
     required List<String> phoneNumber,
     required List<dynamic> stores,
-    int? discountToggle,
-    String? offerDescription,
-    double? discountValue,
+    int? addressId,
+    // int? discountToggle,
+    // String? offerDescription,
+    // double? discountValue,
   }) async {
     late Response response;
     try {
-      print('images : ${images}');
-      print('description : ${description}');
-      print('age : ${age}');
-      print('weight : ${weight}');
-      print('carat : ${carat}');
-      print('subcategory id : ${subcategoryId}');
-      print('current gold price : ${currentGoldPrice}');
-      print('profit : ${profit}');
-      print('addition : ${addition}');
-      print('details : ${details}');
-      print('manufacturer : ${manufacturer}');
-      print('manufaturer type : ${manufacturerType}');
-      print('toggle : ${toggle}');
-      print('delivery type : ${deliveryType}');
-      print('phone numbers : ${phoneNumber}');
-      print('stores : ${stores}');
-      print('discount toggle : ${discountToggle}');
-      print('offer description : ${offerDescription}');
-      print('discount value : ${discountValue}');
+      print('images : $images');
+      print('description : $description');
+      print('weight : $weight');
+      print('carat : $carat');
+      print('subcategory id : $subcategoryId');
+      print('current gold price : $currentGoldPrice');
+      print('profit : $profit');
+      print('addition : $addition');
+      print('details : $details');
+      print('product type : $productType');
+      print('toggle : $toggle');
+      print('delivery type : $deliveryType');
+      print('phone numbers : $phoneNumber');
+      print('stores : $stores');
+      print('addressId : $addressId');
       List tmp = [];
       List sto = [];
       Map<String, dynamic> data = {
         'images[]': tmp,
         'description': description,
-        'age': age,
         'wight': weight,
         'carat': carat,
         'subcategory_id': subcategoryId,
@@ -536,15 +593,12 @@ class DioHelper {
         'profit': profit,
         'addition': addition ?? 0.0,
         'detail': details ?? 'no offer',
-        'manufacture': manufacturer,
-        'manufacture_type': manufacturerType,
+        'product_type': productType,
         'toggle': toggle,
         'delivery_type': deliveryType,
         'phone_number[]': phoneNumber,
         'stores[]': stores,
-        'discount_toggle': discountToggle,
-        'offer_description': offerDescription ?? 'no offer',
-        'discount_value': discountValue ?? 0.0,
+        'address_id': addressId,
       };
       for (int i = 0; i < images.length; i++) {
         tmp.add(await MultipartFile.fromFile(images[i].path));
@@ -717,13 +771,7 @@ class DioHelper {
       required String lastName,
       required String? email,
       required File? photo,
-      required double longitude,
-      required double latitude,
-      required String country,
-      required String state,
-      required String city,
-      required String neighborhood,
-      required String street}) async {
+      }) async {
     late Response response;
     try {
       FormData body = FormData.fromMap({
@@ -731,13 +779,6 @@ class DioHelper {
         'last_name': lastName,
         if (email != null) 'email': email,
         if (photo != null) 'photo': await MultipartFile.fromFile(photo.path),
-        'longitude': longitude,
-        'latitude': latitude,
-        'country': country,
-        'state': state,
-        'city': city,
-        'neighborhood': neighborhood,
-        'street': street,
       });
       response = await _dio
           .post(EndPoints.updateProfile(StorageHandler().userId), data: body,options: Options(
@@ -787,8 +828,10 @@ class DioHelper {
         'description': description,
         'type': 'problem',
       });
+      print(response.toString());
       return true;
     } on DioException catch (error) {
+      print(error.response);
       return false;
     }
   }
@@ -1584,4 +1627,15 @@ class DioHelper {
       return {'status': false};
     }
   }
+
+  // payment
+static Future<Map<String,dynamic>> payment(int orderId)async {
+    late Response response ;
+    try{
+       response = await _dio.post(EndPoints.payment(orderId),options: Options(headers: AppHeadersUser.header));
+      return response.data;
+    }on DioException catch(error){
+      return error.response!.data;
+    }
+}
 }

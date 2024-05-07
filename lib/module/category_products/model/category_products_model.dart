@@ -9,27 +9,25 @@ class SubCategoryADVSModel {
 
   final String image;
 
-  final String createdAt;
+  final String background;
 
-  final String updatedAt;
-
-  SubCategoryADVSModel(
-      {required this.id,
-      this.categoryId,
-      required this.subcategoryId,
-      required this.paragraph,
-      required this.image,
-      required this.createdAt,
-      required this.updatedAt});
+  SubCategoryADVSModel({
+    required this.id,
+    this.categoryId,
+    required this.subcategoryId,
+    required this.paragraph,
+    required this.image,
+    required this.background,
+  });
 
   factory SubCategoryADVSModel.fromJson({required Map<String, dynamic> json}) {
     return SubCategoryADVSModel(
-        id: json['id'],
-        subcategoryId: json['subcategory_id'],
-        paragraph: json['paragraph'],
-        image: json['image'],
-        createdAt: json['created_at'],
-        updatedAt: json['updated_at']);
+      id: json['id'],
+      subcategoryId: json['subcategory_id'],
+      paragraph: json['paragraph'],
+      image: json['image'],
+      background: json['background']
+    );
   }
 }
 
@@ -73,10 +71,10 @@ class ProductsModel {
 
   factory ProductsModel.fromJson({required Map<String, dynamic> json}) {
     List<Map<String, dynamic>> tmp = [];
-    if(json['images'].isNotEmpty) {
+    if (json['images'].isNotEmpty) {
       json['images'].forEach((e) {
-      tmp.add(e);
-    });
+        tmp.add(e);
+      });
     }
     return ProductsModel(
       id: json['id'],
@@ -98,4 +96,3 @@ class ProductsModel {
     );
   }
 }
-

@@ -13,6 +13,7 @@ class AdsProductController extends GetxController {
   ProfileMyProductsModel? model;
   List<SubCategoryADVSModel> subcategoriesADVS = [];
   dynamic appCommission;
+  String? productType;
 
   void subcategoryADVS({required int subcategoryId}) async {
     isSubcategoryLoading = true;
@@ -27,9 +28,15 @@ class AdsProductController extends GetxController {
   void getProductDetails({required int productId}) async {
     isLoading = true;
     update();
-    getAppCommission();
     Map<String, dynamic> data = await DioHelper.profileListsShowProduct(productId: productId);
     model = ProfileMyProductsModel.fromJson(json: data['data']);
+    if (model!.productType==1){
+      productType = AppWord.news;
+    }if(model!.productType == 2){
+      productType = AppWord.used;
+    }else{
+      productType = AppWord.likeNew;
+    }
     subcategoryADVS(subcategoryId: model!.subcategoryId);
     isLoading = false;
     update();
@@ -53,13 +60,11 @@ class AdsProductController extends GetxController {
   void deleteProduct({required int productId}) async {
     await DioHelper.delete(productId: productId).then((value) {
        if(value == null){
-         Get.snackbar(AppWord.warning, AppWord.checkInternet);
+         ControllerSnackBar(errorTitle: AppWord.warning,errorMessage: AppWord.checkInternet);
          return {};
        } else{
-         Get.snackbar(AppWord.note, AppWord.deleted,
-             snackStyle: SnackStyle.GROUNDED,
-             duration: const Duration(milliseconds: 2500));
-         Get.offAll(const MainScreen(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 700));
+         ControllerSnackBar(errorMessage: AppWord.done);
+         Get.offAll(const MainScreen(),transition: Transition.fadeIn,duration: const Duration(milliseconds: 500));
          return {};
        }
     } );

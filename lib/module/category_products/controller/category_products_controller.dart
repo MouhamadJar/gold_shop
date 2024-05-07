@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/colors/colors.dart';
 import 'package:gold_shop/core/texts/words.dart';
 import '../../../core/network/dio_helper.dart';
+import '../../product_payment_method/model/product_payment_method_model.dart';
 import '../model/category_products_model.dart';
 
 class SubcategoryProductsController extends GetxController {
@@ -14,25 +16,26 @@ class SubcategoryProductsController extends GetxController {
   List<ProductsModel> product = [];
   List<ProductsModel> productByCity = [];
   List<dynamic> image = [];
-  List<String> cities = [];
+  List<CitiesModel> cities = [];
   bool isBannersEmpty = true;
   bool isSubcategoryEmpty = true;
   bool isLoading = true;
   bool isCityEmpty = true;
-  String? selectedCity;
+  String selectedCity = AppWord.chooseCity;
 
   void getAllProducts({required int subcategoryId}) async {
+    isLoading = true;
+    update();
     Map<String, dynamic> data = await DioHelper.allProducts(subcategoryId: subcategoryId);
     product.clear();
     data['data']['data'].forEach((element) { product.add(ProductsModel.fromJson(json: element));});
-    isLoading = false;
     product.isEmpty ? isSubcategoryEmpty == true : isSubcategoryEmpty = false;
+    isLoading = false;
     update();
   }
 
   void subcategoryADVS({required int subcategoryId}) async {
-    Map<String, dynamic> data =
-        await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
+    Map<String, dynamic> data = await DioHelper.subcategoryADVS(subcategoryId: subcategoryId);
     data['data'].forEach((element) {
       subcategoriesADVS.add(SubCategoryADVSModel.fromJson(json: element));
     });
@@ -63,10 +66,9 @@ class SubcategoryProductsController extends GetxController {
   }
 
   void getCity() async {
-    Map<String, dynamic> data = await DioHelper.getCity();
+    Map<String, dynamic> data = await DioHelper.getCities(country: 'السعودية');
     data['data'].forEach((element) {
-      cities.add(element);
-      selectedCity = AppWord.chooseCity;
+      cities.add(CitiesModel.fromJson(json: element));
     });
     isCityEmpty = false;
     update();
@@ -84,6 +86,20 @@ class SubcategoryProductsController extends GetxController {
         return AppWord.sold;
       default :
         return AppWord.sold;
+    }
+  }
+  Color getProductStateColor(String state){
+    switch (state){
+      case '0' :
+        return CustomColors.green;
+      case '1' :
+        return CustomColors.yellow;
+      case '2' :
+        return CustomColors.gold;
+      case '3' :
+        return CustomColors.red;
+      default :
+        return CustomColors.red;
     }
   }
 

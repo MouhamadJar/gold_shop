@@ -11,8 +11,11 @@ import 'package:gold_shop/core/texts/words.dart';
 import 'package:gold_shop/core/utils/app_fonts.dart';
 import 'package:gold_shop/core/utils/app_network_image.dart';
 import 'package:gold_shop/core/utils/dimensions.dart';
+import 'package:gold_shop/module/home/controller/home_controller.dart';
 import 'package:gold_shop/module/invoice/controller/invoice_controller.dart';
 import 'package:gold_shop/module/main/user/view/main_screen_view.dart';
+import 'package:gold_shop/module/put_aside_purchase/controller/put_aside_purchase_controller.dart';
+import 'package:gold_shop/module/put_aside_purchase/view/put_side_purcahse_view.dart';
 
 import '../../../core/colors/colors.dart';
 
@@ -108,20 +111,19 @@ class Invoice extends GetView<InvoiceController> {
                                       width: ScreenDimensions.widthPercentage(context, 35),
                                       child: Column(
                                         children: [
-                                          RichText(
-                                            textAlign: TextAlign.center,
-                                            text: TextSpan(
-                                              style: TextStyle(
-                                                  color: CustomColors.black,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: AppFonts.smallTitleFont(context)),
+                                          Padding(
+                                            padding:  EdgeInsets.symmetric(vertical: ScreenDimensions.heightPercentage(context, 1)),
+                                            child: Row(
+                                              mainAxisAlignment: MainAxisAlignment.center,
                                               children: [
-                                                TextSpan(
-                                                    text: AppWord.productName,),
-                                                TextSpan(
-                                                    text: ' ${AppWord.productCalibre}',),
-                                                 TextSpan(
-                                                    text: '${controller.invoiceModel!.carat}',),
+                                                Text(controller.invoiceModel!.carat,style: TextStyle(
+                                                    color: CustomColors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: AppFonts.smallTitleFont(context))),
+                                                Text('  ${AppWord.caliber}',style: TextStyle(
+                                                    color: CustomColors.black,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: AppFonts.smallTitleFont(context))),
                                               ],
                                             ),
                                           ),
@@ -375,7 +377,7 @@ class Invoice extends GetView<InvoiceController> {
                           vertical: ScreenDimensions.heightPercentage(context, 1)),
                       Center(
                         child: AppButton(
-                            text: Text(AppWord.continues,
+                            text: Text(AppWord.confirmReservationProcess,
                                 style: TextStyle(color: CustomColors.white,fontSize: AppFonts.smallTitleFont(context))),
                             onTap: () {
                               controller.getPaymentInfo();
@@ -464,12 +466,10 @@ class Invoice extends GetView<InvoiceController> {
                                                                             spreadRadius: 1)
                                                                       ]),
                                                                   child: SvgPicture.asset(
-                                                                      AppImages
-                                                                          .whatsApp)),
+                                                                      AppImages.whatsApp)),
                                                             ),
                                                             Text(
-                                                              AppWord
-                                                                  .share,
+                                                              AppWord.share,
                                                               style: TextStyle(
                                                                   color: CustomColors
                                                                       .black,
@@ -524,38 +524,41 @@ class Invoice extends GetView<InvoiceController> {
                                                                     title: AppWord.transferNotificationPicture,
                                                                     description: AppWord.transferNotificationPictureDetails,
                                                                     card2: const SizedBox.shrink(),
-                                                                    onTap: () {
-                                                                      Get.back();
+                                                                    onTap: ()  {
+                                                                      Get.dialog(PopScope(canPop: false,child: Center(child: CircularProgressIndicator(color: CustomColors.gold,),)),barrierDismissible: false);
                                                                       controller.uploadNotificationImage(orderId: orderId);
-                                                                      Future.any([
-                                                                        Future.delayed(
-                                                                            const Duration(seconds: 2)).then((value) => Get.offAll(const MainScreen(),transition: Transition.fade,duration: const Duration(milliseconds: 700)),),
-                                                                              Get.defaultDialog(barrierDismissible: false,
-                                                                                title: '',
-                                                                                content: BackdropFilter(
-                                                                            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                                                                            child: Container(
-                                                                              decoration: BoxDecoration(color: CustomColors.gold, borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 1))),
-                                                                              width: ScreenDimensions.widthPercentage(context, 80),
-                                                                              height: ScreenDimensions.heightPercentage(context, 30),
-                                                                              child: Column(
-                                                                                crossAxisAlignment: CrossAxisAlignment.center,
-                                                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                                                children: [
-                                                                                  Icon(
-                                                                                    size: ScreenDimensions.widthPercentage(context, 10),
-                                                                                    Icons.verified,
-                                                                                    color: CustomColors.white,
-                                                                                  ),
-                                                                                  Text(
-                                                                                    AppWord.payingProcessDone,
-                                                                                    textAlign: TextAlign.center,
-                                                                                    style: TextStyle(fontSize: AppFonts.subTitleFont(context), color: CustomColors.black),
-                                                                                  )
-                                                                                ],
-                                                                              ),
-                                                                            ),
-                                                                          ),),]);
+                                                                      // Future.any([
+                                                                      //   Future.delayed(
+                                                                      //       const Duration(seconds: 2)).then((value) => [Get.off( PutAsidePurchase(productId: controller.invoiceModel!.productId),transition: Transition.fade,duration: const Duration(milliseconds: 700)),Get.lazyPut(() => PutAsidePurchaseController())],),
+                                                                      //         Get.defaultDialog(barrierDismissible: false,
+                                                                      //           title: '',
+                                                                      //           content: BackdropFilter(
+                                                                      //       filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+                                                                      //       child: Container(
+                                                                      //         decoration: BoxDecoration(
+                                                                      //             color: CustomColors.gold,
+                                                                      //             borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 1))),
+                                                                      //         width: ScreenDimensions.widthPercentage(context, 80),
+                                                                      //         height: ScreenDimensions.heightPercentage(context, 30),
+                                                                      //         child: Column(
+                                                                      //           crossAxisAlignment: CrossAxisAlignment.center,
+                                                                      //           mainAxisAlignment: MainAxisAlignment.center,
+                                                                      //           children: [
+                                                                      //             Icon(
+                                                                      //               size: ScreenDimensions.widthPercentage(context, 10),
+                                                                      //               Icons.verified,
+                                                                      //               color: CustomColors.white,
+                                                                      //             ),
+                                                                      //             Text(
+                                                                      //               AppWord.payingProcessDone,
+                                                                      //               textAlign: TextAlign.center,
+                                                                      //               style: TextStyle(fontSize: AppFonts.subTitleFont(context), color: CustomColors.black),
+                                                                      //             )
+                                                                      //           ],
+                                                                      //         ),
+                                                                      //       ),
+                                                                      //     ),
+                                                                      //         ),],);
                                                                     },
                                                                     buttonName: AppWord.sendTransferNotification,
                                                                     buttonButtonBackground: AppImages.buttonLiteBackground,

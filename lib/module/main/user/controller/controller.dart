@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/storage_handler/storage_handler.dart';
 import 'package:gold_shop/core/texts/words.dart';
@@ -28,7 +29,7 @@ class MainScreenController extends GetxController{
          transition: Transition.rightToLeft,
          duration:
          const Duration(milliseconds: 700));
-     Get.snackbar('',AppWord.loggedOut);
+     ControllerSnackBar(errorTitle: AppWord.done,errorMessage: AppWord.loggedOut);
      update();
    });
  }

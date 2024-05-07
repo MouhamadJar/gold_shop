@@ -1,9 +1,8 @@
-import 'dart:ui';
 import 'package:delayed_display/delayed_display.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/validtor/app_validator.dart';
+import '../../../../core/validator/app_validator.dart';
 import 'package:gold_shop/module/authentication/controller/mediator_shop/login_mediator_shop_controller.dart';
 import 'package:gold_shop/module/authentication/view/mediator_shop/signup_screen.dart';
 import '../../../../core/colors/colors.dart';
@@ -13,7 +12,6 @@ import '../../../../core/texts/words.dart';
 import '../../../../core/utils/app_fonts.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../check_code_screen.dart';
-import '../user/signup_screen.dart';
 
 class MediatorLoginScreen extends GetView<LoginMediatorShopController> {
   const MediatorLoginScreen({super.key});
@@ -101,8 +99,9 @@ class MediatorLoginScreen extends GetView<LoginMediatorShopController> {
                                 vertical: ScreenDimensions.heightPercentage(context, 3)),
                             AppTextField(
                               controller: controller.userNameController,
+                              hintText: AppWord.atLeast5Characters,
                               validator: (value) {
-                                return AppValidator().userNameValidator(value);
+                                return AppValidator().userNameValidator(value,context);
                               },
                               title: AppWord.userName,
                               keyboardType: TextInputType.name,
@@ -115,7 +114,8 @@ class MediatorLoginScreen extends GetView<LoginMediatorShopController> {
                             AppTextField(
                               controller: controller.passwordController,
                               title: AppWord.password,
-                              maxLines:1,
+                              maxLines: 1,
+                              hintText: AppWord.atLeast9Characters,
                               keyboardType: TextInputType.visiblePassword,
                               validator: (value) {
                                 return AppValidator().passwordValidator(value);
@@ -330,7 +330,7 @@ class MediatorLoginScreen extends GetView<LoginMediatorShopController> {
                                     AppImages.buttonLiteBackground),
                             GestureDetector(
                               onTap: () {
-                                Get.to( MediatorSignupScreen(),
+                                Get.to( const MediatorSignupScreen(),
                                   transition: Transition.fadeIn,
                                   duration: const Duration(milliseconds: 700),);
                                 },

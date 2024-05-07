@@ -40,8 +40,7 @@ class HomeController extends GetxController {
     isBannerLoading = true;
     update();
     Map<String, dynamic> data = await DioHelper.homeADVS();
-    data['data'].forEach((element) {
-      ads.add(HomeADVSModel.fromJson(json: element));
+    data['data'].forEach((element) {ads.add(HomeADVSModel.fromJson(json: element));
     });
     ads.isEmpty ? isBannerEmpty = true : isBannerEmpty = false;
     isBannerLoading = false;

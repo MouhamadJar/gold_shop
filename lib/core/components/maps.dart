@@ -17,7 +17,6 @@ class AppGoogleMap extends GetView<AppGoogleMapController> {
       this.height,
       this.width,
       this.onTap,
-      this.canTap = false,
       this.onCameraMoved
       });
 
@@ -25,9 +24,8 @@ class AppGoogleMap extends GetView<AppGoogleMapController> {
   final CameraPosition? cameraPosition;
   final double? width;
   final double? height;
-  Function(LatLng)? onTap;
-  Function(CameraPosition)? onCameraMoved;
-   bool canTap;
+  final Function(LatLng)? onTap;
+  final Function(CameraPosition)? onCameraMoved;
 
   @override
   Widget build(BuildContext context) {

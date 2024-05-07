@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gold_shop/core/components/components.dart';
 import 'package:gold_shop/core/network/dio_helper.dart';
 import 'package:gold_shop/core/texts/words.dart';
 
@@ -32,11 +33,11 @@ bool isLoading = false;
         selectedProblemType = {'name': 'select type'};
         isLoading = false;
         update();
-        Get.snackbar(AppWord.done, '');
+        ControllerSnackBar(errorMessage: AppWord.done);
       } else {
         isLoading = false;
         update();
-        Get.snackbar(AppWord.warning, 'check your connection');
+        ControllerSnackBar(errorMessage: AppWord.checkInternet,errorTitle: AppWord.warning);
       }
     });
   }

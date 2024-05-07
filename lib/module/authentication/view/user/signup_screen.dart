@@ -1,14 +1,11 @@
 import 'package:delayed_display/delayed_display.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:gold_shop/core/validtor/app_validator.dart';
+import '../../../../core/validator/app_validator.dart';
 import 'package:gold_shop/module/authentication/controller/user/user_signup_controller.dart';
 import 'package:gold_shop/module/authentication/view/login_screen.dart';
 import 'package:gold_shop/module/privacy/view/privacy_view.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../../../../core/components/components.dart';
 import '../../../../core/components/maps.dart';
 import '../../../../core/texts/words.dart';
@@ -17,7 +14,6 @@ import '../../../../core/colors/colors.dart';
 import '../../../../core/images/images.dart';
 import '../../../../core/utils/dimensions.dart';
 import '../../../edit_profile/components/edit_profile_components.dart';
-import 'verify_account_screen.dart';
 
 class UserSignUpScreen extends GetView<UserSignupController> {
   const UserSignUpScreen({super.key});
@@ -25,6 +21,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
   @override
   Widget build(BuildContext context) {
     Get.put(UserSignupController());
+    List<String>phoneNumber = [];
     return GetBuilder<UserSignupController>(
         builder: (_) {
           return SafeArea(
@@ -117,6 +114,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                       return AppValidator().nameValidator(
                                           value,3);
                                     },
+                                    hintText: AppWord.atLeast6Characters,
                                     title: AppWord.firstName,
                                     suffix: Icon(Icons.person,color: controller.firstNameController.text.isEmpty?CustomColors.black:CustomColors.gold,),
                                     onChanged: (value){
@@ -133,6 +131,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                       return AppValidator().nameValidator(
                                           value,3);
                                     },
+                                    hintText: AppWord.atLeast6Characters,
                                     suffix: Icon(Icons.person,color: controller.lastNameController.text.isEmpty?CustomColors.black:CustomColors.gold,),
                                     onChanged: (value){
                                       controller.update();
@@ -160,9 +159,19 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   AppTextField(
                                     title: AppWord.phoneNumber,
                                     controller: controller.phoneController,
+                                    hintText: '05********',
                                     validator: (value) {
-                                      return AppValidator().phoneValidator(
-                                          value);
+                                      phoneNumber = value.toString().characters.toList();
+                                      if(value==null||value.toString().isEmpty){
+                                        return AppValidator().phoneValidator(value);
+                                      }
+                                      if(phoneNumber[0]!='0'||phoneNumber[1]!='5'){
+                                        return AppWord.mustStartWith05;
+                                      }
+                                      else {
+                                        return AppValidator().phoneValidator(
+                                            value);
+                                      }
                                     },
                                     keyboardType: TextInputType.phone,
                                     suffix: Icon(Icons.phone,color: controller.phoneController.text.isEmpty?CustomColors.black:CustomColors.gold,),
@@ -175,10 +184,10 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   AppTextField(
                                     maxLines: 1,
                                     title: AppWord.password,
+                                    hintText: AppWord.atLeast9Characters,
                                     controller: controller.passwordController,
                                     validator: (value) {
-                                      return AppValidator().passwordValidator(
-                                          value);
+                                      return AppValidator().passwordValidator(value);
                                     },
                                     keyboardType: TextInputType.name,
                                     suffix: Icon(Icons.lock,color: controller.passwordController.text.isEmpty?CustomColors.black:CustomColors.gold,),
@@ -195,64 +204,124 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                   ).paddingSymmetric(
                                       horizontal: ScreenDimensions.widthPercentage(context, 5))
                                       .marginOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
-                                  GetBuilder<UserSignupController>(
-                                    builder: (_) {
-                                      return AppGoogleMap(
-                                        markers: controller.markers,
-                                        onTap: controller.zoomed?controller.onGoogleMapTapped:(latLng){
-                                          controller.update();
-                                          Get.snackbar(AppWord.warning,AppWord.pleaseZoomIn);
-                                        },
-                                        onCameraMoved: (cameraPosition){
-                                          if (cameraPosition.zoom==19.0){
-                                            controller.zoomed = true;
+                                  AppTextField(
+                                    controller: controller.descriptionController,
+                                    title: AppWord.mediatorDescription,
+                                    hintText: AppWord.atLeast9Characters,
+                                    suffix:  Icon(Icons.description,color: controller.descriptionController.text.isEmpty?Colors.black:CustomColors.gold,),
+                                    onChanged: (value){
+                                      controller.update();
+                                    },
+                                    keyboardType: TextInputType.name,
+                                    validator: (value) {
+                                      if (value== null || value.toString().isEmpty){
+                                        ControllerSnackBar(errorMessage: AppWord.emptyDescription);
+                                        return AppWord.emptyDescription;
+                                      }
+                                      if(value.toString().isNum){
+                                        ControllerSnackBar(errorMessage: AppWord.descriptionShouldNotBeOnlyNumbers);
+                                        return AppWord.descriptionShouldNotBeOnlyNumbers;
+                                      }
+                                      if(value.toString().length < 9){
+                                        ControllerSnackBar(errorMessage: AppWord.descriptionMustBeAtLeast9);
+                                        return AppWord.descriptionMustBeAtLeast9;
+                                      }
+                                      return null;
+                                    },
+                                  )
+                                      .paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 5))
+                                      .marginOnly(bottom: ScreenDimensions.heightPercentage(context, 2)),
+                                  // GetBuilder<UserSignupController>(
+                                  //   builder: (_) {
+                                  //     return AppGoogleMap(
+                                  //       markers: controller.markers,
+                                  //       onTap: controller.zoomed?controller.onGoogleMapTapped:(latLng){
+                                  //         controller.update();
+                                  //         Get.snackbar(AppWord.warning,AppWord.pleaseZoomIn);
+                                  //       },
+                                  //       onCameraMoved: (cameraPosition){
+                                  //         if (cameraPosition.zoom==19.0){
+                                  //           controller.zoomed = true;
+                                  //           controller.update();
+                                  //         }if(cameraPosition.zoom ==18.9){
+                                  //           controller.zoomed = false;
+                                  //           controller.update();
+                                  //         }
+                                  //       },
+                                  //     ).paddingSymmetric(
+                                  //         vertical: ScreenDimensions.heightPercentage(context, 2), horizontal:
+                                  //         ScreenDimensions.widthPercentage(context, 5)
+                                  //     );
+                                  //   }
+                                  // ),
+                                  // Directions(
+                                  //   child: EditProfileCard(
+                                  //     title: AppWord.area,
+                                  //     subtitle: controller.country,
+                                  //   ),
+                                  // ).marginOnly(bottom:
+                                  //     ScreenDimensions.heightPercentage(context, 5)),
+                                  // Directions(
+                                  //   child: EditProfileCard(
+                                  //     title: AppWord.state,
+                                  //     subtitle: controller.state,
+                                  //   ),
+                                  // ).marginOnly(
+                                  //     bottom: ScreenDimensions.heightPercentage(context, 5)),
+                                  // Directions(
+                                  //   child: EditProfileCard(
+                                  //     title: AppWord.city,
+                                  //     subtitle: controller.city,
+                                  //   ),
+                                  // ).marginOnly(
+                                  //     bottom: ScreenDimensions.heightPercentage(context, 5)),
+                                  // Directions(
+                                  //   child: EditProfileCard(
+                                  //     title: AppWord.neighborhood,
+                                  //     subtitle: controller.neighborhood,
+                                  //   ),
+                                  // ).marginOnly(
+                                  //     bottom: ScreenDimensions.heightPercentage(context, 5)),
+                                  // Directions(
+                                  //   child: EditProfileCard(
+                                  //     title: AppWord.street,
+                                  //     subtitle: controller.street,
+                                  //   ),
+                                  // ).marginOnly(
+                                  //     bottom: ScreenDimensions.heightPercentage(context, 5)),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      AppPopUpMenu(
+                                        title: controller.selectedCountry,
+                                        items: controller.countries.map((e) => PopupMenuItem(
+                                          value: e,
+                                          onTap: (){
+                                            controller.selectedCountry=e;
+                                            controller.getCities(country: e);
                                             controller.update();
-                                          }if(cameraPosition.zoom ==18.9){
-                                            controller.zoomed = false;
+                                          },
+                                          child: Text(
+                                            e,
+                                            style: TextStyle(fontSize: AppFonts.smallTitleFont(context),
+                                            ),
+                                          ),),).toList(),),
+                                      AppPopUpMenu(
+                                        title: controller.selectedCity,
+                                        items: controller.cities.map((e) => PopupMenuItem(
+                                          value: e.city,
+                                          onTap: (){
+                                            controller.selectedCity=e.city;
+                                            controller.addressId = e.addressId;
                                             controller.update();
-                                          }
-                                        },
-                                      ).paddingSymmetric(
-                                          vertical: ScreenDimensions.heightPercentage(context, 2), horizontal:
-                                          ScreenDimensions.widthPercentage(context, 5)
-                                      );
-                                    }
+                                          },
+                                          child: Text(
+                                            e.city,
+                                            style: TextStyle(fontSize: AppFonts.smallTitleFont(context),
+                                            ),
+                                          ),),).toList(),),
+                                    ],
                                   ),
-                                  Directions(
-                                    child: EditProfileCard(
-                                      title: AppWord.area,
-                                      subtitle: controller.country,
-                                    ),
-                                  ).marginOnly(bottom:
-                                      ScreenDimensions.heightPercentage(context, 5)),
-                                  Directions(
-                                    child: EditProfileCard(
-                                      title: AppWord.state,
-                                      subtitle: controller.state,
-                                    ),
-                                  ).marginOnly(
-                                      bottom: ScreenDimensions.heightPercentage(context, 5)),
-                                  Directions(
-                                    child: EditProfileCard(
-                                      title: AppWord.city,
-                                      subtitle: controller.city,
-                                    ),
-                                  ).marginOnly(
-                                      bottom: ScreenDimensions.heightPercentage(context, 5)),
-                                  Directions(
-                                    child: EditProfileCard(
-                                      title: AppWord.neighborhood,
-                                      subtitle: controller.neighborhood,
-                                    ),
-                                  ).marginOnly(
-                                      bottom: ScreenDimensions.heightPercentage(context, 5)),
-                                  Directions(
-                                    child: EditProfileCard(
-                                      title: AppWord.street,
-                                      subtitle: controller.street,
-                                    ),
-                                  ).marginOnly(
-                                      bottom: ScreenDimensions.heightPercentage(context, 5)),
                                   Row(
                                     children: [
                                       Checkbox(
@@ -261,6 +330,7 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                           controller.check = value!;
                                           controller.update();
                                         },
+                                        fillColor: controller.check?MaterialStatePropertyAll(CustomColors.gold):MaterialStatePropertyAll(CustomColors.silver),
                                         activeColor: CustomColors.gold,).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
                                       Text( AppWord.acceptTerms,
                                         style: TextStyle(
@@ -297,7 +367,6 @@ class UserSignUpScreen extends GetView<UserSignupController> {
                                       ),
                                       onTap: controller.check?() {
                                         if (!(controller.formKey.currentState!.validate())) {
-                                          Get.snackbar(AppWord.warning, AppWord.checkAllRequiredFields);
                                           return;
                                         }
                                         Get.dialog(

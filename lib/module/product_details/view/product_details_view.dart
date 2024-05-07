@@ -28,16 +28,6 @@ class ProductDetails extends GetView<ProductDetailsController> {
       child: Scaffold(
         backgroundColor: CustomColors.white,
         appBar: AppBar(
-          actions: [
-            Padding(
-              padding: EdgeInsetsDirectional.all(
-                  ScreenDimensions.widthPercentage(context, 2)),
-              child: SvgPicture.asset(
-                AppImages.saudiArabia,
-                height: ScreenDimensions.heightPercentage(context, 5),
-              ),
-            ),
-          ],
           centerTitle: true,
           title: Text(
             AppWord.productDetails,
@@ -137,11 +127,23 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    Text(
-                                      '${AppWord.productName} ${AppWord.caliber} ${controller.model!.carat}',
-                                      style: TextStyle(
-                                          fontSize:
-                                              AppFonts.subTitleFont(context)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          controller.model!.carat,
+                                          style: TextStyle(
+                                              fontSize: AppFonts.subTitleFont(context),
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                        Text(
+                                          ' ${AppWord.caliber}',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  AppFonts.subTitleFont(context),fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
                                     ),
                                     Text(
                                       controller.model!.description,
@@ -162,30 +164,38 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                     ),
                                     Details(
                                         withIcon: true,
-                                        details: controller.model!.manufacturer,
-                                        title: AppWord.manufacturer,
-                                        picPath: AppImages.building),
-                                    Details(
-                                        withIcon: true,
-                                        details: controller.model!.age,
-                                        title: AppWord.age,
+                                        details: controller.productType,
+                                        title: AppWord.productType,
                                         picPath: AppImages.age),
                                     Details(
                                         withIcon: true,
-                                        details: '${controller.model!.weight.toString()} ${AppWord.grams}',
+                                        withSubtitle:  true,
+                                        subtitle: AppWord.grams,
+                                        details: controller.model!.weight.toString(),
                                         title: AppWord.weight,
                                         picPath: AppImages.weightScale),
                                     Details(
                                         withIcon: true,
+                                        withSubtitle: true,
+                                        subtitle: AppWord.sad,
                                         details: controller.model!.toggle==false
-                                            ?'${controller.model!.currentGoldPrice.toString()} ${AppWord.sad}'
-                                            : controller.allCaratPrices.isLoading?AppWord.sad:'${controller.allCaratPrices.caratPrice.toString()} ${AppWord.sad}',
+                                            ?controller.model!.currentGoldPrice.toString()
+                                            : controller.allCaratPrices.isLoading?'':controller.allCaratPrices.caratPrice.toString(),
                                         title: AppWord.gramPrice,
                                         picPath: AppImages.priceTag),
                                     Details(
                                         withIcon: true,
-                                        details: '${controller.model!.price.toString()} ${AppWord.sad}',
+                                        withSubtitle: true,
+                                        subtitle: AppWord.sad,
+                                        details: controller.model!.price.toString(),
                                         title: AppWord.productPrice,
+                                        picPath: AppImages.priceTag),
+                                    Details(
+                                        withIcon: true,
+                                        withSubtitle: true,
+                                        subtitle: AppWord.sad,
+                                        details: controller.model!.marketValue.toInt().toString(),
+                                        title: AppWord.marketValue,
                                         picPath: AppImages.priceTag),
                                     Details(
                                         withIcon: true,
@@ -542,7 +552,7 @@ class ProductDetails extends GetView<ProductDetailsController> {
                                                   sigmaX: 10, sigmaY: 10),
                                               child: AppDialog(
                                                   title: AppWord.addToPutAside,
-                                                  description: AppWord.pleaseConfirmYourPurchase,
+                                                  description: AppWord.pleaseConfirmYourReservation,
                                                   card1: Directions(
                                                     child: RichText(
                                                       text: TextSpan(

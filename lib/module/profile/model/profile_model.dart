@@ -1,7 +1,6 @@
 import 'package:gold_shop/core/location_service/location_entity.dart';
 
 class ProfileModel {
-  final LocationEntity location;
   final int id;
 
   final String firstName;
@@ -10,48 +9,32 @@ class ProfileModel {
 
   final String phoneNumber;
 
+  final String? description;
+
   final String? photo;
 
   final String email;
 
-  final String country;
+  final int addressId;
 
-  final String state;
+  final int isVerified;
 
-  final String city;
+  final int isEmailVerified;
 
-  final String neighborhood;
-
-  final String street;
-
-  final bool isVerified;
-
-  final dynamic blocked;
-
-  final String? deletedAt;
-
-  final String? createdAt;
-
-  final String? updatedAt;
+  final int blocked;
 
   ProfileModel({
     required this.id,
     required this.firstName,
     required this.lastName,
     required this.phoneNumber,
+    this.description,
     this.photo,
+    required this.addressId,
+    required this.blocked,
+    required this.isEmailVerified,
     required this.email,
-    required this.country,
-    required this.state,
-    required this.city,
-    required this.neighborhood,
-    required this.street,
     required this.isVerified,
-    this.blocked,
-    required this.deletedAt,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.location,
   });
 
   factory ProfileModel.fromJson({required Map<String, dynamic> json}) {
@@ -63,17 +46,11 @@ class ProfileModel {
       phoneNumber: json['phone_number'],
       photo: json['photo'],
       email: json['email'],
-      country: json['country'],
-      state: json['state'],
-      city: json['city'],
-      neighborhood: json['neighborhood'],
-      street: json['street'],
-      isVerified: json['is_verified'] == 0 ? false : true,
+      isVerified: json['is_verified'],
+      isEmailVerified: json['is_email_verified'],
+      addressId: json['address_id'],
+      description: json['description'],
       blocked: json['blocked'],
-      deletedAt: json['deleted_at'],
-      createdAt: json['created_at'],
-      updatedAt: json['updated_at'],
-      location: LocationEntity(lon: json['longitude'], lat: json['latitude']),
     );
   }
 }

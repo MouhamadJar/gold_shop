@@ -37,9 +37,6 @@ class Profile extends GetView<ProfileController> {
         backgroundColor: CustomColors.white,
         body: GetBuilder<ProfileController>(initState: (state) {
           controller.getProfile();
-          controller.getPurchases();
-          controller.getSells();
-          controller.getMyProducts();
         }, builder: (_) {
           return controller.isLoading
               ? Center(
@@ -100,7 +97,7 @@ class Profile extends GetView<ProfileController> {
                                   child: CircleAvatar(
                                     backgroundColor: CustomColors.white1,
                                     radius: ScreenDimensions.radius(context, 9),
-                                    child: controller.model['photo'] != null
+                                    child: controller.user!.photo != null
                                         ? GestureDetector(
                                             onTap: () {
                                               Get.dialog(BackdropFilter(
@@ -108,16 +105,14 @@ class Profile extends GetView<ProfileController> {
                                                     sigmaY: 10, sigmaX: 10),
                                                 child: InteractiveViewer(
                                                   child: AppNetworkImage(
-                                                    baseUrlImages +
-                                                        controller
-                                                            .model['photo'],
+                                                    baseUrlImages + controller.user!.photo!,
                                                     fit: BoxFit.contain,
                                                   ),
                                                 ),
                                               ));
                                             },
                                             child: AppNetworkImage(
-                                              baseUrlImages + controller.model['photo'],
+                                              baseUrlImages + controller.user!.photo!,
                                               shape: BoxShape.circle,
                                               fit: BoxFit.contain,
                                               width: ScreenDimensions.widthPercentage(context, 40),
@@ -144,7 +139,7 @@ class Profile extends GetView<ProfileController> {
                                       delay: const Duration(milliseconds: 300),
                                       slidingBeginOffset: const Offset(5, 0),
                                       child: Text(
-                                        '${controller.model['first_name']} ${controller.model['last_name']}',
+                                        '${controller.user!.firstName} ${controller.user!.lastName}',
                                         style: TextStyle(
                                           color: CustomColors.white,
                                           fontSize:
@@ -152,314 +147,317 @@ class Profile extends GetView<ProfileController> {
                                         ),
                                       ),
                                     ),
+                                    // DelayedDisplay(
+                                    //   delay: const Duration(milliseconds: 600),
+                                    //   slidingBeginOffset: const Offset(-5, 0),
+                                    //   child: Row(
+                                    //     mainAxisAlignment:
+                                    //         MainAxisAlignment.center,
+                                    //     children: [
+                                    //       Text(
+                                    //         controller.user!.isVerified == 0
+                                    //             ? AppWord.notActivatedAccount
+                                    //             : AppWord.activatedAccount,
+                                    //         style: TextStyle(
+                                    //           color: CustomColors.white,
+                                    //           fontSize: AppFonts.subTitleFont(
+                                    //               context),
+                                    //         ),
+                                    //       ).paddingSymmetric(
+                                    //           horizontal: ScreenDimensions
+                                    //               .widthPercentage(context, 3)),
+                                    //       controller.user!.isVerified == 0
+                                    //           ? const SizedBox.shrink()
+                                    //           : Icon(Icons.verified,
+                                    //               color: CustomColors.white,
+                                    //               size: ScreenDimensions
+                                    //                   .widthPercentage(
+                                    //                       context, 6)),
+                                    //     ],
+                                    //   ),
+                                    // ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                right: 1,
+                                top: ScreenDimensions.heightPercentage(
+                                    context, 50),
+                                child: Column(
+                                  children: [
                                     DelayedDisplay(
-                                      delay: const Duration(milliseconds: 600),
-                                      slidingBeginOffset: const Offset(-5, 0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            controller.model['is_verified'] == 0
-                                                ? AppWord.notActivatedAccount
-                                                : AppWord.activatedAccount,
-                                            style: TextStyle(
-                                              color: CustomColors.white,
-                                              fontSize: AppFonts.subTitleFont(
-                                                  context),
-                                            ),
-                                          ).paddingSymmetric(
-                                              horizontal: ScreenDimensions
-                                                  .widthPercentage(context, 3)),
-                                          controller.model['is_verified'] == 0
-                                              ? const SizedBox.shrink()
-                                              : Icon(Icons.verified,
-                                                  color: CustomColors.white,
-                                                  size: ScreenDimensions
-                                                      .widthPercentage(
-                                                          context, 6)),
-                                        ],
-                                      ),
+                                      delay: const Duration(milliseconds: 300),
+                                      slidingBeginOffset: const Offset(5, 0),
+                                      child:
+                                      Directions(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              controller.user!.phoneNumber,
+                                              style: TextStyle(
+                                                  fontSize: AppFonts.smallTitleFont(context),
+                                                  fontWeight: FontWeight.bold),
+                                            ).paddingSymmetric(
+                                                horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                                            SvgPicture.asset(AppImages.phone)
+                                          ],
+                                        ),
+                                      ).paddingSymmetric(
+                                          horizontal: ScreenDimensions.widthPercentage(context, 5),
+                                          vertical: ScreenDimensions.heightPercentage(context, 1)),
                                     ),
                                   ],
                                 ),
                               ),
                               Positioned(
-                                bottom: 1,
-                                width: ScreenDimensions.screenWidth(context),
+                                right: 1,
+                                top: ScreenDimensions.heightPercentage(
+                                    context, 55),
                                 child: Column(
                                   children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                          width: ScreenDimensions.widthPercentage(context, 90),
-                                          child: Text.rich(
-                                            TextSpan(
-                                              children: [
-                                                TextSpan(text: ' ${controller.model['country']} '),
-                                                TextSpan(text: ' ${controller.model['state']} '),
-                                                TextSpan(text: ' ${controller.model['city']} '),
-                                                TextSpan(text: ' ${controller.model['neighborhood']} '),
-                                                TextSpan(text: ' ${controller.model['street']} '),
-                                              ],),
-                                            maxLines: 2,textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: AppFonts.smallTitleFont(context)),
-                                          ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                                    DelayedDisplay(
+                                      delay: const Duration(milliseconds: 300),
+                                      slidingBeginOffset: const Offset(5, 0),
+                                      child:
+                                      Directions(
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.end,
+                                          children: [
+                                            Text(
+                                              controller.user!.email,
+                                              style: TextStyle(
+                                                  fontSize: AppFonts.smallTitleFont(context),
+                                                  fontWeight: FontWeight.bold),
+                                            ).paddingSymmetric(
+                                                horizontal: ScreenDimensions.widthPercentage(
+                                                    context, 2)),
+                                            SvgPicture.asset(AppImages.email)
+                                          ],
                                         ),
-                                        SvgPicture.asset(
-                                          AppImages.location,
-                                        ),
-                                      ],
+                                      ).paddingSymmetric(
+                                          horizontal: ScreenDimensions.widthPercentage(context, 5),
+                                          vertical: ScreenDimensions.heightPercentage(context, 1)),
                                     ),
                                   ],
                                 ),
                               ),
+                              // Positioned(
+                              //   right: 1,
+                              //   top: ScreenDimensions.heightPercentage(
+                              //       context, 50),
+                              //   child: Column(
+                              //     children: [
+                              //       DelayedDisplay(
+                              //         delay: const Duration(milliseconds: 300),
+                              //         slidingBeginOffset: const Offset(5, 0),
+                              //         child:
+                              //         Directions(
+                              //           child: Row(
+                              //             mainAxisAlignment: MainAxisAlignment.end,
+                              //             children: [
+                              //               Text(
+                              //                 'رقم الحساب البنكي',
+                              //                 style: TextStyle(
+                              //                     fontSize: AppFonts.smallTitleFont(context),
+                              //                     fontWeight: FontWeight.bold),
+                              //               ).paddingSymmetric(
+                              //                   horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                              //             ],
+                              //           ),
+                              //         ).paddingSymmetric(
+                              //             horizontal: ScreenDimensions.widthPercentage(context, 5),
+                              //             vertical: ScreenDimensions.heightPercentage(context, 1)),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
+
+
+                              // Positioned(
+                              //   bottom: 1,
+                              //   width: ScreenDimensions.screenWidth(context),
+                              //   child: Column(
+                              //     children: [
+                              //       Row(
+                              //         mainAxisAlignment: MainAxisAlignment.center,
+                              //         children: [
+                              //           SizedBox(
+                              //             width: ScreenDimensions.widthPercentage(context, 90),
+                              //             child: Text.rich(
+                              //               TextSpan(
+                              //                 children: [
+                              //                   TextSpan(text: ' ${controller.model['country']} '),
+                              //                   TextSpan(text: ' ${controller.model['state']} '),
+                              //                   TextSpan(text: ' ${controller.model['city']} '),
+                              //                   TextSpan(text: ' ${controller.model['neighborhood']} '),
+                              //                   TextSpan(text: ' ${controller.model['street']} '),
+                              //                 ],),
+                              //               maxLines: 2,textAlign: TextAlign.center,
+                              //               style: TextStyle(
+                              //                   fontWeight: FontWeight.bold,
+                              //                   fontSize: AppFonts.smallTitleFont(context)),
+                              //             ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 1)),
+                              //           ),
+                              //           SvgPicture.asset(
+                              //             AppImages.location,
+                              //           ),
+                              //         ],
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
-                      ])),
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                            (context, index) => AppGoogleMap(
-                              cameraPosition: controller.position!,
-                              markers: {controller.marker!},
-                            ).paddingSymmetric(
-                                    vertical: ScreenDimensions.heightPercentage(
-                                        context, 2)),
-                            childCount: 1,
-                            addSemanticIndexes: true),
-                      ),
-                      SliverList(
-                          delegate: SliverChildListDelegate([
-                        Directions(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                controller.model['phone_number'],
-                                style: TextStyle(
-                                    fontSize: AppFonts.smallTitleFont(context),
-                                    fontWeight: FontWeight.bold),
-                              ).paddingSymmetric(
-                                  horizontal: ScreenDimensions.widthPercentage(
-                                      context, 2)),
-                              SvgPicture.asset(AppImages.phone)
-                            ],
-                          ),
-                        ).paddingSymmetric(
-                            horizontal: ScreenDimensions.widthPercentage(context, 5),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
-                        Directions(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                controller.model['email'],
-                                style: TextStyle(
-                                    fontSize: AppFonts.smallTitleFont(context),
-                                    fontWeight: FontWeight.bold),
-                              ).paddingSymmetric(
-                                  horizontal: ScreenDimensions.widthPercentage(
-                                      context, 2)),
-                              SvgPicture.asset(AppImages.email)
-                            ],
-                          ),
-                        ).paddingSymmetric(
-                            horizontal: ScreenDimensions.widthPercentage(context, 5),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
-                        Text(
-                          AppWord.myPurchasesAndPutAside,
-                          style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                    blurRadius: 0.5, color: CustomColors.black)
-                              ],
-                              color: CustomColors.gold,
-                              fontSize: AppFonts.subTitleFont(context),
-                              fontWeight: FontWeight.bold),
-                        ).paddingSymmetric(
-                            horizontal: ScreenDimensions.heightPercentage(context, 2),
-                            vertical: ScreenDimensions.heightPercentage(context, 1)),
-                        SizedBox(
-                            width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
-                            child: controller.isLoadingPurchases
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                      color: CustomColors.gold,
-                                    ),
-                                  )
-                                : controller.myPurchases.isEmpty
-                                    ? Center(
-                                        child: Text(
-                                          AppWord.nothingToShow,
-                                          style: TextStyle(
-                                              fontSize: AppFonts.subTitleFont(
-                                                  context)),
-                                        ),
-                                      )
-                                    : ProfileLists(
-                                        product: controller.myPurchases,
-                                        image: controller.myPurchases,
-                                      )),
-                        TextButton(
-                                onPressed: () {
-                                  Get.to(const MyPurchasesHome(),
-                                      transition: Transition.zoom,
-                                      duration:
-                                          const Duration(milliseconds: 500));
-                                },
-                                child: Text(
-                                  AppWord.viewAll,
-                                  style: TextStyle(
-                                      color: CustomColors.black,
-                                      fontSize:
-                                          AppFonts.smallTitleFont(context)),
-                                )).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 2)),
-                        Text(
-                          AppWord.mySellsAndPutAside,
-                          style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                    blurRadius: 0.5, color: CustomColors.black)
-                              ],
-                              color: CustomColors.gold,
-                              fontSize: AppFonts.subTitleFont(context),
-                              fontWeight: FontWeight.bold),
-                        ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.heightPercentage(context, 2),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
-                        SizedBox(
-                            width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
-                            child: controller.isLoadingSells
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                      color: CustomColors.gold,
-                                    ),
-                                  )
-                                : controller.mySells.isEmpty
-                                    ? Center(
-                                        child: Text(
-                                          AppWord.nothingToShow,
-                                          style: TextStyle(
-                                              fontSize: AppFonts.subTitleFont(
-                                                  context)),
-                                        ),
-                                      )
-                                    : ProfileLists(toSold: true,
-                                        product: controller.mySells,
-                                        image: controller.mySells,
-                                      )),
-                        TextButton(
-                            onPressed: () {
-                              Get.to(const MySellsHome(),
-                                  transition: Transition.zoom,
-                                  duration: const Duration(milliseconds: 500));
-                            },
-                            child: Text(
-                              AppWord.viewAll,
-                              style: TextStyle(
-                                  color: CustomColors.black,
-                                  fontSize: AppFonts.smallTitleFont(context)),
-                            )).paddingSymmetric(
-                          horizontal: ScreenDimensions.widthPercentage(context, 2),
-                        ),
-                        Text(
-                          AppWord.myAds,
-                          style: TextStyle(
-                              shadows: [
-                                Shadow(
-                                    blurRadius: 0.5, color: CustomColors.black)
-                              ],
-                              color: CustomColors.gold,
-                              fontSize: AppFonts.subTitleFont(context),
-                              fontWeight: FontWeight.bold),
-                        ).paddingSymmetric(
-                            horizontal:
-                                ScreenDimensions.heightPercentage(context, 2),
-                            vertical:
-                                ScreenDimensions.heightPercentage(context, 1)),
-                        SizedBox(
-                            width: ScreenDimensions.screenWidth(context),
-                            height:
-                                ScreenDimensions.heightPercentage(context, 22),
-                            child: controller.isLoadingMyProducts
-                                ? Center(
-                                    child: CircularProgressIndicator(
-                                      color: CustomColors.gold,
-                                    ),
-                                  )
-                                : controller.myProducts.isEmpty
-                                    ? Center(
-                                        child: Text(
-                                          AppWord.nothingToShow,
-                                          style: TextStyle(
-                                              fontSize: AppFonts.subTitleFont(
-                                                  context)),
-                                        ),
-                                      )
-                                    : ProfileLists(toMyProducts: true,
-                                        product: controller.myProducts,
-                                        image: controller.myProducts,
-                                      )),
-                        TextButton(
-                                onPressed: () {
-                                  Get.to(const MyAds(),
-                                      transition: Transition.zoom,
-                                      duration:
-                                          const Duration(milliseconds: 500));
-                                },
-                                child: Text(
-                                  AppWord.viewAll,
-                                  style: TextStyle(
-                                      color: CustomColors.black,
-                                      fontSize:
-                                          AppFonts.smallTitleFont(context)),
-                                ))
-                            .paddingSymmetric(
-                                horizontal: ScreenDimensions.widthPercentage(
-                                    context, 2)),
-                        Directions(
-                          child: Center(
-                            child: AppButton(
-                                text: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      AppWord.editProfile,
+                            Directions(
+                              child: Column(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      ' : ${AppWord.profileDescription}',
+                                      maxLines: 10,
                                       style: TextStyle(
-                                          color: CustomColors.white,
-                                          fontSize:
-                                              AppFonts.smallTitleFont(context),
+                                          fontSize: AppFonts.subTitleFont(context),
                                           fontWeight: FontWeight.bold),
+                                    ).paddingSymmetric(
+                                        horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                                  ),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                      controller.user!.description!,
+                                      maxLines: 4,
+                                      style: TextStyle(
+                                          fontSize: AppFonts.smallTitleFont(context),
+                                          fontWeight: FontWeight.bold),
+                                    ).paddingSymmetric(
+                                        horizontal: ScreenDimensions.widthPercentage(context, 2)),
+                                  ),
+                                ],
+                              ),
+                            ).paddingSymmetric(
+                                horizontal: ScreenDimensions.widthPercentage(context, 5),
+                                vertical: ScreenDimensions.heightPercentage(context, 1)),
+                        Center(
+                            child: Container(
+                              alignment: Alignment.center,
+                              width: ScreenDimensions.widthPercentage(context, 80),
+                              height: ScreenDimensions.heightPercentage(context, 25),
+                              decoration: BoxDecoration(
+                                color: CustomColors.gold,
+                                borderRadius: BorderRadius.circular(ScreenDimensions.radius(context, 1),
+                                )
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  GestureDetector(
+                                    onTap: (){
+                                      Get.to(const MyPurchasesHome(),duration: const Duration(milliseconds: 500),transition: Transition.zoom);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(AppImages.shop),
+                                        SizedBox(
+                                          width: ScreenDimensions.widthPercentage(context, 40),
+                                          child: Text(
+                                            AppWord.myPurchases,
+                                            style: TextStyle(
+                                                color: CustomColors.white,
+                                              fontSize: AppFonts.subTitleFont(context),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 10)),
+                                  ),
+                                  Divider(color: Colors.white,thickness: ScreenDimensions.widthPercentage(context, 0.3)).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 3)),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Get.to(const MySellsHome(),duration: const Duration(milliseconds: 500),transition: Transition.zoom);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(AppImages.sells),
+                                        SizedBox(
+                                          width: ScreenDimensions.widthPercentage(context, 40),
+                                          child: Text(
+                                            AppWord.mySells,
+                                            style: TextStyle(
+                                              color: CustomColors.white,
+                                              fontSize: AppFonts.subTitleFont(context),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 10)),
+                                  ),
+                                  Divider(color: Colors.white,thickness: ScreenDimensions.widthPercentage(context, 0.3)).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 3)),
+                                  GestureDetector(
+                                    onTap: (){
+                                      Get.to(const MyAds(),duration: const Duration(milliseconds: 500),transition: Transition.zoom);
+                                    },
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        SvgPicture.asset(AppImages.adds),
+                                        SizedBox(
+                                          width: ScreenDimensions.widthPercentage(context, 40),
+                                          child: Text(
+                                            AppWord.myAds,
+                                            style: TextStyle(
+                                              color: CustomColors.white,
+                                              fontSize: AppFonts.subTitleFont(context),
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ).paddingSymmetric(horizontal: ScreenDimensions.widthPercentage(context, 10)),
+                                  ),
+                                ],
+                              ).marginSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                            ),
+                        ).paddingSymmetric(vertical: ScreenDimensions.heightPercentage(context, 2)),
+                        Directions(
+                              child: Center(
+                                child: AppButton(
+                                    text: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text(
+                                          AppWord.editProfile,
+                                          style: TextStyle(
+                                              color: CustomColors.white,
+                                              fontSize:
+                                              AppFonts.smallTitleFont(context),
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        SizedBox(
+                                          width: ScreenDimensions.widthPercentage(
+                                              context, 1),
+                                        ),
+                                        SvgPicture.asset(AppImages.edit,
+                                            color: CustomColors.white),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      width: ScreenDimensions.widthPercentage(
-                                          context, 1),
-                                    ),
-                                    SvgPicture.asset(AppImages.edit,
-                                        color: CustomColors.white),
-                                  ],
-                                ),
-                                onTap: () {
-                                  Get.to(const EditProfile(),
-                                      transition: Transition.fade,
-                                      duration:
+                                    onTap: () {
+                                      Get.to(const EditProfile(),
+                                          transition: Transition.fade,
+                                          duration:
                                           const Duration(milliseconds: 500));
-                                },
-                                buttonBackground:
+                                    },
+                                    buttonBackground:
                                     AppImages.buttonLiteBackground),
-                          ),
-                        )
-                      ]))
+                              ),
+                            ).paddingOnly(bottom: ScreenDimensions.heightPercentage(context, 1)),
+                      ])),
                     ],
                   ),
                 );
